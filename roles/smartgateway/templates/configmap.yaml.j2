@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ meta.name }}-smartgateway
+  namespace: {{ meta.namespace }}
+data:
+  "sa.metrics.config.json": |
+    {
+            "AMQP1MetricURL": "messaging-internal-{{ meta.name }}.{{ meta.namespace }}.svc:5672/collectd/telemetry",
+            "Exporterhost": "0.0.0.0",
+            "Exporterport": 8081,
+            "CPUStats": false,
+            "DataCount": -1,
+            "UseSample": false,
+            "ServiceType": "metrics",
+            "Debug": true,
+            "Prefetch": 1000
+    }

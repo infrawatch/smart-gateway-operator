@@ -1,29 +1,13 @@
 ---
 # tasks file for smartgateway
-- name: Smart gateway configmap
+- name: Write out configmap for smart gateway
+  template:
+    dest: /tmp/configmap.yaml
+    src: configmap.yaml.j2
+
+- name: Smart gateway ConfigMap
   k8s:
-    resource_definition:
-      apiVersion: v1
-      kind: ConfigMap
-      metadata:
-        name: '{{ meta.name }}-smartgateway'
-        namespace: '{{ meta.namespace }}'
-        labels:
-          app: "smartgateway"
-          node: "{{ meta.name }}"
-      data:
-        "sa.metrics.config.json": !unsafe |+
-          {
-              "AMQP1MetricURL": "messaging-internal-{{ meta.name }}.{{ meta.namespace }}.svc:5672/collectd/telemetry",
-              "Exporterhost": "0.0.0.0",
-              "Exporterport": 8081,
-              "CPUStats": false,
-              "DataCount": -1,
-              "UseSample": false,
-              "ServiceType": "metrics",
-              "Debug": false,
-              "Prefetch": 1000
-          }
+    src: /tmp/configmap.yaml
 
 - name: Start the smart gateway
   k8s:
