@@ -1,0 +1,36 @@
+---
+# tasks file for smartgateway
+- name: start smart gateway
+  k8s:
+    resource_definition:
+      apiVersion: apps.openshift.io/v1
+      kind: DeploymentConfig
+      metadata:
+        name: '{{ meta.name }}-smartgateway'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        replicas: '{{ size }}'
+        template:
+          metadata:
+            labels:
+              sa-telemetry-app: '{{ meta.name }}-smartgateway'
+              app: smartgateway
+          spec:
+            securityContext:
+              nonroot: true
+            containers:
+            - name: metrics-smart-gateway
+              image: docker.io/nfvpe/smart_gateway:latest
+              args:
+                - '-config=/config/sa.metrics.config.json'
+                - '-uname=$(MY_POD_NAME)'
+                - '-servicetype=metrics'
+              env:
+                - name: MY_POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: metadata.name
+              ports:
+              - name: metrics
+                containerPort: 8081

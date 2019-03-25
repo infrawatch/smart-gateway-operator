@@ -1,0 +1,5 @@
+---
+- version: v1alpha1
+  group: smartgateway.infra.watch
+  kind: SmartGateway
+  role: /home/lmadsen/src/github/leifmadsen/smart-gateway-operator/roles/smartgateway
