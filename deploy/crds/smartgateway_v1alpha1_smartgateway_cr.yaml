@@ -1,7 +1,7 @@
 apiVersion: smartgateway.infra.watch/v1alpha1
 kind: SmartGateway
 metadata:
-  name: example-smartgateway
+  name: white
 spec:
   # Add fields here
   size: 1

@@ -1,6 +1,31 @@
 ---
 # tasks file for smartgateway
-- name: start smart gateway
+- name: Smart gateway configmap
+  k8s:
+    resource_definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: '{{ meta.name }}-smartgateway'
+        namespace: '{{ meta.namespace }}'
+        labels:
+          app: "smartgateway"
+          node: "{{ meta.name }}"
+      data:
+        "sa.metrics.config.json": !unsafe |+
+          {
+              "AMQP1MetricURL": "messaging-internal-{{ meta.name }}.{{ meta.namespace }}.svc:5672/collectd/telemetry",
+              "Exporterhost": "0.0.0.0",
+              "Exporterport": 8081,
+              "CPUStats": false,
+              "DataCount": -1,
+              "UseSample": false,
+              "ServiceType": "metrics",
+              "Debug": false,
+              "Prefetch": 1000
+          }
+
+- name: Start the smart gateway
   k8s:
     resource_definition:
       apiVersion: apps.openshift.io/v1
@@ -21,6 +46,9 @@
             containers:
             - name: metrics-smart-gateway
               image: docker.io/nfvpe/smart_gateway:latest
+              volumeMounts:
+              - name: metrics-config
+                mountPath: /config
               args:
                 - '-config=/config/sa.metrics.config.json'
                 - '-uname=$(MY_POD_NAME)'
@@ -34,3 +62,65 @@
               ports:
               - name: metrics
                 containerPort: 8081
+            volumes:
+            - name: metrics-config
+              configMap:
+                name: "{{ meta.name }}-smartgateway"
+            nodeSelector:
+              node: "{{ meta.name }}"
+              application: sa-telemetry
+
+- name: Service for the smart gateway
+  k8s:
+    resource_definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: '{{ meta.name }}-smartgateway'
+        namespace: '{{ meta.namespace }}'
+        labels:
+          sa-telemetry-app: '{{ meta.name }}-smartgateway'
+          app: 'smartgateway'
+          node: 'blue'
+      spec:
+        ports:
+        - name: '{{ meta.name }}'
+          port: 8081
+          targetPort: 8081
+          protocol: TCP
+        selector:
+          sa-telemetry-app: '{{ meta.name }}-smartgateway'
+
+- name: Service monitor for smart gateway
+  k8s:
+    resource_definition:
+      apiVersion: monitoring.coreos.com/v1
+      kind: ServiceMonitor
+      metadata:
+        name: '{{ meta.name }}-smartgateway'
+        namespace: '{{ meta.namespace }}'
+        labels:
+          sa-telemetry-app: '{{ meta.name }}-smartgateway'
+      spec:
+        selector:
+          matchLabels:
+            sa-telemetry-app: '{{ meta.name }}-smartgateway'
+        namespaceSelector:
+          matchNames:
+          - '{{ meta.namespace }}'
+        endpoints:
+        - port: metrics
+          interval: 1s
+          metricRelabelings:
+          - action: labeldrop
+            regex: pod
+            sourcelabels: []
+          - action: labeldrop
+            regex: namespace
+            sourcelabels: []
+          - action: labeldrop
+            regex: instance
+            sourcelabels: []
+          - action: labeldrop
+            regex: job
+            sourcelabels: []
