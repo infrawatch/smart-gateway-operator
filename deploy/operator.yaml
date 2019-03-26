@@ -15,8 +15,7 @@ spec:
       serviceAccountName: smart-gateway-operator
       containers:
         - name: smart-gateway-operator
-          # Replace this with the built image name
-          image: "{{ REPLACE_IMAGE }}"
+          image: "quay.io/redhat-service-assurance/smart-gateway-operator:latest"
           imagePullPolicy: "{{ pull_policy|default('Always') }}"
           env:
             - name: WATCH_NAMESPACE
