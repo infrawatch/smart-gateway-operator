@@ -7,12 +7,12 @@ data:
   "sa.metrics.config.json": |
     {
             "AMQP1MetricURL": "messaging-internal-{{ meta.name }}.{{ meta.namespace }}.svc:5672/collectd/telemetry",
-            "Exporterhost": "0.0.0.0",
-            "Exporterport": 8081,
-            "CPUStats": false,
-            "DataCount": -1,
-            "UseSample": false,
-            "ServiceType": "metrics",
-            "Debug": true,
-            "Prefetch": 1000
+            "Exporterhost": "{{ exporter_host|default('0.0.0.0') }}",
+            "Exporterport": {{ exporter_port|default('8081') }},
+            "CPUStats": {{ cpu_stats|default('false') }},
+            "DataCount": {{ data_count|default('-1') }},
+            "UseSample": {{ use_sample|default('false') }},
+            "ServiceType": "{{ service_type|default('metrics') }}",
+            "Debug": {{ debug|default('true') }},
+            "Prefetch": {{ prefetch|default('1000') }}
     }
