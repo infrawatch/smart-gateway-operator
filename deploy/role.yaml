@@ -55,6 +55,7 @@ rules:
   - deploymentconfigs/finalizers
   verbs:
   - update
+  - watch
 - apiGroups:
   - smartgateway.infra.watch
   resources:
