@@ -23,6 +23,12 @@ rules:
   verbs:
   - get
 - apiGroups:
+  - apps.openshift.io
+  resources:
+  - deploymentconfigs
+  verbs:
+  - '*'
+- apiGroups:
   - apps
   resources:
   - deployments
@@ -38,12 +44,15 @@ rules:
   verbs:
   - get
   - create
+  - list
+  - patch
 - apiGroups:
   - apps
   resourceNames:
   - smart-gateway-operator
   resources:
   - deployments/finalizers
+  - deploymentconfigs/finalizers
   verbs:
   - update
 - apiGroups:

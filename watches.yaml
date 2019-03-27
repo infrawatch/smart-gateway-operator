@@ -2,7 +2,7 @@
 - version: v1alpha1
   group: smartgateway.infra.watch
   kind: SmartGateway
-  role: /home/lmadsen/src/github/redhat-service-assurance/smart-gateway-operator/roles/smartgateway
+  role: /opt/ansible/roles/smartgateway
   finalizer:
     name: finalizer.smartgateway.infra.watch
     vars:

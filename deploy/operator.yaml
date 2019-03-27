@@ -16,7 +16,7 @@ spec:
       containers:
         - name: smart-gateway-operator
           image: "quay.io/redhat-service-assurance/smart-gateway-operator:latest"
-          imagePullPolicy: "{{ pull_policy|default('Always') }}"
+          imagePullPolicy: "Always"
           env:
             - name: WATCH_NAMESPACE
               valueFrom:
