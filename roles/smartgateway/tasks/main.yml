@@ -22,8 +22,7 @@
         template:
           metadata:
             labels:
-              sa-telemetry-app: '{{ meta.name }}-smartgateway'
-              app: smartgateway
+              app: prometheus-{{ meta.name }}
           spec:
             securityContext:
               nonroot: true
@@ -63,17 +62,15 @@
         name: '{{ meta.name }}-smartgateway'
         namespace: '{{ meta.namespace }}'
         labels:
-          sa-telemetry-app: '{{ meta.name }}-smartgateway'
-          app: 'smartgateway'
-          node: 'blue'
+          smartgateway: '{{ meta.name }}'
       spec:
         ports:
-        - name: '{{ meta.name }}'
+        - name: metrics
           port: 8081
           targetPort: 8081
           protocol: TCP
         selector:
-          sa-telemetry-app: '{{ meta.name }}-smartgateway'
+          app: prometheus-{{ meta.name }}
 
 - name: Service monitor for smart gateway
   k8s:
@@ -84,11 +81,11 @@
         name: '{{ meta.name }}-smartgateway'
         namespace: '{{ meta.namespace }}'
         labels:
-          sa-telemetry-app: '{{ meta.name }}-smartgateway'
+          smartgateway: '{{ meta.name }}'
       spec:
         selector:
           matchLabels:
-            sa-telemetry-app: '{{ meta.name }}-smartgateway'
+            smartgateway: '{{ meta.name }}'
         namespaceSelector:
           matchNames:
           - '{{ meta.namespace }}'
