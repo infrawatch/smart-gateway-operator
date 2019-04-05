@@ -3,7 +3,3 @@
   group: smartgateway.infra.watch
   kind: SmartGateway
   role: /opt/ansible/roles/smartgateway
-  finalizer:
-    name: finalizer.smartgateway.infra.watch
-    vars:
-      state: absent
