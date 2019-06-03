@@ -28,7 +28,7 @@
               nonroot: true
             containers:
             - name: metrics-smart-gateway
-              image: docker.io/nfvpe/smart_gateway:latest
+              image: '{{ container_image_path }}'
               volumeMounts:
               - name: metrics-config
                 mountPath: /config
