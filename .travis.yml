@@ -1,0 +1,15 @@
+git:
+  deoth: 1
+
+language: go
+go:
+  1.9.7
+
+sudo: required
+dist: xenial
+services:
+  - docker
+
+script:
+  - docker build --tag redhat-service-assurance/smart-gateway-operator:latest .
+  - docker images
