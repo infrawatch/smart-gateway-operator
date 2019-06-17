@@ -3,6 +3,9 @@ git:
 
 sudo: required
 dist: xenial
+
+languages: none
+
 services:
   - docker
 
