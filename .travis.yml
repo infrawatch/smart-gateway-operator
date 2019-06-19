@@ -1,6 +1,5 @@
 git:
   deoth: 1
-sudo: required
 dist: xenial
 languages: python
 python:
