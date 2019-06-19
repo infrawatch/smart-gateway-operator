@@ -1,14 +1,14 @@
 git:
   deoth: 1
-
 sudo: required
 dist: xenial
-
-languages: none
-
+languages: python
 services:
   - docker
-
+before_install:
+  pip install molecule
+  pip install docker
 script:
-  - docker build --tag redhat-service-assurance/smart-gateway-operator:latest .
-  - docker images
+  - molecule test
+  #- docker build --tag redhat-service-assurance/smart-gateway-operator:latest .
+  #- docker images
