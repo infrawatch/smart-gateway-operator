@@ -1,13 +1,12 @@
 git:
-  deoth: 1
+  depth: 1
 dist: xenial
 languages: python
-python:
-  - "3.6"
 services:
   - docker
 before_install:
-  pip install molecule docker
+  - pip install --upgrade pip
+  - pip install molecule docker --user
 script:
   - molecule --version
   - ansible --version
