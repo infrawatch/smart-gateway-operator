@@ -3,12 +3,15 @@ git:
 sudo: required
 dist: xenial
 languages: python
+python:
+  - "3.6"
 services:
   - docker
 before_install:
-  pip install molecule
-  pip install docker
+  pip install molecule docker
 script:
+  - molecule --version
+  - ansible --version
   - molecule test
   #- docker build --tag redhat-service-assurance/smart-gateway-operator:latest .
   #- docker images
