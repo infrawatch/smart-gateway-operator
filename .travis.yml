@@ -6,7 +6,7 @@ services:
   - docker
 before_install:
   - pip install --upgrade pip --user
-  - pip install molecule docker kubernetes openshift --user
+  - pip install molecule docker kubernetes openshift jmespath --user
 script:
   - molecule --version
   - ansible --version
