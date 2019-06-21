@@ -6,10 +6,9 @@ services:
   - docker
 before_install:
   - pip install --upgrade pip --user
-  - pip install molecule docker --user
+  - pip install molecule docker kubernetes openshift --user
 script:
   - molecule --version
   - ansible --version
-  - molecule test
-  #- docker build --tag redhat-service-assurance/smart-gateway-operator:latest .
-  #- docker images
+  - molecule test -s test-local
+
