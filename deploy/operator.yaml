@@ -6,16 +6,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: smart-gateway-operator
+      app: smart-gateway-operator
   template:
     metadata:
       labels:
-        name: smart-gateway-operator
+        app: smart-gateway-operator
     spec:
       serviceAccountName: smart-gateway-operator
       containers:
         - name: smart-gateway-operator
-          image: "quay.io/redhat-service-assurance/smart-gateway-operator:latest"
+          image: quay.io/redhat-service-assurance/smart-gateway-operator:latest
           imagePullPolicy: "Always"
           env:
             - name: WATCH_NAMESPACE

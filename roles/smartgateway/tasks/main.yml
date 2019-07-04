@@ -1,104 +1,20 @@
 ---
-# tasks file for smartgateway
 - name: Write out configmap for smart gateway
   template:
     dest: /tmp/configmap.yaml
-    src: configmap.yaml.j2
+    src: "{{ service_type }}-configmap.yaml.j2"
 
 - name: Smart gateway ConfigMap
   k8s:
     src: /tmp/configmap.yaml
 
-- name: Start the smart gateway
-  k8s:
-    resource_definition:
-      apiVersion: apps.openshift.io/v1
-      kind: DeploymentConfig
-      metadata:
-        name: '{{ meta.name }}-smartgateway'
-        namespace: '{{ meta.namespace }}'
-      spec:
-        replicas: '{{ size }}'
-        template:
-          metadata:
-            labels:
-              app: smart-gateway
-          spec:
-            securityContext:
-              nonroot: true
-            containers:
-            - name: metrics-smart-gateway
-              image: '{{ container_image_path }}'
-              volumeMounts:
-              - name: metrics-config
-                mountPath: /config
-              args:
-                - '-config=/config/sa.metrics.config.json'
-                - '-uname=$(MY_POD_NAME)'
-                - '-servicetype=metrics'
-              env:
-                - name: MY_POD_NAME
-                  valueFrom:
-                    fieldRef:
-                      apiVersion: v1
-                      fieldPath: metadata.name
-              ports:
-              - name: metrics
-                containerPort: 8081
-            volumes:
-            - name: metrics-config
-              configMap:
-                name: "{{ meta.name }}-smartgateway"
+- name: Create deployment for the Smart Gateway
+  include_tasks: deployment.yml
 
-- name: Service for the smart gateway
-  k8s:
-    resource_definition:
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: '{{ meta.name }}-smartgateway'
-        namespace: '{{ meta.namespace }}'
-        labels:
-          app: smart-gateway
-      spec:
-        ports:
-        - name: metrics
-          port: 8081
-          targetPort: 8081
-          protocol: TCP
-        selector:
-          app: smart-gateway
+- name: Create service for the Smart Gateway
+  include_tasks: service.yml
+  when: service_type == "metrics"
 
-- name: Service monitor for smart gateway
-  k8s:
-    resource_definition:
-      apiVersion: monitoring.coreos.com/v1
-      kind: ServiceMonitor
-      metadata:
-        name: '{{ meta.name }}-smartgateway'
-        namespace: '{{ meta.namespace }}'
-        labels:
-          app: smart-gateway
-      spec:
-        selector:
-          matchLabels:
-            app: smart-gateway
-        namespaceSelector:
-          matchNames:
-          - '{{ meta.namespace }}'
-        endpoints:
-        - port: metrics
-          interval: 1s
-          metricRelabelings:
-          - action: labeldrop
-            regex: pod
-            sourcelabels: []
-          - action: labeldrop
-            regex: namespace
-            sourcelabels: []
-          - action: labeldrop
-            regex: instance
-            sourcelabels: []
-          - action: labeldrop
-            regex: job
-            sourcelabels: []
+- name: Create ServiceMonitor for Smart Gateway
+  include_tasks: servicemonitor.yml
+  when: service_type == "metrics"
