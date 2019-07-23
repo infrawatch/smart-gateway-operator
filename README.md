@@ -21,14 +21,17 @@ A procedure for testing in minishift
 
 Tested with the following versions:
 * docker
+  * 18.06.0-ce
   * 18.09.7
-* kubernetes 
+* kubernetes
   * v1.11.0+d4cacc0
-* minishift 
+* minishift
   * v1.34.0+f5db7cb
+  * v1.34.1+c2ff9cb
 * oc
   * v3.11.0+0cbc58b
 * operator-sdk
+  * v0.6.0
   * v0.9.0
 
 ### Set up minishift and docker
