@@ -2,7 +2,7 @@
 
 Operator for the infra.watch [smart gateway](https://github.com/redhat-service-assurance/smart-gateway)
 
-## Deployment
+## Deployment to an existing cluster
 
 Deploy the components under the `deploy/` directory.
 
@@ -15,9 +15,21 @@ oc apply -f deploy/role.yaml
 oc apply -f deploy/service_account.yaml
 ```
 
-## Build and test
+## Build and test against minishift
 
 A procedure for testing in minishift
+
+Tested with the following versions:
+* docker
+  * 18.09.7
+* kubernetes 
+  * v1.11.0+d4cacc0
+* minishift 
+  * v1.34.0+f5db7cb
+* oc
+  * v3.11.0+0cbc58b
+* operator-sdk
+  * v0.9.0
 
 ### Set up minishift and docker
 
