@@ -65,18 +65,26 @@ With molecule (Currently broken)
 
 Test the newly built operator with the Service Assurance Framework (SAF).
 
+The sections below can be iterated on during development, in brief:
+
+1. Clean out the project space
+1. Build the operator
+1. Import the operator to an ImageStream in the project
+1. Deploy SAF in the same project
+
 #### Prepare project
 
 Create the `sa-telemetry` project and push the operator image to an image stream
 in its registry namespace.
 
 ```shell
-oc delete project sa-telemetry
-oc new-project sa-telemetry
-SA_DOCKER_IMAGE="$(minishift openshift registry)/$(oc project -q)/smart-gateway-operator:latest"
-docker tag "${DOCKER_IMAGE}" "${SA_DOCKER_IMAGE}"
+PROJECT=sa-telemetry
+oc delete project ${PROJECT}
+oc new-project ${PROJECT}
+SA_DOCKER_IMAGE="$(minishift openshift registry)/${PROJECT}/smart-gateway-operator:dev"
+operator-sdk build "${SA_DOCKER_IMAGE}"
 docker push "${SA_DOCKER_IMAGE}"
-oc import-image --insecure=true smart-gateway-operator:latest --from=$(oc registry info)/sa-telemetry/smart-gateway-operator --confirm
+oc import-image --insecure=true smart-gateway-operator:latest --from=$(oc registry info)/${PROJECT}/smart-gateway-operator:dev --confirm
 ```
 
 **NOTE:** The `--insecure=true` flag is to work around an issue where the
