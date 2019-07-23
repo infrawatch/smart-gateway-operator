@@ -24,11 +24,12 @@ A procedure for testing in minishift
 Enable the edge routing for the minishift registry and log into it:
 
 ```shell
-minishift addons enable registry-route # Must be BEFORE you start minishift (https://github.com/minishift/minishift/issues/2060)
+minishift addons enable registry-route  # Must be BEFORE you start minishift (https://github.com/minishift/minishift/issues/2060)
 minishift addons enable admin-user
 minishift start
 oc login -u admin -p admin
 oc new-project sg-test
+eval $(minishift docker-env)  # Note this reconfigures your DOCKER_HOST
 docker login -u admin -p `oc whoami -t` $(minishift openshift registry)
 ```
 
@@ -44,8 +45,9 @@ docker push "${DOCKER_IMAGE}"
 
 ### Deploy with the newly built operator
 
-Follow the same process as documented in the "Deployment" section above, but
-apply a patched version of the operator resource that uses the newly built
+Follow the same process as documented in the [Deployment](#Deployment) section
+above, but apply a patched version of the operator resource that uses the newly
+built
 operator image:
 
 ```shell
@@ -65,7 +67,7 @@ Test the newly built operator with the Service Assurance Framework (SAF).
 
 #### Prepare project
 
-Create the sa-telemetry project and push the operator image to an image stream
+Create the `sa-telemetry` project and push the operator image to an image stream
 in its registry namespace.
 
 ```shell
