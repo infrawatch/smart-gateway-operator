@@ -79,7 +79,6 @@
         namespace: '{{ meta.namespace }}'
         labels:
           app: smart-gateway
-          smartgateway: '{{ meta.name }}'
       spec:
         selector:
           matchLabels:
