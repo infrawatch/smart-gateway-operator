@@ -3,8 +3,10 @@ kind: SmartGateway
 metadata:
   name: metrics
 spec:
+  # Add fields here
   size: 1
   amqp_url: qdr-white.sa-telemetry.svc.cluster.local:5672/collectd/telemetry
+  use_sample: "true"
   debug: "false"
   container_image_path: quay.io/redhat-service-assurance/smart-gateway:latest
-# vim: set tabstop=2 shiftwidth=2 expandtab smartindent:
+
