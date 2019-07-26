@@ -1,0 +1,33 @@
+- name: Service monitor for smart gateway
+  k8s:
+    resource_definition:
+      apiVersion: monitoring.coreos.com/v1
+      kind: ServiceMonitor
+      metadata:
+        name: '{{ meta.name }}-smartgateway'
+        namespace: '{{ meta.namespace }}'
+        labels:
+          app: smart-gateway
+      spec:
+        selector:
+          matchLabels:
+            app: smart-gateway
+        namespaceSelector:
+          matchNames:
+          - '{{ meta.namespace }}'
+        endpoints:
+        - port: prom-http
+          interval: 1s
+          metricRelabelings:
+          - action: labeldrop
+            regex: pod
+            sourcelabels: []
+          - action: labeldrop
+            regex: namespace
+            sourcelabels: []
+          - action: labeldrop
+            regex: instance
+            sourcelabels: []
+          - action: labeldrop
+            regex: job
+            sourcelabels: []

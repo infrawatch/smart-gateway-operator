@@ -1,0 +1,18 @@
+- name: Service for the smart gateway
+  k8s:
+    resource_definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: '{{ meta.name }}-smartgateway'
+        namespace: '{{ meta.namespace }}'
+        labels:
+          app: smart-gateway
+      spec:
+        ports:
+        - name: prom-http
+          port: 8081
+          targetPort: 8081
+          protocol: TCP
+        selector:
+          app: smart-gateway

@@ -2,3 +2,4 @@
 # defaults file for smartgateway
 size: 1
 container_image_path: quay.io/redhat-service-assurance/smart-gateway:latest
+service_type: metrics

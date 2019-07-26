@@ -4,9 +4,9 @@ metadata:
   name: {{ meta.name }}-smartgateway
   namespace: {{ meta.namespace }}
 data:
-  "sa.metrics.config.json": |
+  "smartgateway_config.json": |
     {
-            "AMQP1MetricURL": "{{ amqpmetric_url | default('messaging-internal-{{ meta.name }}.{{ meta.namespace }}.svc:5672/collectd/telemetry') }}",
+            "AMQP1MetricURL": "{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/telemetry') }}",
             "Exporterhost": "{{ exporter_host | default('0.0.0.0') }}",
             "Exporterport": {{ exporter_port | default('8081') }},
             "CPUStats": {{ cpu_stats | default('false') }},
