@@ -23,6 +23,8 @@
               volumeMounts:
               - name: sg-config
                 mountPath: /config
+              - name: elastic-certs
+                mountPath: /config/certs
               args:
                 - '-config=/config/smartgateway_config.json'
                 - '-uname=$(MY_POD_NAME)'
@@ -40,3 +42,7 @@
             - name: sg-config
               configMap:
                 name: "{{ meta.name }}-smartgateway"
+            - name: elastic-certs
+              secret:
+                secretName: elasticsearch
+

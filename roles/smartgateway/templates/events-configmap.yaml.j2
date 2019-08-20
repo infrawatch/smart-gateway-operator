@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,9 +9,20 @@ data:
     {
             "AMQP1EventURL": "{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/notify') }}",
             "ElasticHostURL": "{{ elastic_url | default('elasticsearch.' + meta.namespace + '.svc:9200') }}",
-            "AlertManagerURL": "{{ alertmanager_url | default('alertmanager.' + meta.namespace + '.svc:9093/api/v1/alerts') }}",
             "ResetIndex": {{ reset_index | default('false') }},
-            "ServiceType": "{{ service_type | default('metrics') }}",
+            "ServiceType": "{{ service_type | default('events') }}",
             "Debug": {{ debug | default('false') }},
-            "Prefetch": {{ prefetch | default('0') }}
+            "Prefetch": {{ prefetch | default('0') }},
+            "UniqueName": "{{ unique_name | default(meta.name + '-smartgateway') }}",
+            "AlertManagerEnabled": {{ alert_manager_enabled | default('false') }},
+            "AlertManagerURL": "{{ alert_manager_url | default('') }}",
+            "APIEnabled": {{ api_enabled | default('false') }},
+            "APIEndpointURL": "{{ api_endpoint_url | default('') }}",
+            "PublishEventEnabled": {{ publish_event_enabled | default('false') }},
+            "AMQP1PublishURL": "{{ amqp_publish_url | default('') }}",
+            "TlsClientCert": "{{ tls_client_cert | default('') }}",
+            "TlsClientKey": "{{ tls_client_key | default('') }}",
+            "TlsCaCert": "{{ tls_ca_cert | default('') }}",
+            "TlsServerName": "{{ tls_server_name | default('') }}",
+            "UseTls": {{ use_tls | default('false') }}
     }
