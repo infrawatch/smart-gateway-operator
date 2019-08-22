@@ -16,3 +16,4 @@
           protocol: TCP
         selector:
           app: smart-gateway
+          deploymentconfig: '{{ meta.name }}-smartgateway'
