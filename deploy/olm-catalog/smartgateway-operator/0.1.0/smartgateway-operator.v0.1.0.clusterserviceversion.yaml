@@ -1,0 +1,135 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[{"apiVersion":"smartgateway.infra.watch/v1alpha1","kind":"SmartGateway","metadata":{"name":"metrics"},"spec":{"amqp_url":"qdr-white.sa-telemetry.svc.cluster.local:5672/collectd/telemetry","container_image_path":"quay.io/redhat-service-assurance/smart-gateway:latest","debug":"false","size":1}},{"apiVersion":"smartgateway.infra.watch/v1alpha1","kind":"SmartGateway","metadata":{"name":"events"},"spec":{"amqp_url":"qdr-white.sa-telemetry.svc.cluster.local:5672/collectd/telemetry","container_image_path":"quay.io/redhat-service-assurance/smart-gateway:latest","debug":"false","elastic_url":"https://elasticsearch.sa-telemetry.svc:9200","service_type":"events","size":1}}]'
+    capabilities: Basic Install
+  name: smart-gateway-operator.v0.1.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - kind: SmartGateway
+      name: smartgateways.smartgateway.infra.watch
+      version: v1alpha1
+  description:  |- 
+    Smart gateway for service assurance. Includes applications for both metrics and events gathering. Provides middleware that connects to an AMQP 1.0 message bus, pulling data off the bus and exposing it as a scrape target for Prometheus. Metrics are provided via the OPNFV Barometer project (collectd). Events are provided by the various event plugins for collectd, including connectivity, procevent and sysevent.
+  displayName: Smart Gateway Operator
+  install:
+    spec:
+      deployments:
+      - name: smart-gateway-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: smart-gateway-operator
+          strategy: {}
+          template:
+            metadata:
+              labels:
+                app: smart-gateway-operator
+            spec:
+              containers:
+              - env:
+                - name: WATCH_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.annotations['olm.targetNamespaces']
+                - name: POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: OPERATOR_NAME
+                  value: smart-gateway-operator
+                image: quay.io/redhat-service-assurance/smart-gateway-operator:latest
+                imagePullPolicy: Always
+                name: smart-gateway-operator
+                resources: {}
+              serviceAccountName: smart-gateway-operator
+      permissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - services
+          - endpoints
+          - persistentvolumeclaims
+          - events
+          - configmaps
+          - secrets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
+        - apiGroups:
+          - apps.openshift.io
+          resources:
+          - deploymentconfigs
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          - daemonsets
+          - replicasets
+          - statefulsets
+          verbs:
+          - '*'
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - servicemonitors
+          verbs:
+          - get
+          - create
+          - list
+          - patch
+          - watch
+        - apiGroups:
+          - apps
+          resourceNames:
+          - smart-gateway-operator
+          resources:
+          - deployments/finalizers
+          - deploymentconfigs/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - smartgateway.infra.watch
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        serviceAccountName: smart-gateway-operator
+    strategy: deployment
+  installModes:
+  - supported: true
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  minKubeVersion: 1.11.0
+  provider:
+    name: 'Red Hat, Inc.'
+  keywords:
+  - smartgateway
+  - serviceassurance
+  maintainers:
+  - email: leif@redhat.com
+    name: Leif Madsen
+  - email: aputtur@redhat.com
+    name: Aneesh Puttur
+  maturity: alpha
+  version: 0.1.0
+  
