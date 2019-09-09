@@ -1,11 +1,49 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
-  annotations:
-    alm-examples: '[{"apiVersion":"smartgateway.infra.watch/v1alpha1","kind":"SmartGateway","metadata":{"name":"metrics"},"spec":{"amqp_url":"qdr-white.sa-telemetry.svc.cluster.local:5672/collectd/telemetry","container_image_path":"quay.io/redhat-service-assurance/smart-gateway:latest","debug":"false","size":1}},{"apiVersion":"smartgateway.infra.watch/v1alpha1","kind":"SmartGateway","metadata":{"name":"events"},"spec":{"amqp_url":"qdr-white.sa-telemetry.svc.cluster.local:5672/collectd/telemetry","container_image_path":"quay.io/redhat-service-assurance/smart-gateway:latest","debug":"false","elastic_url":"https://elasticsearch.sa-telemetry.svc:9200","service_type":"events","size":1}}]'
-    capabilities: Basic Install
   name: smart-gateway-operator.v0.1.0
   namespace: placeholder
+  annotations:
+    alm-examples: |- 
+      [
+        {
+          "apiVersion": "smartgateway.infra.watch/v1alpha1",
+          "kind": "SmartGateway",
+          "metadata": {
+            "name":"metrics"
+            },
+            "spec":{
+              "amqp_url": "qdr-white.sa-telemetry.svc.cluster.local:5672/collectd/telemetry",
+              "container_image_path": "quay.io/redhat-service-assurance/smart-gateway:latest",
+              "debug": false,
+              "size": 1
+              }
+        },
+        {
+          "apiVersion": "smartgateway.infra.watch/v1alpha1",
+          "kind": "SmartGateway",
+          "metadata": {
+            "name": "events"
+            },
+            "spec": {
+              "amqp_url": "qdr-white.sa-telemetry.svc.cluster.local:5672/collectd/telemetry",
+              "container_image_path": "quay.io/redhat-service-assurance/smart-gateway:latest",
+              "debug": false,
+              "elastic_url": "https://elasticsearch.sa-telemetry.svc:9200",
+              "service_type": "events",
+              "size": 1
+              }
+        }
+        ]
+    capabilities: Basic Install
+    categories: Monitoring
+    description: Smart gateway for service assurance. Includes applications for both metrics and events gathering. Provides middleware that connects to an AMQP 1.0 message bus, pulling data off the bus and exposing it as a scrape target for Prometheus. Metrics are provided via the OPNFV Barometer project (collectd). Events are provided by the various event plugins for collectd, including connectivity, procevent and sysevent.
+    certified: "false"
+    containerImage: quay.io/redhat-service-assurance/smart-gateway-operator.0.1.0
+    createdAt: 2019-09-09T08:00:00Z
+    support: Red Hat, Inc.
+    repository: https://github.com/redhat-service-assurance/smart-gateway-operator
+  
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
@@ -13,6 +51,8 @@ spec:
     - kind: SmartGateway
       name: smartgateways.smartgateway.infra.watch
       version: v1alpha1
+      displayName: SmartGateway
+      description: SmartGateway Events/Metrics Deployment with the Operator
   description:  |- 
     Smart gateway for service assurance. Includes applications for both metrics and events gathering. Provides middleware that connects to an AMQP 1.0 message bus, pulling data off the bus and exposing it as a scrape target for Prometheus. Metrics are provided via the OPNFV Barometer project (collectd). Events are provided by the various event plugins for collectd, including connectivity, procevent and sysevent.
   displayName: Smart Gateway Operator
@@ -121,7 +161,7 @@ spec:
     type: AllNamespaces
   minKubeVersion: 1.11.0
   provider:
-    name: 'Red Hat, Inc.'
+    name: Red Hat, Inc.
   keywords:
   - smartgateway
   - serviceassurance
@@ -130,6 +170,9 @@ spec:
     name: Leif Madsen
   - email: aputtur@redhat.com
     name: Aneesh Puttur
+  links:
+  - name: Source Code
+    url: https://github.com/redhat-service-assurance/smart-gateway-operator
   maturity: alpha
   version: 0.1.0
   
