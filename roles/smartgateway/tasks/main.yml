@@ -9,7 +9,13 @@
     src: /tmp/configmap.yaml
 
 - name: Create deployment for the Smart Gateway
-  include_tasks: deployment.yml
+  template:
+    dest: /tmp/deployment.yaml
+    src: deployment.yaml.j2
+
+- name: Deploy the Smart Gateway
+  k8s:
+    src: /tmp/deployment.yaml
 
 - name: Create service for the Smart Gateway
   include_tasks: service.yml
