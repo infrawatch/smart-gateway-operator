@@ -1,5 +1,5 @@
+packageName: smartgateway-operator
 channels:
-- currentCSV: smart-gateway-operator.v0.1.0
-  name: alpha
+- name: alpha
+  currentCSV: smartgateway-operator.v0.1.0
 defaultChannel: alpha
-packageName: smart-gateway-operator
