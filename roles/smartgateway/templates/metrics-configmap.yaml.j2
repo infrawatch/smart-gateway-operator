@@ -11,7 +11,6 @@ data:
             "Exporterport": {{ exporter_port | default('8081') }},
             "CPUStats": {{ cpu_stats | default('false') }},
             "DataCount": {{ data_count | default('-1') }},
-            "UseSample": {{ use_sample | default('false') }},
             "ServiceType": "{{ service_type | default('metrics') }}",
             "Debug": {{ debug | default('true') }},
             "Prefetch": {{ prefetch | default('1000') }}

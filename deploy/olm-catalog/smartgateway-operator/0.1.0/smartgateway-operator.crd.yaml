@@ -62,9 +62,6 @@ spec:
             dataCount:
               description: Stop after receiving this many messages in total (-1 forever). Defaults to '-1'.
               type: string
-            useSample:
-              description: Use sample data instead of AMQP .This will not fetch any data from AMQP. Defaults to 'false'.
-              type: string
             debug:
               description: Enable verbose debugging statements. Defaults to 'false'.
               type: string
