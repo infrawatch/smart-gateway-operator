@@ -17,7 +17,7 @@
           - '{{ meta.namespace }}'
         endpoints:
         - port: prom-http
-          interval: 1s
+          interval: '{{ prometheus_scrape_interval }}'
           metricRelabelings:
           - action: labeldrop
             regex: pod
