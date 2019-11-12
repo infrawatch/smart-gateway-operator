@@ -4,14 +4,14 @@ metadata:
   name: '{{ meta.name }}-smartgateway'
   namespace: '{{ meta.namespace }}'
 spec:
-  replicas: '{{ size }}'
+  replicas: {{ size }}
   template:
     metadata:
       labels:
         app: smart-gateway
     spec:
       securityContext:
-        nonroot: true
+        runAsNonRoot: true
       containers:
       - name: smart-gateway
         image: '{{ container_image_path }}'
