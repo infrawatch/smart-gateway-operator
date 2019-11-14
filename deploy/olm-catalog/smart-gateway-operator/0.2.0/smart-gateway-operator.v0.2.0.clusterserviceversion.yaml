@@ -35,7 +35,7 @@ metadata:
     categories: Monitoring
     containerImage: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
     createdAt: "2019-11-14T14:49:00Z"
-    repository: https://github.com/redhat-service-assurance/smart-gateway-operator
+    repository: https://github.com/redhat-service-assurance/smart-gateway-operator.0.2.0
     support: Red Hat (CloudOps)
   name: smart-gateway-operator.v0.2.0
   namespace: placeholder
@@ -228,7 +228,7 @@ spec:
     name: smart-gateway-operator
   links:
   - name: Source Code
-    url: https://github.com/redhat-service-assurance/smart-gateway-operator
+    url: https://github.com/redhat-service-assurance/smart-gateway-operator.0.2.0
   maintainers:
   - email: support@redhat.com
     name: Red Hat CloudOps DFG
