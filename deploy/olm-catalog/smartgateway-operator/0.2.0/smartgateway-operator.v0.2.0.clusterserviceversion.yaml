@@ -16,6 +16,7 @@ metadata:
               "amqp_url": "qdr-white.sa-telemetry.svc.cluster.local:5672/collectd/telemetry",
               "container_image_path": "quay.io/redhat-service-assurance/smart-gateway:latest",
               "debug": "false",
+              "service_type": "metrics",
               "size": 1
               }
         },
@@ -115,13 +116,11 @@ spec:
   links:
   - name: Source Code
     url: https://github.com/redhat-service-assurance/smart-gateway-operator
-  
   labels:
     name: smart-gateway-operator
   selector:
     matchLabels:
       name: smart-gateway-operator
-
   installModes:
   - supported: true
     type: OwnNamespace
@@ -131,7 +130,6 @@ spec:
     type: MultiNamespace
   - supported: false
     type: AllNamespaces
-  
   install:
     strategy: deployment
     spec:
@@ -227,7 +225,6 @@ spec:
           - '*'
         serviceAccountName: smart-gateway-operator
     strategy: deployment
-  
   customresourcedefinitions:
       owned:
       - kind: SmartGateway
@@ -235,3 +232,16 @@ spec:
         version: v2alpha1
         displayName: SmartGateway
         description: SmartGateway Events/Metrics Deployment with the Operator
+        resources:
+        - kind: Pods
+          version: v1
+        - kind: Deployments
+          version: v1
+        - kind: ReplicaSets
+          version: v1
+        - kind: Services
+          version: v1
+        - kind: ConfigMaps
+          version: v1
+        - kind: SmartGateways
+          version: v2alpha2
