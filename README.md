@@ -4,6 +4,13 @@ Operator for the infra.watch [smart gateway](https://github.com/redhat-service-a
 
 NOTE: Development environment for OCP 4.2 controlled from Service Assurance Operato (SAO)
 
+## Required CSV fields
+
+More information about ClusterServiceVersion fields required for Operator Lifecycle Manager that
+are not identified in the CSV Custom Resource Definition can be found here:
+
+> https://github.com/operator-framework/community-operators/blob/master/docs/required-fields.md
+
 ## Deployment to an existing cluster
 
 Use the OperatorHub deployment from the Community catalog.
@@ -59,16 +66,5 @@ Start a new smart gateway by creating a CustomResource object
 based on the example:
 
 ```shell
-oc create -f deploy/crds/smartgateway_v2alpha1_smartgateway_cr.yaml
-```
-
-Here is an example CustomResource for the `cloud1`` smart gateway.
-
-```yaml
-apiVersion: infra.watch/v2alpha1
-kind: SmartGateway
-metadata:
-  name: cloud1
-spec:
-  size: 1
+oc create -f deploy/crds/smartgateway.infra.watch_v2alpha1_smartgateway.metrics_cr.yaml
 ```
