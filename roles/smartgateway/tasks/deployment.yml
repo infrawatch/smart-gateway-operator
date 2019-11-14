@@ -1,5 +1,4 @@
 ---
-# tasks file for smartgateway
 - name: Start the smart gateway
   k8s:
     resource_definition:
@@ -45,4 +44,3 @@
             - name: elastic-certs
               secret:
                 secretName: elasticsearch
-

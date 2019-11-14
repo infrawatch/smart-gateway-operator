@@ -20,7 +20,3 @@
 - name: Create service for the Smart Gateway
   include_tasks: service.yml
   when: service_type == "metrics"
-
-- name: Create ServiceMonitor for Smart Gateway
-  include_tasks: servicemonitor.yml
-  when: service_type == "metrics"

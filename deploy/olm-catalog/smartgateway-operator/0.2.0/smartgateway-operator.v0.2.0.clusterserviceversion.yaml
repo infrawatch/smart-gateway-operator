@@ -1,13 +1,13 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
-  name: smartgateway-operator.v0.1.0
+  name: smartgateway-operator.v0.2.0
   namespace: placeholder
   annotations:
-    alm-examples: |- 
+    alm-examples: |-
       [
         {
-          "apiVersion": "smartgateway.infra.watch/v1alpha1",
+          "apiVersion": "smartgateway.infra.watch/v2alpha1",
           "kind": "SmartGateway",
           "metadata": {
             "name": "metrics"
@@ -20,7 +20,7 @@ metadata:
               }
         },
         {
-          "apiVersion": "smartgateway.infra.watch/v1alpha1",
+          "apiVersion": "smartgateway.infra.watch/v2alpha1",
           "kind": "SmartGateway",
           "metadata": {
             "name": "events"
@@ -39,14 +39,14 @@ metadata:
     categories: Monitoring
     description: Smart gateway for service assurance. Includes applications for both metrics and events gathering. Provides middleware that connects to an AMQP 1.0 message bus, pulling data off the bus and exposing it as a scrape target for Prometheus. Metrics are provided via the OPNFV Barometer project (collectd). Events are provided by the various event plugins for collectd, including connectivity, procevent and sysevent.
     certified: "false"
-    containerImage: quay.io/redhat-service-assurance/smart-gateway-operator.0.1.0
-    createdAt: 2019-09-09T08:00:00Z
+    containerImage: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
+    createdAt: 2019-11-12T08:00:00Z
     support: Red Hat, Inc.
     repository: https://github.com/redhat-service-assurance/smart-gateway-operator
 spec:
   displayName: Smart Gateway Operator
-  minKubeVersion: 1.13.0
-  description:  |- 
+  minKubeVersion: 1.14.0
+  description:  |-
     The Smart Gateway is middleware for OpenShift that takes metrics and events
     data streams from an AMQP 1.x message bus, and provides a method to having
     that data stream stored within Prometheus or ElasticSearch.
@@ -73,7 +73,7 @@ spec:
 
     **Events (ElasticSearch storage)**
 
-        apiVersion: smartgateway.infra.watch/v1alpha1
+        apiVersion: smartgateway.infra.watch/v2alpha1
         kind: SmartGateway
         metadata:
           name: cloud1-notify
@@ -93,7 +93,7 @@ spec:
 
     **Metrics (Prometheus storage)**
 
-        apiVersion: smartgateway.infra.watch/v1alpha1
+        apiVersion: smartgateway.infra.watch/v2alpha1
         kind: SmartGateway
         metadata:
           name: cloud1-telemetry
@@ -106,7 +106,7 @@ spec:
           size: 1
   keywords: ['smartgateway','serviceassurance']
   maturity: alpha
-  version: 0.1.0
+  version: 0.2.0
   maintainers:
   - email: email@redhat.com
     name: Red Hat, Inc
@@ -160,7 +160,7 @@ spec:
                       fieldPath: metadata.name
                 - name: OPERATOR_NAME
                   value: smart-gateway-operator
-                image: quay.io/redhat-service-assurance/smart-gateway-operator:latest
+                image: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
                 imagePullPolicy: Always
                 name: smart-gateway-operator
                 resources: {}
@@ -232,6 +232,6 @@ spec:
       owned:
       - kind: SmartGateway
         name: smartgateways.smartgateway.infra.watch
-        version: v1alpha1
+        version: v2alpha1
         displayName: SmartGateway
-        description: SmartGateway Events/Metrics Deployment with the Operator  
+        description: SmartGateway Events/Metrics Deployment with the Operator
