@@ -1,0 +1,236 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: |-
+      [
+        {
+          "apiVersion": "smartgateway.infra.watch/v2alpha1",
+          "kind": "SmartGateway",
+          "metadata": {
+            "name": "cloud1-events"
+          },
+          "spec": {
+            "debug": "false",
+            "service_type": "events",
+            "size": 1
+          }
+        },
+        {
+          "apiVersion": "smartgateway.infra.watch/v2alpha1",
+          "kind": "SmartGateway",
+          "metadata": {
+            "name": "cloud1-metrics"
+          },
+          "spec": {
+            "debug": "false",
+            "service_type": "metrics",
+            "size": 1
+          }
+        }
+      ]
+    capabilities: Basic Install
+    categories: Monitoring
+    containerImage: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
+    createdAt: "2019-11-14T14:49:00Z"
+    repository: https://github.com/redhat-service-assurance/smart-gateway-operator
+    support: Red Hat (CloudOps)
+  name: smart-gateway-operator.v0.2.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: Instance of the Smart Gateway
+      displayName: SmartGateway
+      kind: SmartGateway
+      name: smartgateways.smartgateway.infra.watch
+      resources:
+      - kind: Pod
+        name: ""
+        version: v1
+      - kind: Deployments
+        name: ""
+        version: v1
+      - kind: ReplicaSets
+        name: ""
+        version: v1
+      - kind: Services
+        name: ""
+        version: v1
+      - kind: ConfigMaps
+        name: ""
+        version: v1
+      - kind: SmartGateways
+        name: ""
+        version: v2alpha1
+      version: v2alpha1
+  description: |-
+    # Smart Gateway for Service Assurance
+
+    The Smart Gateway is middleware for OpenShift that takes metrics and events
+    data streams from an AMQP 1.x message bus, and provides a method to having
+    that data stream stored within Prometheus or ElasticSearch.
+
+    ## Core capabilities
+
+    The Smart Gateway provides two modes:
+
+    * metrics: provides an HTTP scrape endpoint for Prometheus
+    * events: writes events directly to an ElasticSearch endpoint
+
+    ## Operator features
+
+    * **Two Service Types** - Supports the `metrics` and `events` service types which defines the type of Smart Gateway to be deployed
+
+    * **Configuration** - Configuration of the Smart Gateway to allow for it to be connected to an AMQP 1.x bus and pointed at the appropriate storage mechanism based on service type.
+
+    ## Before getting started
+
+    1. Ensure an AMQP 1.x bus has been setup (such as AMQ Interconnect)
+    2. If the Smart Gateway is running in events mode, be sure the ElasticSearch Operator and ElasticSearch instance have been pre-deployed.
+  displayName: Smart Gateway Operator
+  install:
+    spec:
+      deployments:
+      - name: smart-gateway-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: smart-gateway-operator
+          strategy: {}
+          template:
+            metadata:
+              labels:
+                app: smart-gateway-operator
+            spec:
+              containers:
+              - command:
+                - /usr/local/bin/ao-logs
+                - /tmp/ansible-operator/runner
+                - stdout
+                image: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
+                imagePullPolicy: Always
+                name: ansible
+                resources: {}
+                volumeMounts:
+                - mountPath: /tmp/ansible-operator/runner
+                  name: runner
+                  readOnly: true
+              - env:
+                - name: WATCH_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.annotations['olm.targetNamespaces']
+                - name: POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: OPERATOR_NAME
+                  value: smart-gateway-operator
+                - name: ANSIBLE_GATHERING
+                  value: explicit
+                image: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
+                imagePullPolicy: Always
+                name: operator
+                resources: {}
+                volumeMounts:
+                - mountPath: /tmp/ansible-operator/runner
+                  name: runner
+              serviceAccountName: smart-gateway-operator
+              volumes:
+              - emptyDir: {}
+                name: runner
+      permissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - services
+          - endpoints
+          - persistentvolumeclaims
+          - events
+          - configmaps
+          - secrets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
+        - apiGroups:
+          - apps.openshift.io
+          resources:
+          - deploymentconfigs
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          - daemonsets
+          - replicasets
+          - statefulsets
+          verbs:
+          - '*'
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - servicemonitors
+          verbs:
+          - get
+          - create
+          - list
+          - patch
+          - watch
+        - apiGroups:
+          - apps
+          resourceNames:
+          - smart-gateway-operator
+          resources:
+          - deployments/finalizers
+          - deploymentconfigs/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - smartgateway.infra.watch
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        serviceAccountName: smart-gateway-operator
+    strategy: deployment
+  installModes:
+  - supported: true
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - serviceassurance
+  - monitoring
+  - telemetry
+  - notifications
+  - smartgateway
+  labels:
+    name: smart-gateway-operator
+  links:
+  - name: Source Code
+    url: https://github.com/redhat-service-assurance/smart-gateway-operator
+  maintainers:
+  - email: support@redhat.com
+    name: Red Hat CloudOps DFG
+  maturity: alpha
+  provider:
+    name: Red Hat, Inc.
+  selector:
+    matchLabels:
+      name: smart-gateway-operator
+  version: 0.2.0
