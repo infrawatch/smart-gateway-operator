@@ -1,5 +1,0 @@
-packageName: smartgateway-operator
-channels:
-- name: "0.2.0"
-  currentCSV: smartgateway-operator.v0.2.0
-defaultChannel: "0.2.0"
