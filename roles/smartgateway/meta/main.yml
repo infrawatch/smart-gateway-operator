@@ -1,0 +1,14 @@
+galaxy_info:
+  author: Red Hat CloudOps
+  description: Smart Gateway Operator
+  company: Red Hat, Inc.
+
+  license: Apache
+
+  min_ansible_version: 2.7
+
+  galaxy_tags:
+    - monitoring
+    - telemetry
+
+dependencies: []

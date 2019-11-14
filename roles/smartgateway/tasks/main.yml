@@ -1,0 +1,22 @@
+---
+- name: Write out configmap for smart gateway
+  template:
+    dest: /tmp/configmap.yaml
+    src: "{{ service_type }}-configmap.yaml.j2"
+
+- name: Smart gateway ConfigMap
+  k8s:
+    src: /tmp/configmap.yaml
+
+- name: Create deployment for the Smart Gateway
+  template:
+    dest: /tmp/deployment.yaml
+    src: deployment.yaml.j2
+
+- name: Deploy the Smart Gateway
+  k8s:
+    src: /tmp/deployment.yaml
+
+- name: Create service for the Smart Gateway
+  include_tasks: service.yml
+  when: service_type == "metrics"

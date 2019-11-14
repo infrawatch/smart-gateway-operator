@@ -1,0 +1,5 @@
+---
+- version: v2alpha1
+  group: smartgateway.infra.watch
+  kind: SmartGateway
+  role: /opt/ansible/roles/smartgateway

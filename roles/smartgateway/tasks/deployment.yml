@@ -1,0 +1,46 @@
+---
+- name: Start the smart gateway
+  k8s:
+    resource_definition:
+      apiVersion: apps.openshift.io/v1
+      kind: DeploymentConfig
+      metadata:
+        name: '{{ meta.name }}-smartgateway'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        replicas: '{{ size }}'
+        template:
+          metadata:
+            labels:
+              app: smart-gateway
+          spec:
+            securityContext:
+              nonroot: true
+            containers:
+            - name: smart-gateway
+              image: '{{ container_image_path }}'
+              volumeMounts:
+              - name: sg-config
+                mountPath: /config
+              - name: elastic-certs
+                mountPath: /config/certs
+              args:
+                - '-config=/config/smartgateway_config.json'
+                - '-uname=$(MY_POD_NAME)'
+                - '-servicetype={{ service_type }}'
+              env:
+                - name: MY_POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: metadata.name
+              ports:
+              - name: "{{ service_type }}"
+                containerPort: 8081
+            volumes:
+            - name: sg-config
+              configMap:
+                name: "{{ meta.name }}-smartgateway"
+            - name: elastic-certs
+              secret:
+                secretName: elasticsearch
