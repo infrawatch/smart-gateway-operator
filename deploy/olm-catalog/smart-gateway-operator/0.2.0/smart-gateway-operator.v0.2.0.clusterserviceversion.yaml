@@ -29,12 +29,12 @@ metadata:
           }
         }
       ]
-    description: Smart Gateway Operator
-    certified: "false"
     capabilities: Basic Install
     categories: Monitoring
+    certified: "false"
     containerImage: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
     createdAt: "2019-11-14T14:49:00Z"
+    description: Smart Gateway Operator
     repository: https://github.com/redhat-service-assurance/smart-gateway-operator.0.2.0
     support: Red Hat (CloudOps)
   name: smart-gateway-operator.v0.2.0
