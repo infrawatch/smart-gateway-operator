@@ -2,7 +2,7 @@
 
 Operator for the infra.watch [smart gateway](https://github.com/redhat-service-assurance/smart-gateway)
 
-NOTE: Development environment for OCP 4.2 controlled from Service Assurance Operato (SAO)
+NOTE: Development environment for OCP 4.2 controlled from Service Assurance Operator (SAO)
 
 ## Required CSV fields
 
@@ -26,15 +26,15 @@ development is available at https://github.com/code-ready/crc.
 A procedure for testing in CodeReady Containers will be available soon.
 
 * buildah
-  * <todo>
+  * 1.12.0
 * kubernetes
   * v1.14.0
 * crc
-  * <todo>
+  * crc version: 1.3.0+918756b
 * oc
-  * <todo>
+  * openshift-clients-4.2.0-201910041700
 * operator-sdk
-  * v0.12.0
+  * v0.12.0 (!0.13.0 which causes regressions via `gen-csv` command)
 
 ### Set up crc and buildah
 
@@ -54,7 +54,7 @@ With molecule (Currently broken)
 
 ### Integration testing
 
-Test the newly built operator with the Service Assurance Operator.
+Test the newly built operator with the Service Assurance Framework (SAF).
 
 <todo>
 
