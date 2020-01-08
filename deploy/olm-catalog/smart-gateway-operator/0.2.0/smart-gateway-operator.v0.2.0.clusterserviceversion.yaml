@@ -115,7 +115,7 @@ spec:
                 - /usr/local/bin/ao-logs
                 - /tmp/ansible-operator/runner
                 - stdout
-                image: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
+                image: quay.io/redhat-service-assurance/smart-gateway-operator:latest
                 imagePullPolicy: Always
                 name: ansible
                 resources: {}
@@ -136,7 +136,7 @@ spec:
                   value: smart-gateway-operator
                 - name: ANSIBLE_GATHERING
                   value: explicit
-                image: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
+                image: quay.io/redhat-service-assurance/smart-gateway-operator:latest
                 imagePullPolicy: Always
                 name: operator
                 resources: {}

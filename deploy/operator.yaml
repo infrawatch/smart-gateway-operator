@@ -19,14 +19,14 @@ spec:
           - /usr/local/bin/ao-logs
           - /tmp/ansible-operator/runner
           - stdout
-          image: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
+          image: quay.io/redhat-service-assurance/smart-gateway-operator:latest
           imagePullPolicy: Always
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
             readOnly: true
         - name: operator
-          image: quay.io/redhat-service-assurance/smart-gateway-operator.0.2.0:latest
+          image: quay.io/redhat-service-assurance/smart-gateway-operator:latest
           imagePullPolicy: Always
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
