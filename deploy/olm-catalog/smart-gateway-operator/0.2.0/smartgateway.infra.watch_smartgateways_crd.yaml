@@ -10,11 +10,11 @@ spec:
     plural: smartgateways
     singular: smartgateway
   scope: Namespaced
-  version: v1alpha1
+  version: v2alpha1
   subresources:
     status: {}
   versions:
-  - name: v1alpha1
+  - name: v2alpha1
     served: true
     storage: true
   validation:
