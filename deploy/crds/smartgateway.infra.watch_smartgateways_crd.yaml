@@ -43,8 +43,11 @@ spec:
               type: string
             elasticUrl:
               description: URL for ElasticSearch endpoing to connect when the Smart Gateway is operating as an 'events' service type.
-                Defaults to 'elasticsearch.<namespace>.svc:9200'.
+                Defaults to 'elasticsearch-es-http.<namespace>.svc:9200'.
               type: string
+            tlsSecretName:
+              description: Name of the Secret object that holds the TLS certificates and key for Elasticsearch.
+                Defaults to 'elasticsearch-es-cert'.
             resetIndex:
               description: Reset the ElasticSearch index on load. Defaults to 'false'.
             serviceType:

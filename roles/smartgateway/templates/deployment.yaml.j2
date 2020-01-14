@@ -42,5 +42,5 @@ spec:
 {% if service_type == 'events' %}
       - name: elastic-certs
         secret:
-          secretName: elasticsearch
+          secretName: {{ tls_secret_name }}
 {% endif %}
