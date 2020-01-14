@@ -10,8 +10,6 @@ spec:
       labels:
         app: smart-gateway
     spec:
-      securityContext:
-        runAsNonRoot: true
       containers:
       - name: smart-gateway
         image: '{{ container_image_path }}'
