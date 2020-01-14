@@ -9,12 +9,12 @@ ORGANIZATION=${ORGANIZATION:-redhat-service-assurance}
 
 if [ -z "$USERNAME" ]; then
     echo -n "Username: "
-    read USERNAME
+    read -r USERNAME
 fi
 
 if [ -z "$PASSWORD" ]; then
     echo -n "Password: "
-    read -s PASSWORD
+    read -r -s PASSWORD
 fi
 echo
 
