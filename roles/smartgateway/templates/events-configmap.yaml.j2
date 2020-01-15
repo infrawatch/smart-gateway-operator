@@ -9,9 +9,11 @@ data:
     {
             "AMQP1EventURL": "{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/notify') }}",
             "ElasticHostURL": "{{ elastic_url | default('elasticsearch.' + meta.namespace + '.svc:9200') }}",
-            "UseBasicAuth": "{{ use_basic_auth | default('false') }}",{% if use_basic_auth %}
+            "UseBasicAuth": {{ use_basic_auth | default('false') }},
+{% if use_basic_auth %}
             "ElasticUser": "{{ elastic_user | default('elastic') }}",
-            "ElasticPass": "{{ elastic_pass | default('elastic') }}",{% endif %}
+            "ElasticPass": "{{ elastic_pass | default('elastic') }}",
+{% endif %}
             "ResetIndex": {{ reset_index | default('false') }},
             "ServiceType": "{{ service_type | default('events') }}",
             "Debug": {{ debug | default('false') }},
