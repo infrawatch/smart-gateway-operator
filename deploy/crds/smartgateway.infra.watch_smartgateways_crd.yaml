@@ -41,9 +41,18 @@ spec:
               description: AMQP1.x listener example 127.0.0.1:5672/collectd/telemetry. Defaults to using
                 'messaging-internal-<name>.<namespace>.src:5672/collectd/telemetry'.
               type: string
+            useBasicAuth:
+              description: Whether to use basic authentication or not when connecting to ElasticSearch. Default is 'false'
+              type: boolean
             elasticUrl:
               description: URL for ElasticSearch endpoing to connect when the Smart Gateway is operating as an 'events' service type.
                 Defaults to 'elasticsearch-es-http.<namespace>.svc:9200'.
+              type: string
+            elasticUser:
+              description: Basic Authentication username for ElasticSearch.
+              type: string
+            elasticPass:
+              description: Basic Authentication password for ElasticSearch.
               type: string
             tlsSecretName:
               description: Name of the Secret object that holds the TLS certificates and key for Elasticsearch.
