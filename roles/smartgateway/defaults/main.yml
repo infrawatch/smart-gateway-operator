@@ -3,3 +3,5 @@
 size: 1
 container_image_path: quay.io/redhat-service-assurance/smart-gateway:latest
 prometheus_scrape_interval: 1s
+use_basic_auth: false
+tls_secret_name: elasticsearch-es-cert

@@ -10,8 +10,6 @@ spec:
       labels:
         app: smart-gateway
     spec:
-      securityContext:
-        runAsNonRoot: true
       containers:
       - name: smart-gateway
         image: '{{ container_image_path }}'
@@ -42,5 +40,5 @@ spec:
 {% if service_type == 'events' %}
       - name: elastic-certs
         secret:
-          secretName: elasticsearch
+          secretName: {{ tls_secret_name }}
 {% endif %}
