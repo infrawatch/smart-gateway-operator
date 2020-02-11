@@ -32,10 +32,10 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring
     certified: "false"
-    containerImage: quay.io/redhat-service-assurance/smart-gateway-operator:latest
+    containerImage: quay.io/infrawatch/smart-gateway-operator:latest
     createdAt: "2019-11-14T14:49:00Z"
     description: Smart Gateway Operator
-    repository: https://github.com/redhat-service-assurance/smart-gateway-operator
+    repository: https://github.com/infrawatch/smart-gateway-operator
     support: Red Hat (CloudOps)
   name: smart-gateway-operator.v0.2.0
   namespace: placeholder
@@ -68,7 +68,7 @@ spec:
         version: v2alpha1
       version: v2alpha1
   description: |-
-    # Smart Gateway for Service Assurance
+    # Smart Gateway for Service Telemetry Framework
 
     The Smart Gateway is middleware for OpenShift that takes metrics and events
     data streams from an AMQP 1.x message bus, and provides a method to having
@@ -115,7 +115,7 @@ spec:
                 - /usr/local/bin/ao-logs
                 - /tmp/ansible-operator/runner
                 - stdout
-                image: quay.io/redhat-service-assurance/smart-gateway-operator:latest
+                image: quay.io/infrawatch/smart-gateway-operator:latest
                 imagePullPolicy: Always
                 name: ansible
                 resources: {}
@@ -136,7 +136,7 @@ spec:
                   value: smart-gateway-operator
                 - name: ANSIBLE_GATHERING
                   value: explicit
-                image: quay.io/redhat-service-assurance/smart-gateway-operator:latest
+                image: quay.io/infrawatch/smart-gateway-operator:latest
                 imagePullPolicy: Always
                 name: operator
                 resources: {}
@@ -219,7 +219,7 @@ spec:
   - supported: true
     type: AllNamespaces
   keywords:
-  - serviceassurance
+  - servicetelemetry
   - monitoring
   - telemetry
   - notifications
@@ -228,7 +228,7 @@ spec:
     name: smart-gateway-operator
   links:
   - name: Source Code
-    url: https://github.com/redhat-service-assurance/smart-gateway-operator.0.2.0
+    url: https://github.com/infrawatch/smart-gateway-operator.0.2.0
   maintainers:
   - email: support@redhat.com
     name: Red Hat CloudOps DFG
