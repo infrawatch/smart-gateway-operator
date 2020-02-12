@@ -1,8 +1,8 @@
 # smart-gateway-operator
 
-Operator for the infra.watch [smart gateway](https://github.com/redhat-service-assurance/smart-gateway)
+Operator for the infra.watch [smart gateway](https://github.com/infrawatch/smart-gateway)
 
-NOTE: Development environment for OCP 4.2 controlled from Service Assurance Operator (SAO)
+NOTE: Development environment for OCP 4.2 controlled from Service Telemetry Operator (STO)
 
 ## Required CSV fields
 
@@ -15,7 +15,7 @@ are not identified in the CSV Custom Resource Definition can be found here:
 
 Use the OperatorHub deployment from the Community catalog.
 
-For development or latest version, create an OperatorSource for quay.io/redhat-service-assurance/smartgateway-operator.
+For development or latest version, create an OperatorSource for quay.io/infrawatch/smartgateway-operator.
 
 ## Build and test against CodeReady Containers
 
@@ -54,7 +54,7 @@ With molecule (Currently broken)
 
 ### Integration testing
 
-Test the newly built operator with the Service Assurance Framework (SAF).
+Test the newly built operator with the Service Telemetry Framework (STF).
 
 <todo>
 

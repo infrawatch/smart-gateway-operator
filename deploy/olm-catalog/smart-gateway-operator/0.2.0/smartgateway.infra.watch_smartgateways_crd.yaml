@@ -85,6 +85,6 @@ spec:
               type: integer
             containerImagePath:
               description: Path to the container image this Operator will deploy. Value is defined as the standard registry/image_name:tag
-                format. Defaults to 'quay.io/redhat-service-assurance/smart-gateway:latest'
+                format. Defaults to 'quay.io/infrawatch/smart-gateway:latest'
               type: string
 
