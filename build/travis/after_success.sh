@@ -8,7 +8,7 @@ REL=$(dirname "$0")
 # Add everything, get ready for commit. But only do it if we're on master or a
 # named branch of the format <#>.<#>.X. If you want to deploy on different
 # branches, you can change this.
-if [[ "$BRANCH" =~ ^mazter$|^[0-9]+\.[0-9]+\.X$ ]]; then
+if [[ "$BRANCH" =~ ^master$|^[0-9]+\.[0-9]+\.X$ ]]; then
     echo "Branch is master, so push new application to Quay registry"
     export PATH=$HOME/bin:$PATH
     curl -L https://github.com/operator-framework/operator-sdk/releases/download/v0.12.0/operator-sdk-v0.12.0-x86_64-linux-gnu -o $HOME/bin/operator-sdk
