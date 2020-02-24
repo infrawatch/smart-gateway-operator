@@ -37,41 +37,41 @@ spec:
             size:
               description: Size sets the number of replicas to create. Defaults to 1.
               type: integer
-            AMQPUrl:
+            amqp_url:
               description: AMQP1.x listener example 127.0.0.1:5672/collectd/telemetry. Defaults to using
                 'messaging-internal-<name>.<namespace>.src:5672/collectd/telemetry'.
               type: string
-            useBasicAuth:
+            use_basic_auth:
               description: Whether to use basic authentication or not when connecting to ElasticSearch. Default is 'false'
               type: boolean
-            elasticUrl:
+            elastic_url:
               description: URL for ElasticSearch endpoing to connect when the Smart Gateway is operating as an 'events' service type.
                 Defaults to 'elasticsearch-es-http.<namespace>.svc:9200'.
               type: string
-            elasticUser:
+            elastic_user:
               description: Basic Authentication username for ElasticSearch.
               type: string
-            elasticPass:
+            elastic_pass:
               description: Basic Authentication password for ElasticSearch.
               type: string
-            tlsSecretName:
+            tls_secret_name:
               description: Name of the Secret object that holds the TLS certificates and key for Elasticsearch.
                 Defaults to 'elasticsearch-es-cert'.
-            resetIndex:
+            reset_index:
               description: Reset the ElasticSearch index on load. Defaults to 'false'.
-            serviceType:
+            service_type:
               description: The service type for this smart gateway. One of 'metrics' or 'events'. Defaults to 'metrics'.
               type: string
-            exporterHost:
+            exporter_host:
               description: Metrics URL for Prometheus to export. Defaults to "0.0.0.0".
               type: string
-            exporterPort:
+            exporter_port:
               description: Metrics port for Prometheus to export. Defaults to 8081.
               type: integer
-            cpuStats:
+            cpu_stats:
               description: Include CPU usage info in http requests (degrades performance). Defaults to 'false'.
               type: string
-            dataCount:
+            data_count:
               description: Stop after receiving this many messages in total (-1 forever). Defaults to '-1'.
               type: string
             debug:
@@ -83,8 +83,29 @@ spec:
                 To avoid the round trip for every message, the use of prefetch can be used to allow the receiver to request messages be sent
                 in anticipation of them being sent to us.
               type: integer
-            containerImagePath:
+            container_image_path:
               description: Path to the container image this Operator will deploy. Value is defined as the standard registry/image_name:tag
                 format. Defaults to 'quay.io/infrawatch/smart-gateway:latest'
               type: string
-
+            use_timestamp:
+              description: Use the source timestamp (time when data was collected) rather than let Prometheus write when the data was 
+                scraped for that metric.
+              type: boolean
+        status:
+          description: Status results of an instance of Smart Gateway
+          properties:
+            conditions:
+              description: The resulting conditions when a Smart Gateway is instantiated
+              items:
+                properties:
+                  status:
+                    type: string
+                  type:
+                    type: string
+                  reason:
+                    type: string
+                  lastTransitionTime:
+                    type: string
+                type: object
+              type: array
+          type: object
