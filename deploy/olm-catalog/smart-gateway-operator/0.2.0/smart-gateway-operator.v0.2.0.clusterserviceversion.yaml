@@ -66,6 +66,55 @@ spec:
       - kind: SmartGateways
         name: ""
         version: v2alpha1
+      specDescriptors:
+      - description: Number of Smart Gateways to deploy
+        displayName: Size
+        path: size
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: Location of the AMQP endpoint to connect the Smart Gateway to
+        displayName: AMQP URL
+        path: amqp_url
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Container image path
+        displayName: Container image path
+        path: container_image_path
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Number of messages that we can prefetch from AMQP 1.x. By enabling
+          prefetching, the smart gateway won't need to request every message individually
+          from the AMQP bus, resulting in a round trip for every request between sender
+          and receiver. To avoid the round trip for every message, the use of prefetch
+          can be used to allow the receiver to request messages be sent in anticipation
+          of them being sent to us.
+        displayName: Prefetch
+        path: prefetch
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: Use the source timestamp (time when data was collected) rather
+          than let Prometheus write when the data was scraped for that metric.
+        displayName: Use Timestamp
+        path: use_timestamp
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:booleanSwitch
+      - description: Smart Gateway Service Type
+        displayName: Service Type
+        path: service_type
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:select:metrics
+        - urn:alm:descriptor:com.tectonic.ui:select:events
+      - description: Enable additional debugging information to console output
+        displayName: Enable debugging
+        path: debug
+        x-descriptors:
+        - urn:alm:descriptor:tectonic.ui:booleanSwitch
+      statusDescriptors:
+      - description: Conditions provided by deployment
+        displayName: Conditions
+        path: conditions
+        x-descriptors:
+        - urn:alm:descriptor:io.kubernetes.conditions
       version: v2alpha1
   description: |-
     # Smart Gateway for Service Telemetry Framework
