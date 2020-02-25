@@ -90,7 +90,7 @@ spec:
             use_timestamp:
               description: Use the source timestamp (time when data was collected) rather than let Prometheus write when the data was 
                 scraped for that metric.
-              type: boolean
+              type: string
         status:
           description: Status results of an instance of Smart Gateway
           properties:
