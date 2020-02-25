@@ -43,7 +43,7 @@ spec:
               type: string
             use_basic_auth:
               description: Whether to use basic authentication or not when connecting to ElasticSearch. Default is 'false'
-              type: boolean
+              type: string
             elastic_url:
               description: URL for ElasticSearch endpoing to connect when the Smart Gateway is operating as an 'events' service type.
                 Defaults to 'elasticsearch-es-http.<namespace>.svc:9200'.
