@@ -4,7 +4,7 @@ metadata:
   name: cloud1-metrics
 spec:
   size: 1
-  debug: "false"
+  debug: false
   serviceType: "metrics"
-  useTimestamp: "true"
+  useTimestamp: true
   prefetch: 15000

@@ -11,9 +11,9 @@ metadata:
             "name": "cloud1-events"
           },
           "spec": {
-            "debug": "false",
+            "debug": false,
             "prefetch": 0,
-            "resetIndex": "false",
+            "resetIndex": false,
             "serviceType": "events",
             "size": 1
           }
@@ -25,11 +25,11 @@ metadata:
             "name": "cloud1-metrics"
           },
           "spec": {
-            "debug": "false",
+            "debug": false,
             "prefetch": 15000,
             "serviceType": "metrics",
             "size": 1,
-            "useTimestamp": "true"
+            "useTimestamp": true
           }
         }
       ]

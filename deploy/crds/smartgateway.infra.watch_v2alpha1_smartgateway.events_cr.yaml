@@ -4,7 +4,7 @@ metadata:
   name: cloud1-events
 spec:
   size: 1
-  debug: "false"
+  debug: false
   serviceType: "events"
-  resetIndex: "false"
+  resetIndex: false
   prefetch: 0
