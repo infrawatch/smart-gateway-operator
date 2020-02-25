@@ -4,6 +4,7 @@ metadata:
   name: cloud1-metrics
 spec:
   size: 1
-  debug: "false"
-  service_type: "metrics"
-# vim: set tabstop=2 shiftwidth=2 expandtab smartindent:
+  debug: false
+  serviceType: "metrics"
+  useTimestamp: true
+  prefetch: 15000

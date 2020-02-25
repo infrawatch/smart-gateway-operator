@@ -11,8 +11,10 @@ metadata:
             "name": "cloud1-events"
           },
           "spec": {
-            "debug": "false",
-            "service_type": "events",
+            "debug": false,
+            "prefetch": 0,
+            "resetIndex": false,
+            "serviceType": "events",
             "size": 1
           }
         },
@@ -23,9 +25,11 @@ metadata:
             "name": "cloud1-metrics"
           },
           "spec": {
-            "debug": "false",
-            "service_type": "metrics",
-            "size": 1
+            "debug": false,
+            "prefetch": 15000,
+            "serviceType": "metrics",
+            "size": 1,
+            "useTimestamp": true
           }
         }
       ]
@@ -74,12 +78,12 @@ spec:
         - urn:alm:descriptor:com.tectonic.ui:number
       - description: Location of the AMQP endpoint to connect the Smart Gateway to
         displayName: AMQP URL
-        path: amqp_url
+        path: amqpUrl
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:text
       - description: Container image path
         displayName: Container image path
-        path: container_image_path
+        path: containerImagePath
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:text
       - description: Number of messages that we can prefetch from AMQP 1.x. By enabling
@@ -95,12 +99,12 @@ spec:
       - description: Use the source timestamp (time when data was collected) rather
           than let Prometheus write when the data was scraped for that metric.
         displayName: Use Timestamp
-        path: use_timestamp
+        path: useTimestamp
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:booleanSwitch
       - description: Smart Gateway Service Type
         displayName: Service Type
-        path: service_type
+        path: serviceType
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:select:metrics
         - urn:alm:descriptor:com.tectonic.ui:select:events

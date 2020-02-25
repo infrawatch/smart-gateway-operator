@@ -4,6 +4,7 @@ metadata:
   name: cloud1-events
 spec:
   size: 1
-  debug: "false"
-  service_type: "events"
-# vim: set tabstop=2 shiftwidth=2 expandtab smartindent:
+  debug: false
+  serviceType: "events"
+  resetIndex: false
+  prefetch: 0

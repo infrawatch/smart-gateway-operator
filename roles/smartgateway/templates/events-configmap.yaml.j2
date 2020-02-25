@@ -17,7 +17,7 @@ data:
             "ResetIndex": {{ reset_index | default('false') }},
             "ServiceType": "{{ service_type | default('events') }}",
             "Debug": {{ debug | default('false') }},
-            "Prefetch": {{ prefetch | default('0') }},
+            "Prefetch": {{ prefetch | default(0) }},
             "UniqueName": "{{ unique_name | default(meta.name + '-smartgateway') }}",
             "AlertManagerEnabled": {{ alert_manager_enabled | default('false') }},
             "AlertManagerURL": "{{ alert_manager_url | default('') }}",
