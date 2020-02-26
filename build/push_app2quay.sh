@@ -3,7 +3,7 @@
 
 set -e
 
-CSV_VERSION=${CSV_VERSION:-0.2.0}
+CSV_VERSION=${CSV_VERSION:-1.0.0-beta1}
 UNIXDATE=$(date +%s)
 ORGANIZATION=${ORGANIZATION:-infrawatch}
 
