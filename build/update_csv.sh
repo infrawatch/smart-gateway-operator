@@ -1,2 +1,4 @@
 #!/usr/bin/env sh
-operator-sdk generate csv --csv-version 0.2.0 --operator-name smart-gateway-operator --update-crds
+set -e
+REL=$(dirname "$0"); source "${REL}/metadata.sh"
+operator-sdk generate csv --csv-version=${CSV_VERSION} --operator-name smart-gateway-operator --update-crds

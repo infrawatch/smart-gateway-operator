@@ -1,22 +1,19 @@
 ---
-- name: Write out configmap for smart gateway
-  template:
-    dest: /tmp/configmap.yaml
-    src: "{{ service_type }}-configmap.yaml.j2"
+# this will be useful later to understand if we're on vanilla k8s or OpenShift (OKD)
+- name: "Get information about the cluster"
+  set_fact:
+    api_groups: "{{ lookup('k8s', cluster_info='api_groups') }}"
 
-- name: Smart gateway ConfigMap
+- name: Setup Smart Gateway
   k8s:
-    src: /tmp/configmap.yaml
-
-- name: Create deployment for the Smart Gateway
-  template:
-    dest: /tmp/deployment.yaml
-    src: deployment.yaml.j2
-
-- name: Deploy the Smart Gateway
-  k8s:
-    src: /tmp/deployment.yaml
-
-- name: Create service for the Smart Gateway
-  include_tasks: service.yml
-  when: service_type == "metrics"
+    state: "{{ state }}"
+    definition: "{{ lookup('template', item.name) | from_yaml }}"
+  when: item.to_load | default(True)
+  loop:
+    - name: events-configmap.yaml.j2
+      to_load: "{{ True if 'events' in service_type else False }}"
+    - name: metrics-configmap.yaml.j2
+      to_load: "{{ True if 'metrics' in service_type else False }}"
+    - name: deployment.yaml.j2
+    - name: service.yaml.j2
+      to_load: "{{ True if 'metrics' in service_type else False }}"

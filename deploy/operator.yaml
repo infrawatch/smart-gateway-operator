@@ -44,6 +44,8 @@ spec:
               value: "smart-gateway-operator"
             - name: ANSIBLE_GATHERING
               value: explicit
+            - name: SMARTGATEWAY_IMAGE
+              value: quay.io/infrawatch/smart-gateway:latest
       volumes:
         - name: runner
           emptyDir: {}
