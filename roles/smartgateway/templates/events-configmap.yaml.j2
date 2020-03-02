@@ -7,7 +7,10 @@ metadata:
 data:
   "smartgateway_config.json": |
     {
-            "AMQP1EventURL": "{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/notify') }}",
+            "AMQP1Connections": {
+              "URL": "{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/notify') }}",
+              "DataSource": "{{ amqp_data_source | default('collectd') }}"
+            },
             "ElasticHostURL": "{{ elastic_url | default('elasticsearch.' + meta.namespace + '.svc:9200') }}",
             "UseBasicAuth": {{ use_basic_auth | default('false') | lower }},
 {% if use_basic_auth %}

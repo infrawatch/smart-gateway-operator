@@ -6,7 +6,10 @@ metadata:
 data:
   "smartgateway_config.json": |
     {
-            "AMQP1MetricURL": "{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/telemetry') }}",
+            "AMQP1Connections": {
+              "URL": "{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/telemetry') }}",
+              "DataSource": "{{ amqp_data_source | default('collectd') }}"
+            },
             "Exporterhost": "{{ exporter_host | default('0.0.0.0') }}",
             "Exporterport": {{ exporter_port | default(8081) }},
             "CPUStats": {{ cpu_stats | default('false') | lower }},
