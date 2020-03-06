@@ -221,9 +221,9 @@ spec:
           verbs:
           - get
         - apiGroups:
-          - apps.openshift.io
+          - extensions
           resources:
-          - deploymentconfigs
+          - deployments
           verbs:
           - '*'
         - apiGroups:
