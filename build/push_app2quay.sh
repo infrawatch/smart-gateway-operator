@@ -2,10 +2,7 @@
 # contents of this file originally from https://redhat-connect.gitbook.io/certified-operator-guide/ocp-deployment/openshift-deployment
 
 set -e
-
-CSV_VERSION=${CSV_VERSION:-1.0.0-beta1}
-UNIXDATE=$(date +%s)
-ORGANIZATION=${ORGANIZATION:-infrawatch}
+REL=$(dirname "$0"); source "${REL}/metadata.sh"
 
 if [ -z "$USERNAME" ]; then
     echo -n "Username: "
