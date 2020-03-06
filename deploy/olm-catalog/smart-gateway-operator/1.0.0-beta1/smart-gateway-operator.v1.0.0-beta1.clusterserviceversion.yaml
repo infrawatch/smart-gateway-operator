@@ -36,7 +36,7 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring
     certified: "false"
-    containerImage: quay.io/infrawatch/smart-gateway-operator:latest
+    containerImage: quay.io/infrawatch/smart-gateway-operator:v1.0.0-beta1
     createdAt: "2019-11-14T14:49:00Z"
     description: Smart Gateway Operator
     repository: https://github.com/infrawatch/smart-gateway-operator
