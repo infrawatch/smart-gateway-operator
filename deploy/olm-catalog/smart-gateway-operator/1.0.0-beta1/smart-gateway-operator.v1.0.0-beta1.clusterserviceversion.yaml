@@ -251,7 +251,6 @@ spec:
           - smart-gateway-operator
           resources:
           - deployments/finalizers
-          - deploymentconfigs/finalizers
           verbs:
           - update
         - apiGroups:
