@@ -8,4 +8,4 @@ scorecard:
     - olm:
         cr-manifest:
           - "deploy/crds/smartgateway.infra.watch_v2alpha1_smartgateway.metrics_cr.yaml"
-        csv-path: "deploy/olm-catalog/smart-gateway-operator/0.2.0/smart-gateway-operator.v0.2.0.clusterserviceversion.yaml"
+        csv-path: "deploy/olm-catalog/smart-gateway-operator/1.0.0-beta1/smart-gateway-operator.v1.0.0-beta1.clusterserviceversion.yaml"
