@@ -7,27 +7,32 @@ metadata:
 data:
   "smartgateway_config.json": |
     {
-            "AMQP1EventURL": "{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/notify') }}",
-            "ElasticHostURL": "{{ elastic_url | default('elasticsearch.' + meta.namespace + '.svc:9200') }}",
-            "UseBasicAuth": {{ use_basic_auth | default('false') | lower }},
+      "AMQP1Connections": [
+        {
+          "URL": "{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/notify') }}",
+          "DataSource": "{{ amqp_data_source | default('collectd') }}"
+        }
+      ],
+      "ElasticHostURL": "{{ elastic_url | default('elasticsearch.' + meta.namespace + '.svc:9200') }}",
+      "UseBasicAuth": {{ use_basic_auth | default('false') | lower }},
 {% if use_basic_auth %}
-            "ElasticUser": "{{ elastic_user | default('elastic') }}",
-            "ElasticPass": "{{ elastic_pass | default('elastic') }}",
+      "ElasticUser": "{{ elastic_user | default('elastic') }}",
+      "ElasticPass": "{{ elastic_pass | default('elastic') }}",
 {% endif %}
-            "ResetIndex": {{ reset_index | default('false') | lower }},
-            "ServiceType": "{{ service_type | default('events') }}",
-            "Debug": {{ debug | default('false') | lower }},
-            "Prefetch": {{ prefetch | default(0) }},
-            "UniqueName": "{{ unique_name | default(meta.name + '-smartgateway') }}",
-            "AlertManagerEnabled": {{ alert_manager_enabled | default('false') | lower }},
-            "AlertManagerURL": "{{ alert_manager_url | default('') }}",
-            "APIEnabled": {{ api_enabled | default('false') | lower }},
-            "APIEndpointURL": "{{ api_endpoint_url | default('') }}",
-            "PublishEventEnabled": {{ publish_event_enabled | default('false') | lower }},
-            "AMQP1PublishURL": "{{ amqp_publish_url | default('') }}",
-            "TlsClientCert": "{{ tls_client_cert | default('') }}",
-            "TlsClientKey": "{{ tls_client_key | default('') }}",
-            "TlsCaCert": "{{ tls_ca_cert | default('') }}",
-            "TlsServerName": "{{ tls_server_name | default('') }}",
-            "UseTls": {{ use_tls | default('false') | lower }}
+      "ResetIndex": {{ reset_index | default('false') | lower }},
+      "ServiceType": "{{ service_type | default('events') }}",
+      "Debug": {{ debug | default('false') | lower }},
+      "Prefetch": {{ prefetch | default(0) }},
+      "UniqueName": "{{ unique_name | default(meta.name + '-smartgateway') }}",
+      "AlertManagerEnabled": {{ alert_manager_enabled | default('false') | lower }},
+      "AlertManagerURL": "{{ alert_manager_url | default('') }}",
+      "APIEnabled": {{ api_enabled | default('false') | lower }},
+      "APIEndpointURL": "{{ api_endpoint_url | default('') }}",
+      "PublishEventEnabled": {{ publish_event_enabled | default('false') | lower }},
+      "AMQP1PublishURL": "{{ amqp_publish_url | default('') }}",
+      "TlsClientCert": "{{ tls_client_cert | default('') }}",
+      "TlsClientKey": "{{ tls_client_key | default('') }}",
+      "TlsCaCert": "{{ tls_ca_cert | default('') }}",
+      "TlsServerName": "{{ tls_server_name | default('') }}",
+      "UseTls": {{ use_tls | default('false') | lower }}
     }
