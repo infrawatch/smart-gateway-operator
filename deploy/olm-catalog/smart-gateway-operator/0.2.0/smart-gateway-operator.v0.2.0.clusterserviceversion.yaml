@@ -281,7 +281,7 @@ spec:
     name: smart-gateway-operator
   links:
   - name: Source Code
-    url: https://github.com/infrawatch/smart-gateway-operator.0.2.0
+    url: https://github.com/infrawatch/smart-gateway-operator
   maintainers:
   - email: support@redhat.com
     name: Red Hat CloudOps DFG

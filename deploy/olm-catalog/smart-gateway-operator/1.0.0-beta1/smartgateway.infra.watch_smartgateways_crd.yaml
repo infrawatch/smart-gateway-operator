@@ -41,6 +41,9 @@ spec:
               description: AMQP1.x listener example 127.0.0.1:5672/collectd/telemetry. Defaults to using
                 'messaging-internal-<name>.<namespace>.src:5672/collectd/telemetry'.
               type: string
+            amqpDataSource:
+              description: The expected data source of the messages received from the address configured in amqpUrl. Available values include 'universal', 'collectd', and 'ceilometer'.
+              type: string
             useBasicAuth:
               description: Whether to use basic authentication or not when connecting to ElasticSearch. Default is 'false'
               type: boolean
@@ -86,7 +89,7 @@ spec:
               type: integer
             containerImagePath:
               description: Path to the container image this Operator will deploy. Value is defined as the standard registry/image_name:tag
-                format. Defaults to 'quay.io/infrawatch/smart-gateway:latest'
+                format.
               type: string
             useTimestamp:
               description: Use the source timestamp (time when data was collected) rather than let Prometheus write when the data was 

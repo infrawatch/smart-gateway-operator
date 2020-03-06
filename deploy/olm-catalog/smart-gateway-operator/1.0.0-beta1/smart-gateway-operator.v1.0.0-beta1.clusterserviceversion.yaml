@@ -37,7 +37,7 @@ metadata:
     categories: Monitoring
     certified: "false"
     containerImage: quay.io/infrawatch/smart-gateway-operator:latest
-    createdAt: "2020-02-25T14:49:00Z"
+    createdAt: "2019-11-14T14:49:00Z"
     description: Smart Gateway Operator
     repository: https://github.com/infrawatch/smart-gateway-operator
     support: Red Hat (CloudOps)
@@ -285,11 +285,11 @@ spec:
   maintainers:
   - email: support@redhat.com
     name: Red Hat CloudOps DFG
-  maturity: stable
+  maturity: alpha
   provider:
     name: Red Hat, Inc.
+  replaces: smart-gateway-operator.v0.2.0
   selector:
     matchLabels:
       name: smart-gateway-operator
   version: 1.0.0-beta1
-  replaces: smart-gateway-operator.v0.2.0
