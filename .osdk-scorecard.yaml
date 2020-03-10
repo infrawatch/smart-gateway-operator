@@ -6,10 +6,8 @@ scorecard:
     - basic:
         cr-manifest:
           - "deploy/crds/smartgateway.infra.watch_v2alpha1_smartgateway.metrics_cr.yaml"
-        init-timeout: 300
         csv-path: "deploy/olm-catalog/smart-gateway-operator/1.0.0-beta1/smart-gateway-operator.v1.0.0-beta1.clusterserviceversion.yaml"
     - olm:
         cr-manifest:
           - "deploy/crds/smartgateway.infra.watch_v2alpha1_smartgateway.metrics_cr.yaml"
-        init-timeout: 300
         csv-path: "deploy/olm-catalog/smart-gateway-operator/1.0.0-beta1/smart-gateway-operator.v1.0.0-beta1.clusterserviceversion.yaml"
