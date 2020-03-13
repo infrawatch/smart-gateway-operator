@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 
 if [ -z "$CSV_VERSION" ]; then
-    echo -n "CSV version to create [e.g. 1.0.0-beta2]: "
+    echo -n "CSV version to create [e.g. 1.1.0]: "
     read CSV_VERSION
 fi
 
 if [ -z "$FROM_VERSION" ]; then
-    echo -n "CSV version to upgrade from [e.g. 1.0.0-beta1]: "
+    echo -n "CSV version to upgrade from [e.g. 1.0.0]: "
     read FROM_VERSION
 fi
 
