@@ -4,6 +4,10 @@
   set_fact:
     api_groups: "{{ lookup('k8s', cluster_info='api_groups') }}"
 
+- name: "Set Smart Gateway container image"
+  set_fact:
+    container_image_path: "{{ lookup('env', 'SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/smart-gateway:latest', true) }}"
+
 - name: Setup Smart Gateway
   k8s:
     state: "{{ state }}"

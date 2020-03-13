@@ -2,7 +2,6 @@
 # defaults file for smartgateway
 size: 1
 state: present
-container_image_path: quay.io/infrawatch/smart-gateway:latest
 prometheus_scrape_interval: 1s
 use_basic_auth: false
 tls_secret_name: elasticsearch-es-cert
