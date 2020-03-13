@@ -11,4 +11,4 @@ chmod +x "$HOME/bin/operator-sdk"
 
 # Push new application version, but strip the first character which is expected to be 'v'
 # Why not just create tags that don't have 'v'? Because the container image versions are expected to lead with a 'v'. Fun!
-CSV_VERSION="${TRAVIS_TAG:1}" "${REL}/../push_app2quay.sh""
+CSV_VERSION="${TRAVIS_TAG:1}" "${REL}/../push_app2quay.sh"
