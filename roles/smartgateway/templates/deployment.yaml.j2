@@ -1,14 +1,26 @@
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
   name: '{{ meta.name }}-smartgateway'
   namespace: '{{ meta.namespace }}'
 spec:
   replicas: {{ size }}
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: smart-gateway
+      smart-gateway: '{{ meta.name }}'
   template:
     metadata:
       labels:
         app: smart-gateway
+        smart-gateway: '{{ meta.name }}'
     spec:
       containers:
       - name: smart-gateway
