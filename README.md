@@ -17,6 +17,25 @@ Use the OperatorHub deployment from the Community catalog.
 
 For development or latest version, create an OperatorSource for quay.io/infrawatch/smartgateway-operator.
 
+```
+oc apply -f - <<EOF
+apiVersion: operators.coreos.com/v1
+kind: OperatorSource
+metadata:
+  labels:
+    opsrc-provider: infrawatch
+  name: infrawatch-operators
+  namespace: openshift-marketplace
+spec:
+  authorizationToken: {}
+  displayName: InfraWatch Operators
+  endpoint: https://quay.io/cnr
+  publisher: InfraWatch
+  registryNamespace: infrawatch
+  type: appregistry
+EOF
+```
+
 ## Build and test against CodeReady Containers
 
 NOTE: You'll need a Red Hat subscription to access CodeReady Containers. Access of the pull secret
@@ -61,11 +80,19 @@ INTERNAL_REGISTRY=$(oc registry info --internal=true)
 buildah login --tls-verify=false -u openshift -p "${TOKEN}" "${REGISTRY}"
 ```
 
+### Create working project (namespace)
+
+Create a namespace for the application called `service-telemetry`.
+
+```
+oc new-project service-telemetry
+```
+
 ### Build the operator
 
 ```
-buildah bud -f build/Dockerfile -t "${REGISTRY}/default/smart-gateway-operator:latest" .
-buildah push --tls-verify=false "${REGISTRY}/default/smart-gateway-operator:latest"
+buildah bud -f build/Dockerfile -t "${REGISTRY}/service-telemetry/smart-gateway-operator:latest" .
+buildah push --tls-verify=false "${REGISTRY}/service-telemetry/smart-gateway-operator:latest"
 ```
 
 ### Deploy with the newly built operator
@@ -90,8 +117,8 @@ INTERNAL_REGISTRY=$(oc registry info --internal=true)
 oc apply -f deploy/olm-catalog/smart-gateway-operator/${CSV_VERSION}/smartgateway.infra.watch_smartgateways_crd.yaml
 
 oc create -f <(sed "\
-    s|image: .\+/smart-gateway-operator:.\+$|image: ${INTERNAL_REGISTRY}/default/smart-gateway-operator:latest|g;
-    s|namespace: placeholder|namespace: default|g"\
+    s|image: .\+/smart-gateway-operator:.\+$|image: ${INTERNAL_REGISTRY}/service-telemetry/smart-gateway-operator:latest|g;
+    s|namespace: placeholder|namespace: service-telemetry|g"\
     "deploy/olm-catalog/smart-gateway-operator/${CSV_VERSION}/smart-gateway-operator.v${CSV_VERSION}.clusterserviceversion.yaml")
 ```
 
@@ -123,7 +150,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: amq7-interconnect-operator
-  namespace: default
+  namespace: service-telemetry
 spec:
   channel: 1.2.0
   installPlanApproval: Automatic
@@ -145,7 +172,7 @@ apiVersion: interconnectedcloud.github.io/v1alpha1
 kind: Interconnect
 metadata:
   name: amq-interconnect
-  namespace: default
+  namespace: service-telemetry
 spec:
   addresses:
   - distribution: closest
@@ -188,7 +215,7 @@ apiVersion: smartgateway.infra.watch/v2alpha1
 kind: SmartGateway
 metadata:
   name: cloud1-metrics
-  namespace: default
+  namespace: service-telemetry
 spec:
   amqpUrl: amq-interconnect:5672/collectd/telemetry
   debug: true
@@ -197,3 +224,4 @@ spec:
   size: 1
 EOF
 ```
+

@@ -2,7 +2,7 @@ apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: smartgateway-operator-group
-  namespace: default
+  namespace: service-telemetry
 spec:
   targetNamespaces:
-  - default
+  - service-telemetry
