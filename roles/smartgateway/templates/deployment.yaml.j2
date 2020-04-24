@@ -23,15 +23,34 @@ spec:
         smart-gateway: '{{ meta.name }}'
     spec:
       containers:
+{% if service_type == 'metrics' %}
+      - name: bridge
+        image: '{{ bridge_container_image_path }}'
+        args:
+        - --amqp_url
+        - amqp://{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/telemetry') }}
+        - --verbose
+        volumeMounts:
+        - mountPath: /tmp
+          name: socket-dir
       - name: smart-gateway
-        image: '{{ container_image_path }}'
+        image: '{{ metrics_container_image_path }}'
+        args:
+        - -promhost
+        - 0.0.0.0
+        - unix
+        volumeMounts:
+        - mountPath: /tmp
+          name: socket-dir
+{% endif %}
+{% if service_type == 'events' %}
+      - name: smart-gateway
+        image: '{{ events_container_image_path }}'
         volumeMounts:
         - name: sg-config
           mountPath: /config
-{% if service_type == 'events' %}
         - name: elastic-certs
           mountPath: /config/certs
-{% endif %}
         args:
           - '-config=/config/smartgateway_config.json'
           - '-uname=$(MY_POD_NAME)'
@@ -42,14 +61,19 @@ spec:
               fieldRef:
                 apiVersion: v1
                 fieldPath: metadata.name
+{% endif %}
         ports:
         - name: "{{ service_type }}"
           containerPort: 8081
       volumes:
+{% if service_type == 'metrics' %}
+      - name: socket-dir
+        emptyDir: {}
+{% endif %}
+{% if service_type == 'events' %}
       - name: sg-config
         configMap:
           name: "{{ meta.name }}-smartgateway"
-{% if service_type == 'events' %}
       - name: elastic-certs
         secret:
           secretName: {{ tls_secret_name }}
