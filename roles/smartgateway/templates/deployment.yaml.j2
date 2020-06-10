@@ -30,6 +30,11 @@ spec:
         - --amqp_url
         - amqp://{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/telemetry') }}
         - --verbose
+        - --block
+        - --stat_period
+        - "60"
+        - --rbc
+        - "15000"
         volumeMounts:
         - mountPath: /tmp
           name: socket-dir
