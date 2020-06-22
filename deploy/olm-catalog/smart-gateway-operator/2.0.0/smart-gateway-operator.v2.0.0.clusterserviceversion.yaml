@@ -191,7 +191,7 @@ spec:
                   value: explicit
                 - name: SMARTGATEWAY_IMAGE
                   value: quay.io/infrawatch/smart-gateway:v2.0.0-beta1
-                - name: METRICS_SMARTGATEWAY_IMAGE
+                - name: CORE_SMARTGATEWAY_IMAGE
                   value: quay.io/infrawatch/sg-core:v3.0.0
                 - name: BRIDGE_SMARTGATEWAY_IMAGE
                   value: quay.io/infrawatch/sg-bridge:v1.0.0
