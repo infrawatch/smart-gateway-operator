@@ -7,8 +7,8 @@
 - name: "Set Smart Gateway container images"
   set_fact:
     events_container_image_path: "{{ lookup('env', 'SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/smart-gateway:latest', true) }}"
-    metrics_container_image_path: "{{ lookup('env', 'METRICS_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg2:latest', true) }}"
-    bridge_container_image_path: "{{ lookup('env', 'BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sgbridge:latest', true) }}"
+    metrics_container_image_path: "{{ lookup('env', 'CORE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-core:latest', true) }}"
+    bridge_container_image_path: "{{ lookup('env', 'BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-bridge:latest', true) }}"
 
 - name: Setup Smart Gateway
   k8s:
