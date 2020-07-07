@@ -1,7 +1,6 @@
 scorecard:
   version: v1alpha2
   output: text
-  bundle: deploy/olm-catalog/smart-gateway-operator/2.0.0/metadata
   plugins:
     - basic:
         cr-manifest:
