@@ -70,6 +70,7 @@ spec:
         ports:
         - name: "{{ service_type }}"
           containerPort: 8081
+{%   endif %}
       volumes:
 {%   if (service_type == 'metrics') and (amqp_data_source == 'collectd') %}
       - name: socket-dir
@@ -83,4 +84,3 @@ spec:
         secret:
           secretName: {{ tls_secret_name }}
 {%   endif %}
-{% endif %}
