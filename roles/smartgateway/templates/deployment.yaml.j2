@@ -23,7 +23,7 @@ spec:
         smart-gateway: '{{ meta.name }}'
     spec:
       containers:
-{% if (service_type == 'metrics') and (amqpDataSource == 'collectd') %}
+{% if (service_type == 'metrics') and (amqp_data_source == 'collectd') %}
       - name: bridge
         image: '{{ bridge_container_image_path }}'
         args:
@@ -71,7 +71,7 @@ spec:
         - name: "{{ service_type }}"
           containerPort: 8081
       volumes:
-{%   if (service_type == 'metrics') and (amqpDataSource == 'collectd') %}
+{%   if (service_type == 'metrics') and (amqp_data_source == 'collectd') %}
       - name: socket-dir
         emptyDir: {}
 {%   endif %}
