@@ -10,7 +10,7 @@ data:
       "AMQP1Connections": [
         {
           "URL": "{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/telemetry') }}",
-          "DataSource": "{{ amqp_data_source | default('collectd') }}"
+          "DataSource": "{{ amqp_data_source | default('ceilometer') }}"
         }
       ],
       "Exporterhost": "{{ exporter_host | default('0.0.0.0') }}",

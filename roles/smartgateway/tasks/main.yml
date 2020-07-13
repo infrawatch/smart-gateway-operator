@@ -4,9 +4,11 @@
   set_fact:
     api_groups: "{{ lookup('k8s', cluster_info='api_groups') }}"
 
-- name: "Set Smart Gateway container image"
+- name: "Set Smart Gateway container images"
   set_fact:
-    container_image_path: "{{ lookup('env', 'SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/smart-gateway:latest', true) }}"
+    events_container_image_path: "{{ lookup('env', 'SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/smart-gateway:latest', true) }}"
+    metrics_container_image_path: "{{ lookup('env', 'CORE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-core:latest', true) }}"
+    bridge_container_image_path: "{{ lookup('env', 'BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-bridge:latest', true) }}"
 
 - name: Setup Smart Gateway
   k8s:
@@ -16,8 +18,8 @@
   loop:
     - name: events-configmap.yaml.j2
       to_load: "{{ True if 'events' in service_type else False }}"
-    - name: metrics-configmap.yaml.j2
-      to_load: "{{ True if 'metrics' in service_type else False }}"
+    - name: ceilometer-metrics-configmap.yaml.j2
+      to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'ceilometer' else False }}"
     - name: deployment.yaml.j2
     - name: service.yaml.j2
       to_load: "{{ True if 'metrics' in service_type else False }}"
