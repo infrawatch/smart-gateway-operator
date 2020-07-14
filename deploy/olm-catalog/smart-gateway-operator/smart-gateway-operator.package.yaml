@@ -1,5 +1,5 @@
 channels:
-- currentCSV: smart-gateway-operator.v2.0.0
+- currentCSV: smart-gateway-operator.v2.0.1
   name: stable
 defaultChannel: stable
 packageName: smartgateway-operator

@@ -36,12 +36,12 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring
     certified: "false"
-    containerImage: quay.io/infrawatch/smart-gateway-operator:v1.0.2
+    containerImage: quay.io/infrawatch/smart-gateway-operator:v2.0.1
     createdAt: "2019-11-14T14:49:00Z"
-    description: Smart Gateway Operator
+    description: Operator for managing the Smart Gateway Custom Resources, resulting in deployments of the Smart Gateway.
     repository: https://github.com/infrawatch/smart-gateway-operator
     support: Red Hat (CloudOps)
-  name: smart-gateway-operator.v1.0.2
+  name: smart-gateway-operator.v2.0.1
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -190,8 +190,12 @@ spec:
                 - name: ANSIBLE_GATHERING
                   value: explicit
                 - name: SMARTGATEWAY_IMAGE
-                  value: quay.io/infrawatch/smart-gateway:latest
-                image: quay.io/infrawatch/smart-gateway-operator:latest
+                  value: quay.io/infrawatch/smart-gateway:v2.0.0
+                - name: CORE_SMARTGATEWAY_IMAGE
+                  value: quay.io/infrawatch/sg-core:v3.0.0
+                - name: BRIDGE_SMARTGATEWAY_IMAGE
+                  value: quay.io/infrawatch/sg-bridge:v1.0.0
+                image: quay.io/infrawatch/smart-gateway-operator:v2.0.1
                 imagePullPolicy: Always
                 name: operator
                 resources: {}
@@ -283,8 +287,8 @@ spec:
   maturity: alpha
   provider:
     name: Red Hat
-  replaces: smart-gateway-operator.v1.0.1
+  replaces: smart-gateway-operator.v2.0.0
   selector:
     matchLabels:
       name: smart-gateway-operator
-  version: 1.0.2
+  version: 2.0.1
