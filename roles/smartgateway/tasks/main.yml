@@ -10,16 +10,38 @@
     metrics_container_image_path: "{{ lookup('env', 'CORE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-core:latest', true) }}"
     bridge_container_image_path: "{{ lookup('env', 'BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-bridge:latest', true) }}"
 
-- name: Setup Smart Gateway
-  k8s:
-    state: "{{ state }}"
-    definition: "{{ lookup('template', item.name) | from_yaml }}"
+- name: Get Smart Gateway ConfigMap Environment
+  set_fact:
+    smartgateway_resource_configmap:
+      env: "{{ lookup('template', item.name) | from_yaml }}"
   when: item.to_load | default(True)
   loop:
     - name: events-configmap.yaml.j2
       to_load: "{{ True if 'events' in service_type else False }}"
     - name: ceilometer-metrics-configmap.yaml.j2
       to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'ceilometer' else False }}"
+
+- name: Debug ConfigMap
+  debug:
+    var: smartgateway_resource_configmap | from_yaml
+
+- name: Setup the ConfigMaps
+  k8s:
+    state: "{{ state }}"
+    append_hash: yes
+    definition: "{{ smartgateway_resource_configmap.env }}"
+  when: smartgateway_resource_configmap is defined
+
+- name: Debug Deployment
+  debug:
+    var: lookup('template', 'deployment.yaml.j2') | from_yaml
+
+- name: Deploy Smart Gateway
+  k8s:
+    state: "{{ state }}"
+    definition: "{{ lookup('template', item.name) | from_yaml }}"
+  when: item.to_load | default(True)
+  loop:
     - name: deployment.yaml.j2
     - name: service.yaml.j2
       to_load: "{{ True if 'metrics' in service_type else False }}"
