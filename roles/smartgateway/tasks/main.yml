@@ -10,7 +10,22 @@
     metrics_container_image_path: "{{ lookup('env', 'CORE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-core:latest', true) }}"
     bridge_container_image_path: "{{ lookup('env', 'BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-bridge:latest', true) }}"
 
-- name: Setup Smart Gateway
+# only one of these is expected to be true
+# -- events SG (collectd, ceilometer) both use legacy config, thus events-configmap.yaml
+# -- metrics SG (ceilometer) uses ceilometer-metrics-configmap
+# -- metrics SG (collectd) only has the Deployment manifest updated due to direct call of configurations (no ConfigMap)
+- name: Get Smart Gateway ConfigMap Environment
+  set_fact:
+    smartgateway_resource_configmap:
+      env: "{{ lookup('template', item.name) | from_yaml }}"
+  when: item.to_load | default(True)
+  loop:
+    - name: events-configmap.yaml.j2
+      to_load: "{{ True if 'events' in service_type else False }}"
+    - name: ceilometer-metrics-configmap.yaml.j2
+      to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'ceilometer' else False }}"
+
+- name: Deploy Smart Gateway
   k8s:
     state: "{{ state }}"
     definition: "{{ lookup('template', item.name) | from_yaml }}"

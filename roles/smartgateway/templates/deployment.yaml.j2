@@ -21,6 +21,9 @@ spec:
       labels:
         app: smart-gateway
         smart-gateway: '{{ meta.name }}'
+{% if smartgateway_resource_configmap is defined %}
+        sg-config-resource-name: {{ smartgateway_resource_configmap.env | k8s_config_resource_name }}
+{% endif %}
     spec:
       containers:
 {% if (service_type == 'metrics') and (amqp_data_source == 'collectd') %}
@@ -50,12 +53,14 @@ spec:
 {% else %}
       - name: smart-gateway
         image: '{{ events_container_image_path }}'
+{%   if smartgateway_resource_configmap is defined %}
         volumeMounts:
         - name: sg-config
           mountPath: /config
-{%   if service_type == 'events' %}
+{%     if service_type == 'events' %}
         - name: elastic-certs
           mountPath: /config/certs
+{%     endif %}
 {%   endif %}
         args:
           - '-config=/config/smartgateway_config.json'
@@ -70,17 +75,19 @@ spec:
         ports:
         - name: "{{ service_type }}"
           containerPort: 8081
-{%   endif %}
+{% endif %}
       volumes:
-{%   if (service_type == 'metrics') and (amqp_data_source == 'collectd') %}
+{% if (service_type == 'metrics') and (amqp_data_source == 'collectd') %}
       - name: socket-dir
         emptyDir: {}
-{%   endif %}
+{% endif %}
+{% if smartgateway_resource_configmap is defined %}
       - name: sg-config
         configMap:
-          name: "{{ meta.name }}-smartgateway"
+          name: {{ meta.name }}-smartgateway
 {%   if service_type == 'events' %}
       - name: elastic-certs
         secret:
           secretName: {{ tls_secret_name }}
 {%   endif %}
+{% endif %}
