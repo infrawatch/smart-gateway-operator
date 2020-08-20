@@ -44,6 +44,9 @@ spec:
       - name: smart-gateway
         image: '{{ metrics_container_image_path }}'
         args:
+{% if use_timestamp %}
+        - -usetimestamp
+{% endif %}
         - -promhost
         - 0.0.0.0
         - unix
