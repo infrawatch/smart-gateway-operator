@@ -36,12 +36,12 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring
     certified: "false"
-    containerImage: quay.io/infrawatch/smart-gateway-operator:v2.0.1
+    containerImage: quay.io/infrawatch/smart-gateway-operator:latest
     createdAt: "2019-11-14T14:49:00Z"
-    description: Operator for managing the Smart Gateway Custom Resources, resulting in deployments of the Smart Gateway.
+    description: Smart Gateway Operator
     repository: https://github.com/infrawatch/smart-gateway-operator
     support: Red Hat (CloudOps)
-  name: smart-gateway-operator.v2.0.1
+  name: smart-gateway-operator.v0.2.0
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -146,8 +146,8 @@ spec:
     2. If the Smart Gateway is running in events mode, be sure the ElasticSearch Operator and ElasticSearch instance have been pre-deployed.
   displayName: Smart Gateway Operator
   icon:
-  - base64data: PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMS4wYmV0YTIgKHVua25vd24pIgogICBoZWlnaHQ9IjEyOCIKICAgd2lkdGg9IjEyOCIKICAgc29kaXBvZGk6ZG9jbmFtZT0iSWNvbi1SZWRfSGF0LU9iamVjdHMtTGlnaHRfQnVsYi1BLUJsYWNrLVJHQi5zdmciCiAgIHZlcnNpb249IjEuMSIKICAgdmlld0JveD0iMCAwIDEyOCAxMjgiCiAgIGlkPSJJY29ucyI+CiAgPG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRhMjYyIj4KICAgIDxyZGY6UkRGPgogICAgICA8Y2M6V29yawogICAgICAgICByZGY6YWJvdXQ9IiI+CiAgICAgICAgPGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+CiAgICAgICAgPGRjOnR5cGUKICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPgogICAgICAgIDxkYzp0aXRsZT5JY29uLVJlZF9IYXQtT2JqZWN0cy1MaWdodF9CdWxiLUEtQmxhY2stUkdCPC9kYzp0aXRsZT4KICAgICAgPC9jYzpXb3JrPgogICAgPC9yZGY6UkRGPgogIDwvbWV0YWRhdGE+CiAgPGRlZnMKICAgICBpZD0iZGVmczI2MCIgLz4KICA8c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0iSWNvbnMiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMCIKICAgICBpbmtzY2FwZTp3aW5kb3cteT0iMTgiCiAgICAgaW5rc2NhcGU6d2luZG93LXg9IjM4NDAiCiAgICAgaW5rc2NhcGU6Y3k9IjQ5LjgzNjQ4OSIKICAgICBpbmtzY2FwZTpjeD0iMTAzLjgxNzM4IgogICAgIGlua3NjYXBlOnpvb209IjQuMzgwMTMzNyIKICAgICB2aWV3Ym94LXk9IjAiCiAgICAgc2NhbGUteD0iMSIKICAgICBzaG93Z3JpZD0iZmFsc2UiCiAgICAgaWQ9Im5hbWVkdmlldzI1OCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDYyIgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwIgogICAgIGd1aWRldG9sZXJhbmNlPSIxMCIKICAgICBncmlkdG9sZXJhbmNlPSIxMCIKICAgICBvYmplY3R0b2xlcmFuY2U9IjEwIgogICAgIGJvcmRlcm9wYWNpdHk9IjEiCiAgICAgaW5rc2NhcGU6ZG9jdW1lbnQtcm90YXRpb249IjAiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIiAvPgogIDx0aXRsZQogICAgIGlkPSJ0aXRsZTI1MSI+SWNvbi1SZWRfSGF0LU9iamVjdHMtTGlnaHRfQnVsYi1BLUJsYWNrLVJHQjwvdGl0bGU+CiAgPHBhdGgKICAgICBzdHlsZT0ic3Ryb2tlLXdpZHRoOjUuMDIzNjciCiAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICBpZD0icGF0aDI1MyIKICAgICBkPSJtIDg4LjMxNDkzMSw4OS4zNjA1NjcgNS4yNzQ5NjcsLTI0Ljg2NzUyNiBhIDM5LjAzNDU0MSwzOS4wMzQ1NTcgMCAxIDAgLTU5LjE3OTc5NiwwIGwgNS4yNzQ5MzgsMjUuMTE4NzI4IGEgMTAuODUxMzAyLDEwLjg1MTMwNiAwIDAgMCAxMC40OTk2NCw4LjU0MDM2OSBoIDI3LjYzMDYzMSBhIDEwLjkwMTUzOCwxMC45MDE1NDEgMCAwIDAgMTAuNDk5NjIsLTguNzkxNTcxIHogTSAzOS42ODUwMzksNTkuMjE4MDc1IEEgMzEuNDk4OTE2LDMxLjQ5ODkyNSAwIDEgMSA5NS40OTg5MDEsMzkuMTIzMDQyIDMxLjA5NzAxNSwzMS4wOTcwMjYgMCAwIDEgODguMzE0OTMxLDU5LjIxODA3NSBaIE0gODAuOTMwMDM1LDg3Ljk1MzkyMiBBIDMuMzE1Njc1MiwzLjMxNTY3NjYgMCAwIDEgNzcuODE1MzEsOTAuNTE2MDI0IEggNTAuMTg0NjggQSAzLjIxNTIwMDMsMy4yMTUyMDE4IDAgMCAxIDQ3LjA2OTk1Miw4Ny45NTM5MjIgTCA0Mi41NDg1NzgsNjYuNzAzNDgzIGggNDIuOTAyODA2IHoiIC8+CiAgPHBhdGgKICAgICBzdHlsZT0ic3Ryb2tlLXdpZHRoOjUuMDIzNjciCiAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICBpZD0icGF0aDI1NSIKICAgICBkPSJNIDgyLjg0Mjk5OSwxMDkuMTU0MTMgQSAzLjc2NzgxMjksMy43Njc4MTM5IDAgMCAwIDc5LjA3NTE5LDEwNS4zODYzMiBIIDQ4LjkzMjY4OSBhIDMuNzY3ODI2OSwzLjc2NzgyODIgMCAxIDAgMCw3LjUzNTY0IGggMC42MDI4NSBjIDAsMCAwLDAuMzAxNzYgMCwwLjUwMjM0IGEgMTQuNTY4ODc3LDE0LjU2ODg4MSAwIDEgMCAyOS4xMzc3NTEsMCBjIDAsMCAwLC0wLjM1MTU1IDAsLTAuNTAyMzQgaCAwLjQwMTc5MiBhIDMuODE4MDUwNSwzLjgxODA1MTUgMCAwIDAgMy43Njc4MDUsLTMuNzY3ODMgeiBtIC0xMS44MDU4MDMsNC4yNzAxOSBhIDcuMDMzMjUzLDcuMDMzMjU1OCAwIDEgMSAtMTQuMDY2NTA1LDAgMS41MDcxMjUsMS41MDcxMjU0IDAgMCAwIDAsLTAuNTAyMzQgSCA3MS4yMzgxNSBhIDEuNTA3MTI1LDEuNTA3MTI1NCAwIDAgMCAtMC4yMDA5NTgsMC42MDI4NSB6IiAvPgo8L3N2Zz4K
-    mediatype: image/svg+xml
+  - base64data: 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
+    mediatype: image/png
   install:
     spec:
       deployments:
@@ -189,13 +189,7 @@ spec:
                   value: smart-gateway-operator
                 - name: ANSIBLE_GATHERING
                   value: explicit
-                - name: SMARTGATEWAY_IMAGE
-                  value: quay.io/infrawatch/smart-gateway:v2.0.0
-                - name: CORE_SMARTGATEWAY_IMAGE
-                  value: quay.io/infrawatch/sg-core:v3.0.0
-                - name: BRIDGE_SMARTGATEWAY_IMAGE
-                  value: quay.io/infrawatch/sg-bridge:v1.0.0
-                image: quay.io/infrawatch/smart-gateway-operator:v2.0.1
+                image: quay.io/infrawatch/smart-gateway-operator:latest
                 imagePullPolicy: Always
                 name: operator
                 resources: {}
@@ -227,6 +221,12 @@ spec:
           verbs:
           - get
         - apiGroups:
+          - apps.openshift.io
+          resources:
+          - deploymentconfigs
+          verbs:
+          - '*'
+        - apiGroups:
           - apps
           resources:
           - deployments
@@ -251,6 +251,7 @@ spec:
           - smart-gateway-operator
           resources:
           - deployments/finalizers
+          - deploymentconfigs/finalizers
           verbs:
           - update
         - apiGroups:
@@ -286,9 +287,8 @@ spec:
     name: Red Hat CloudOps DFG
   maturity: alpha
   provider:
-    name: Red Hat
-  replaces: smart-gateway-operator.v2.0.0
+    name: Red Hat, Inc.
   selector:
     matchLabels:
       name: smart-gateway-operator
-  version: 2.0.1
+  version: 0.2.0
