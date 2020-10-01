@@ -64,3 +64,9 @@ Create a new bundle release by updating the bundle container image.
 ```
 operator-sdk bundle create quay.io/infrawatch-operators/smart-gateway-operator-bundle:v2.1.0
 ```
+
+You can validate your bundle directory with `operator-sdk bundle validate`.
+
+```
+operator-sdk bundle validate ./deploy/olm-catalog/smart-gateway-operator
+```
