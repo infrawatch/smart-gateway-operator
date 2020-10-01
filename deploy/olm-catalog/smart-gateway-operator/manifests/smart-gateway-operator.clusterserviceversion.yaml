@@ -288,7 +288,6 @@ spec:
   maturity: alpha
   provider:
     name: Red Hat
-  replaces: smart-gateway-operator.v2.0.0
   selector:
     matchLabels:
       name: smart-gateway-operator
