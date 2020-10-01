@@ -7,5 +7,5 @@ LABEL operators.operatorframework.io.bundle.package.v1=smart-gateway-operator
 LABEL operators.operatorframework.io.bundle.channels.v1=stable
 LABEL operators.operatorframework.io.bundle.channel.default.v1=stable
 
-COPY /*.yaml /manifests/
-COPY /metadata/annotations.yaml /metadata/annotations.yaml
+COPY deploy/olm-catalog/smart-gateway-operator/manifests /manifests/
+COPY deploy/olm-catalog/smart-gateway-operator/metadata/annotations.yaml /metadata/annotations.yaml
