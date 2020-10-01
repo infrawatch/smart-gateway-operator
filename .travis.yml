@@ -23,4 +23,4 @@ install:
 
 script:
 - ansible-lint roles/smartgateway/
-- operator-sdk bundle validate ./deploy/olm-catalog/smart-gateway-operator
+- operator-sdk bundle validate --verbose ./deploy/olm-catalog/smart-gateway-operator
