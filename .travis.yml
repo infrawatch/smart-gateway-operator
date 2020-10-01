@@ -24,6 +24,3 @@ install:
 script:
 - ansible-lint roles/smartgateway/
 - operator-sdk bundle validate ./deploy/olm-catalog/smart-gateway-operator
-
-after_success:
-- if [ "$TRAVIS_TAG" == "" ]; then echo "Not a tagged release, skipping after_success.sh"; else ./build/travis/after_success.sh; fi
