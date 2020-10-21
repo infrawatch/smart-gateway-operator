@@ -40,6 +40,8 @@ metadata:
     createdAt: "2019-11-14T14:49:00Z"
     description: Operator for managing the Smart Gateway Custom Resources, resulting
       in deployments of the Smart Gateway.
+    operators.operatorframework.io/builder: operator-sdk-v0.19.4
+    operators.operatorframework.io/project_layout: ansible
     repository: https://github.com/infrawatch/smart-gateway-operator
     support: Red Hat (CloudOps)
   name: smart-gateway-operator.v2.0.1
