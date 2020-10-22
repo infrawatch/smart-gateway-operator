@@ -44,7 +44,7 @@ metadata:
     operators.operatorframework.io/project_layout: ansible
     repository: https://github.com/infrawatch/smart-gateway-operator
     support: Red Hat (CloudOps)
-  name: smart-gateway-operator.v2.0.1
+  name: smart-gateway-operator.v2.1.0
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -71,8 +71,12 @@ spec:
         name: ""
         version: v1
       - kind: SmartGateways
-        name: ""
+        name: smartgateways.smartgateway.infra.watch
         version: v2alpha1
+      - kind: ServiceMonitors
+        name: servicemonitors.monitoring.coreos.com
+        version: v1
+        version: v1
       specDescriptors:
       - description: Number of Smart Gateways to deploy
         displayName: Size
@@ -121,7 +125,7 @@ spec:
         displayName: Conditions
         path: conditions
         x-descriptors:
-        - urn:alm:descriptor:io.kubernetes.conditions
+        - urn:alm:descriptor:io.kubernetes:conditions
       version: v2alpha1
   description: |-
     # Smart Gateway for Service Telemetry Framework
@@ -171,7 +175,7 @@ spec:
                 - /usr/local/bin/ao-logs
                 - /tmp/ansible-operator/runner
                 - stdout
-                image: quay.io/infrawatch/smart-gateway-operator:v2.0.1
+                image: quay.io/infrawatch/smart-gateway-operator:latest
                 imagePullPolicy: Always
                 name: ansible
                 resources: {}
@@ -193,12 +197,12 @@ spec:
                 - name: ANSIBLE_GATHERING
                   value: explicit
                 - name: SMARTGATEWAY_IMAGE
-                  value: quay.io/infrawatch/smart-gateway:v2.0.0
+                  value: quay.io/infrawatch/smart-gateway:latest
                 - name: CORE_SMARTGATEWAY_IMAGE
-                  value: quay.io/infrawatch/sg-core:v3.0.0
+                  value: quay.io/infrawatch/sg-core:latest
                 - name: BRIDGE_SMARTGATEWAY_IMAGE
-                  value: quay.io/infrawatch/sg-bridge:v1.0.0
-                image: quay.io/infrawatch/smart-gateway-operator:v2.0.1
+                  value: quay.io/infrawatch/sg-bridge:latest
+                image: quay.io/infrawatch/smart-gateway-operator:latest
                 imagePullPolicy: Always
                 name: operator
                 resources: {}
@@ -271,7 +275,7 @@ spec:
     type: SingleNamespace
   - supported: false
     type: MultiNamespace
-  - supported: true
+  - supported: false
     type: AllNamespaces
   keywords:
   - servicetelemetry
@@ -290,7 +294,8 @@ spec:
   maturity: alpha
   provider:
     name: Red Hat
+  replaces: smart-gateway-operator.v2.0.1
   selector:
     matchLabels:
       name: smart-gateway-operator
-  version: 2.0.1
+  version: 2.1.0

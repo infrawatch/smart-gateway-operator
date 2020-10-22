@@ -1,13 +1,12 @@
 scorecard:
   version: v1alpha2
   output: text
-  bundle: deploy/olm-catalog/smart-gateway-operator/bundle/metadata
+  bundle: deploy/olm-catalog/smart-gateway-operator
   plugins:
     - basic:
         cr-manifest:
           - "deploy/crds/smartgateway.infra.watch_v2alpha1_smartgateway.metrics_cr.yaml"
-        csv-path: "deploy/olm-catalog/smart-gateway-operator/2.0.0/smart-gateway-operator.v2.0.0.clusterserviceversion.yaml"
     - olm:
         cr-manifest:
           - "deploy/crds/smartgateway.infra.watch_v2alpha1_smartgateway.metrics_cr.yaml"
-        csv-path: "deploy/olm-catalog/smart-gateway-operator/2.0.0/smart-gateway-operator.v2.0.0.clusterserviceversion.yaml"
+        csv-path: "deploy/olm-catalog/smart-gateway-operator/manifests/smart-gateway-operator.clusterserviceversion.yaml"

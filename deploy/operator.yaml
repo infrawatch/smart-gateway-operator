@@ -17,7 +17,7 @@ spec:
         - /usr/local/bin/ao-logs
         - /tmp/ansible-operator/runner
         - stdout
-        image: quay.io/infrawatch/smart-gateway-operator:v2.0.1
+        image: quay.io/infrawatch/smart-gateway-operator:latest
         imagePullPolicy: Always
         name: ansible
         resources: {}
@@ -39,12 +39,12 @@ spec:
         - name: ANSIBLE_GATHERING
           value: explicit
         - name: SMARTGATEWAY_IMAGE
-          value: quay.io/infrawatch/smart-gateway:v2.0.0
+          value: quay.io/infrawatch/smart-gateway:latest
         - name: CORE_SMARTGATEWAY_IMAGE
-          value: quay.io/infrawatch/sg-core:v3.0.0
+          value: quay.io/infrawatch/sg-core:latest
         - name: BRIDGE_SMARTGATEWAY_IMAGE
-          value: quay.io/infrawatch/sg-bridge:v1.0.0
-        image: quay.io/infrawatch/smart-gateway-operator:v2.0.1
+          value: quay.io/infrawatch/sg-bridge:latest
+        image: quay.io/infrawatch/smart-gateway-operator:latest
         imagePullPolicy: Always
         name: operator
         resources: {}
