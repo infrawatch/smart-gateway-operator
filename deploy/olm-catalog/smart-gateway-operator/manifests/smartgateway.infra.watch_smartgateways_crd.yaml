@@ -26,6 +26,8 @@ spec:
             object represents. Servers may infer this from the endpoint the client
             submits requests to. Cannot be updated. In CamelCase. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
           type: string
+        metadata:
+          type: object
         spec:
           description: 'SmartGatewaySpec is a specification of the desired behavior
             of the Smartgateway deployment. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status'
@@ -85,6 +87,9 @@ spec:
             serviceType:
               description: The service type for this smart gateway. One of 'metrics'
                 or 'events'. Defaults to 'metrics'.
+              enum:
+              - metrics
+              - events
               type: string
             size:
               description: Size sets the number of replicas to create. Defaults to
@@ -93,6 +98,7 @@ spec:
             tlsSecretName:
               description: Name of the Secret object that holds the TLS certificates
                 and key for Elasticsearch. Defaults to 'elasticsearch-es-cert'.
+              type: string
             useBasicAuth:
               description: Whether to use basic authentication or not when connecting
                 to ElasticSearch. Default is 'false'
@@ -102,6 +108,7 @@ spec:
                 rather than let Prometheus write when the data was scraped for that
                 metric.
               type: boolean
+          type: object
         status:
           description: Status results of an instance of Smart Gateway
           properties:
@@ -120,6 +127,7 @@ spec:
                 type: object
               type: array
           type: object
+      type: object
   version: v2alpha1
   versions:
   - name: v2alpha1

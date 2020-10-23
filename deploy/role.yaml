@@ -9,19 +9,20 @@ rules:
   resources:
   - pods
   - services
+  - services/finalizers
   - endpoints
   - persistentvolumeclaims
   - events
   - configmaps
   - secrets
   verbs:
-  - '*'
-- apiGroups:
-  - ""
-  resources:
-  - namespaces
-  verbs:
+  - create
+  - delete
   - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - apps
   resources:
@@ -30,7 +31,13 @@ rules:
   - replicasets
   - statefulsets
   verbs:
-  - '*'
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - monitoring.coreos.com
   resources:
@@ -38,9 +45,6 @@ rules:
   verbs:
   - get
   - create
-  - list
-  - patch
-  - watch
 - apiGroups:
   - apps
   resourceNames:
@@ -50,8 +54,27 @@ rules:
   verbs:
   - update
 - apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+- apiGroups:
+  - apps
+  resources:
+  - replicasets
+  - deployments
+  verbs:
+  - get
+- apiGroups:
   - smartgateway.infra.watch
   resources:
   - '*'
   verbs:
-  - '*'
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch

@@ -36,7 +36,7 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring
     certified: "false"
-    containerImage: quay.io/infrawatch/smart-gateway-operator:v2.0.1
+    containerImage: quay.io/infrawatch/smart-gateway-operator:latest
     createdAt: "2019-11-14T14:49:00Z"
     description: Operator for managing the Smart Gateway Custom Resources, resulting
       in deployments of the Smart Gateway.
@@ -75,7 +75,6 @@ spec:
         version: v2alpha1
       - kind: ServiceMonitors
         name: servicemonitors.monitoring.coreos.com
-        version: v1
         version: v1
       specDescriptors:
       - description: Number of Smart Gateways to deploy
@@ -220,19 +219,20 @@ spec:
           resources:
           - pods
           - services
+          - services/finalizers
           - endpoints
           - persistentvolumeclaims
           - events
           - configmaps
           - secrets
           verbs:
-          - '*'
-        - apiGroups:
-          - ""
-          resources:
-          - namespaces
-          verbs:
+          - create
+          - delete
           - get
+          - list
+          - patch
+          - update
+          - watch
         - apiGroups:
           - apps
           resources:
@@ -241,7 +241,13 @@ spec:
           - replicasets
           - statefulsets
           verbs:
-          - '*'
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
         - apiGroups:
           - monitoring.coreos.com
           resources:
@@ -249,9 +255,6 @@ spec:
           verbs:
           - get
           - create
-          - list
-          - patch
-          - watch
         - apiGroups:
           - apps
           resourceNames:
@@ -261,11 +264,30 @@ spec:
           verbs:
           - update
         - apiGroups:
+          - ""
+          resources:
+          - pods
+          verbs:
+          - get
+        - apiGroups:
+          - apps
+          resources:
+          - replicasets
+          - deployments
+          verbs:
+          - get
+        - apiGroups:
           - smartgateway.infra.watch
           resources:
           - '*'
           verbs:
-          - '*'
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
         serviceAccountName: smart-gateway-operator
     strategy: deployment
   installModes:

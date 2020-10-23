@@ -19,6 +19,7 @@ spec:
     storage: true
   validation:
     openAPIV3Schema:
+      type: object
       properties:
         apiVersion:
           description: 'APIVersion defines the versioned schema of this representation
@@ -30,6 +31,8 @@ spec:
             object represents. Servers may infer this from the endpoint the client
             submits requests to. Cannot be updated. In CamelCase. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
           type: string
+        metadata:
+          type: object
         spec:
           description: 'SmartGatewaySpec is a specification of the desired behavior
             of the Smartgateway deployment. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status'
@@ -60,12 +63,16 @@ spec:
             tlsSecretName:
               description: Name of the Secret object that holds the TLS certificates and key for Elasticsearch.
                 Defaults to 'elasticsearch-es-cert'.
+              type: string
             resetIndex:
               description: Reset the ElasticSearch index on load. Defaults to 'false'.
               type: boolean
             serviceType:
               description: The service type for this smart gateway. One of 'metrics' or 'events'. Defaults to 'metrics'.
               type: string
+              enum:
+                - metrics
+                - events
             exporterHost:
               description: Metrics URL for Prometheus to export. Defaults to "0.0.0.0".
               type: string
@@ -95,6 +102,7 @@ spec:
               description: Use the source timestamp (time when data was collected) rather than let Prometheus write when the data was 
                 scraped for that metric.
               type: boolean
+          type: object
         status:
           description: Status results of an instance of Smart Gateway
           properties:
