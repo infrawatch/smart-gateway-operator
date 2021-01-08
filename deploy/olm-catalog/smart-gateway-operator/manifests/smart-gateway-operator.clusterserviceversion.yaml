@@ -44,7 +44,7 @@ metadata:
     operators.operatorframework.io/project_layout: ansible
     repository: https://github.com/infrawatch/smart-gateway-operator
     support: Red Hat (CloudOps)
-  name: smart-gateway-operator.v2.1.0
+  name: smart-gateway-operator.v2.2.0
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -316,8 +316,8 @@ spec:
   maturity: alpha
   provider:
     name: Red Hat
-  replaces: smart-gateway-operator.v2.0.1
+  replaces: smart-gateway-operator.v2.1.0
   selector:
     matchLabels:
       name: smart-gateway-operator
-  version: 2.1.0
+  version: 2.2.0
