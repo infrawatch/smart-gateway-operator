@@ -43,16 +43,12 @@ spec:
           name: socket-dir
       - name: smart-gateway
         image: '{{ metrics_container_image_path }}'
-        args:
-{% if use_timestamp %}
-        - -usetimestamp
-{% endif %}
-        - -promhost
-        - 0.0.0.0
-        - unix
         volumeMounts:
         - mountPath: /tmp
           name: socket-dir
+        - mountPath: /etc/sg-core.config.yaml
+          name: sg-core-config
+          readOnly: true
 {% else %}
       - name: smart-gateway
         image: '{{ events_container_image_path }}'
@@ -83,6 +79,10 @@ spec:
 {% if (service_type == 'metrics') and (amqp_data_source == 'collectd') %}
       - name: socket-dir
         emptyDir: {}
+      - name: sg-core-config
+        configMap:
+          name: sg-core-configmap
+
 {% endif %}
 {% if smartgateway_resource_configmap is defined %}
       - name: sg-config
