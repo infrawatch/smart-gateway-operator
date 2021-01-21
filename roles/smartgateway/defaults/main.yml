@@ -4,5 +4,6 @@ size: 1
 state: present
 prometheus_scrape_interval: 1s
 use_basic_auth: false
+use_timestamp: true
 tls_secret_name: elasticsearch-es-cert
 
