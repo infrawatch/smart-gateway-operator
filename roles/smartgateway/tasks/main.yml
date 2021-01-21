@@ -24,6 +24,8 @@
       to_load: "{{ True if 'events' in service_type else False }}"
     - name: ceilometer-metrics-configmap.yaml.j2
       to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'ceilometer' else False }}"
+    - name: sg-core-configmap.yaml.j2
+      to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'collectd' else False }}"
 
 - name: Deploy Smart Gateway
   k8s:
@@ -35,6 +37,8 @@
       to_load: "{{ True if 'events' in service_type else False }}"
     - name: ceilometer-metrics-configmap.yaml.j2
       to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'ceilometer' else False }}"
+    - name: sg-core-configmap.yaml.j2
+      to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'collectd' else False }}"
     - name: deployment.yaml.j2
     - name: service.yaml.j2
       to_load: "{{ True if 'metrics' in service_type else False }}"

@@ -43,10 +43,13 @@ spec:
           name: socket-dir
       - name: smart-gateway
         image: '{{ metrics_container_image_path }}'
+        args:
+          - -config
+          - /etc/sg-core/sg-core.conf.yaml
         volumeMounts:
         - mountPath: /tmp
           name: socket-dir
-        - mountPath: /etc/sg-core.config.yaml
+        - mountPath: /etc/sg-core/
           name: sg-core-config
           readOnly: true
 {% else %}

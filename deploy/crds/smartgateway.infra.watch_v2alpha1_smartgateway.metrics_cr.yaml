@@ -8,3 +8,4 @@ spec:
   serviceType: "metrics"
   useTimestamp: true
   prefetch: 15000
+  amqpDataSource: collectd
