@@ -43,7 +43,7 @@ metadata:
     operators.operatorframework.io/builder: operator-sdk-v0.19.4
     operators.operatorframework.io/project_layout: ansible
     repository: https://github.com/infrawatch/smart-gateway-operator
-    support: Red Hat (CloudOps)
+    support: Red Hat
   name: smart-gateway-operator.v2.2.0
   namespace: placeholder
 spec:
@@ -312,7 +312,7 @@ spec:
     url: https://github.com/infrawatch/smart-gateway-operator
   maintainers:
   - email: support@redhat.com
-    name: Red Hat CloudOps DFG
+    name: Red Hat
   maturity: alpha
   provider:
     name: Red Hat
