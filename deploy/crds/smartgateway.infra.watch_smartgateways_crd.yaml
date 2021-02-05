@@ -98,7 +98,7 @@ spec:
               description: Path to the container image this Operator will deploy for metrics. Value is defined as the standard registry/image_name:tag format.
               type: string
             eventsContainerImagePath:
-              description: Path to the container image this Operator will deploy for metrics. Value is defined as the standard registry/image_name:tag format.
+              description: Path to the container image this Operator will deploy for events. Value is defined as the standard registry/image_name:tag format.
               type: string
             useTimestamp:
               description: Use the source timestamp (time when data was collected) rather than let Prometheus write when the data was 

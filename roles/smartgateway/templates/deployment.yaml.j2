@@ -84,7 +84,7 @@ spec:
         emptyDir: {}
       - name: sg-core-config
         configMap:
-          name: sg-core-configmap
+          name: {{ meta.name }}-sg-core-configmap
 
 {% endif %}
 {% if smartgateway_resource_configmap is defined %}
