@@ -40,7 +40,7 @@ spec:
         volumeMounts:
         - mountPath: /tmp
           name: socket-dir
-      - name: smart-gateway
+      - name: sg-core
         image: '{{ events_container_image_path if service_type == 'events' else metrics_container_image_path }}'
         args:
           - -config
