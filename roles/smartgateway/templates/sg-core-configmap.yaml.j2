@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ meta.name }}-sg-core-configmap
+  namespace: {{ meta.namespace }}
+data:
+  "sg-core.conf.yaml": |
+    loglevel: info
+    transports:
+      - name: socket
+        handlers:
+          - {{ amqp_data_source }}-{{ service_type }}
+        config:
+          path: /tmp/smartgateway
+    applications:
+{% if service_type == 'metrics' %}
+      - name: prometheus 
+        config:
+          host: 0.0.0.0
+          port: 8081
+          metrictimeout: 30
+          withtimestamp: {{ use_timestamp | default('true') | lower }}
+{% elif service_type == 'events' %}
+      - name: elasticsearch
+        config:
+          usebasicauth: {{ use_basic_auth | default('false') | lower }}
+          hosturl: {{ elastic_url | default('elasticsearch.' + meta.namespace + '.svc:9200') }}
+          user: {{ elastic_user | default('elastic') }}
+          password: {{ elastic_user | default('changeme') }}
+          resetindex: {{ reset_index | default('false') | lower }}
+          usetls: {{ use_tls | default('false') | lower }}
+          tlsservername: {{ tls_server_name | default('') }}
+          tlsclientcert: {{ tls_client_cert | default('') }}
+          tlsclientkey: {{ tls_client_key | default('') }}
+          tlscacert: {{ tls_ca_cert | default('') }}
+{% endif %}

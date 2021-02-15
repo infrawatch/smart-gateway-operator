@@ -26,7 +26,6 @@ spec:
 {% endif %}
     spec:
       containers:
-{% if (service_type == 'metrics') and (amqp_data_source == 'collectd') %}
       - name: bridge
         image: '{{ bridge_container_image_path }}'
         args:
@@ -42,32 +41,22 @@ spec:
         - mountPath: /tmp
           name: socket-dir
       - name: smart-gateway
-        image: '{{ metrics_container_image_path }}'
+        image: '{{ events_container_image_path if service_type == 'events' else metrics_container_image_path }}'
         args:
           - -config
           - /etc/sg-core/sg-core.conf.yaml
         volumeMounts:
         - mountPath: /tmp
           name: socket-dir
+{%   if smartgateway_resource_configmap is defined %}
         - mountPath: /etc/sg-core/
           name: sg-core-config
           readOnly: true
-{% else %}
-      - name: smart-gateway
-        image: '{{ events_container_image_path }}'
-{%   if smartgateway_resource_configmap is defined %}
-        volumeMounts:
-        - name: sg-config
-          mountPath: /config
 {%     if service_type == 'events' %}
         - name: elastic-certs
           mountPath: /config/certs
 {%     endif %}
 {%   endif %}
-        args:
-          - '-config=/config/smartgateway_config.json'
-          - '-uname=$(MY_POD_NAME)'
-          - '-servicetype={{ service_type }}'
         env:
           - name: MY_POD_NAME
             valueFrom:
@@ -77,20 +66,13 @@ spec:
         ports:
         - name: "{{ service_type }}"
           containerPort: 8081
-{% endif %}
       volumes:
-{% if (service_type == 'metrics') and (amqp_data_source == 'collectd') %}
       - name: socket-dir
         emptyDir: {}
+{% if smartgateway_resource_configmap is defined %}
       - name: sg-core-config
         configMap:
           name: {{ meta.name }}-sg-core-configmap
-
-{% endif %}
-{% if smartgateway_resource_configmap is defined %}
-      - name: sg-config
-        configMap:
-          name: {{ meta.name }}-smartgateway
 {%   if service_type == 'events' %}
       - name: elastic-certs
         secret:

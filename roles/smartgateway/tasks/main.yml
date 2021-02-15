@@ -6,8 +6,8 @@
 
 - name: "Set Smart Gateway container images"
   set_fact:
-    events_container_image_path: "{{ lookup('env', 'SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/smart-gateway:latest', true) }}"
     metrics_container_image_path: "{{ lookup('env', 'CORE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-core:latest', true) }}"
+    events_container_image_path: "{{ lookup('env', 'CORE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-core:latest', true) }}"
     bridge_container_image_path: "{{ lookup('env', 'BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-bridge:latest', true) }}"
 
 # only one of these is expected to be true
@@ -20,12 +20,7 @@
       env: "{{ lookup('template', item.name) | from_yaml }}"
   when: item.to_load | default(True)
   loop:
-    - name: events-configmap.yaml.j2
-      to_load: "{{ True if 'events' in service_type else False }}"
-    - name: ceilometer-metrics-configmap.yaml.j2
-      to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'ceilometer' else False }}"
     - name: sg-core-configmap.yaml.j2
-      to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'collectd' else False }}"
 
 - name: Deploy Smart Gateway
   k8s:
@@ -33,12 +28,7 @@
     definition: "{{ lookup('template', item.name) | from_yaml }}"
   when: item.to_load | default(True)
   loop:
-    - name: events-configmap.yaml.j2
-      to_load: "{{ True if 'events' in service_type else False }}"
-    - name: ceilometer-metrics-configmap.yaml.j2
-      to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'ceilometer' else False }}"
     - name: sg-core-configmap.yaml.j2
-      to_load: "{{ True if 'metrics' in service_type and amqp_data_source == 'collectd' else False }}"
     - name: deployment.yaml.j2
     - name: service.yaml.j2
       to_load: "{{ True if 'metrics' in service_type else False }}"
