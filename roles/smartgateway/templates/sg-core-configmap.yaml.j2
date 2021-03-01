@@ -6,20 +6,27 @@ metadata:
   namespace: {{ meta.namespace }}
 data:
   "sg-core.conf.yaml": |
-    loglevel: info
+{% if debug %}
+    loglevel: debug
+{% endif %}
     transports:
       - name: socket
-        handlers:
-          - {{ amqp_data_source }}-{{ service_type }}
         config:
           path: /tmp/smartgateway
+        handlers:
+{% if service_type == 'metrics' %}
+          - name: {{ amqp_data_source }}-metrics
+{% elif service_type == 'events' %}
+          - name: events
+            config:
+              strictSource: {{ amqp_data_source }}
+{% endif %}
     applications:
 {% if service_type == 'metrics' %}
       - name: prometheus 
         config:
-          host: 0.0.0.0
-          port: 8081
-          metrictimeout: 30
+          host: exporter_host
+          port: exporter_port
           withtimestamp: {{ use_timestamp | default('true') | lower }}
 {% elif service_type == 'events' %}
       - name: elasticsearch
@@ -34,4 +41,8 @@ data:
           tlsclientcert: {{ tls_client_cert | default('') }}
           tlsclientkey: {{ tls_client_key | default('') }}
           tlscacert: {{ tls_ca_cert | default('') }}
+{%  if reset_index %}
+          resetIndices:
+            - {{ amqp_data_source }}_*
+{%  endif%}
 {% endif %}

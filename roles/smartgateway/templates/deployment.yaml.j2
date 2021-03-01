@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: bridge
-        image: '{{ bridge_container_image_path }}'
+        image: {{ bridge_container_image_path }}
         args:
         - --amqp_url
         - amqp://{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/telemetry') }}
@@ -37,11 +37,13 @@ spec:
         - "60"
         - --rbc
         - "15000"
+        - --count
+        - {{ data_count }}
         volumeMounts:
         - mountPath: /tmp
           name: socket-dir
       - name: sg-core
-        image: '{{ events_container_image_path if service_type == 'events' else metrics_container_image_path }}'
+        image: {{ core_container_image_path }}
         args:
           - -config
           - /etc/sg-core/sg-core.conf.yaml
