@@ -38,7 +38,7 @@ spec:
         - --rbc
         - "15000"
         - --count
-        - {{ data_count }}
+        - "{{ data_count }}"
         volumeMounts:
         - mountPath: /tmp
           name: socket-dir

@@ -25,22 +25,21 @@ data:
 {% if service_type == 'metrics' %}
       - name: prometheus 
         config:
-          host: exporter_host
-          port: exporter_port
+          host: {{ exporter_host }}
+          port: {{ exporter_port }}
           withtimestamp: {{ use_timestamp | default('true') | lower }}
 {% elif service_type == 'events' %}
       - name: elasticsearch
         config:
-          usebasicauth: {{ use_basic_auth | default('false') | lower }}
-          hosturl: {{ elastic_url | default('elasticsearch.' + meta.namespace + '.svc:9200') }}
+          useBasicAuth: {{ use_basic_auth | default('false') | lower }}
+          hostURL: {{ elastic_url | default('http://elasticsearch.' + meta.namespace + '.svc:9200') }}
           user: {{ elastic_user | default('elastic') }}
           password: {{ elastic_user | default('changeme') }}
-          resetindex: {{ reset_index | default('false') | lower }}
-          usetls: {{ use_tls | default('false') | lower }}
-          tlsservername: {{ tls_server_name | default('') }}
-          tlsclientcert: {{ tls_client_cert | default('') }}
-          tlsclientkey: {{ tls_client_key | default('') }}
-          tlscacert: {{ tls_ca_cert | default('') }}
+          useTLS: {{ use_tls | default('false') | lower }}
+          tlsServerName: {{ tls_server_name | default('') }}
+          tlsClientCert: {{ tls_client_cert | default('') }}
+          tlsClientKey: {{ tls_client_key | default('') }}
+          tlsCaCert: {{ tls_ca_cert | default('') }}
 {%  if reset_index %}
           resetIndices:
             - {{ amqp_data_source }}_*
