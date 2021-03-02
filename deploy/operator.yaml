@@ -44,11 +44,9 @@ spec:
           value: smart-gateway-operator
         - name: ANSIBLE_GATHERING
           value: explicit
-        - name: SMARTGATEWAY_IMAGE
-          value: quay.io/infrawatch/smart-gateway:latest
-        - name: CORE_SMARTGATEWAY_IMAGE
+        - name: RELATED_IMAGE_CORE_SMARTGATEWAY_IMAGE
           value: quay.io/infrawatch/sg-core:latest
-        - name: BRIDGE_SMARTGATEWAY_IMAGE
+        - name: RELATED_IMAGE_BRIDGE_SMARTGATEWAY_IMAGE
           value: quay.io/infrawatch/sg-bridge:latest
       volumes:
       - emptyDir: {}
