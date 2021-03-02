@@ -12,7 +12,6 @@ metadata:
           },
           "spec": {
             "debug": false,
-            "prefetch": 0,
             "resetIndex": false,
             "serviceType": "events",
             "size": 1
@@ -25,8 +24,8 @@ metadata:
             "name": "cloud1-metrics"
           },
           "spec": {
+            "amqpDataSource": "collectd",
             "debug": false,
-            "prefetch": 15000,
             "serviceType": "metrics",
             "size": 1,
             "useTimestamp": true
@@ -195,11 +194,9 @@ spec:
                   value: smart-gateway-operator
                 - name: ANSIBLE_GATHERING
                   value: explicit
-                - name: SMARTGATEWAY_IMAGE
-                  value: quay.io/infrawatch/smart-gateway:latest
-                - name: CORE_SMARTGATEWAY_IMAGE
+                - name: RELATED_IMAGE_CORE_SMARTGATEWAY_IMAGE
                   value: quay.io/infrawatch/sg-core:latest
-                - name: BRIDGE_SMARTGATEWAY_IMAGE
+                - name: RELATED_IMAGE_BRIDGE_SMARTGATEWAY_IMAGE
                   value: quay.io/infrawatch/sg-bridge:latest
                 image: quay.io/infrawatch/smart-gateway-operator:latest
                 imagePullPolicy: Always

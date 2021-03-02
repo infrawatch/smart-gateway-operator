@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ meta.name }}-sg-core-configmap
+  namespace: {{ meta.namespace }}
+data:
+  "sg-core.conf.yaml": |
+{% if debug %}
+    logLevel: debug
+{% endif %}
+    handleErrors: true
+    transports:
+      - name: socket
+        config:
+          path: /tmp/smartgateway
+        handlers:
+{% if service_type == 'metrics' %}
+          - name: {{ amqp_data_source }}-metrics
+{% elif service_type == 'events' %}
+          - name: events
+            config:
+              strictSource: {{ amqp_data_source }}
+{% endif %}
+    applications:
+{% if service_type == 'metrics' %}
+      - name: prometheus 
+        config:
+          host: {{ exporter_host }}
+          port: {{ exporter_port }}
+          withTimeStamp: {{ use_timestamp | default('true') | lower }}
+{% elif service_type == 'events' %}
+      - name: elasticsearch
+        config:
+          useBasicAuth: {{ use_basic_auth | default('false') | lower }}
+          hostURL: {{ elastic_url | default('http://elasticsearch.' + meta.namespace + '.svc:9200') }}
+          user: {{ elastic_user | default('elastic') }}
+          password: {{ elastic_user | default('changeme') }}
+          useTLS: {{ use_tls | default('false') | lower }}
+          tlsServerName: {{ tls_server_name | default('') }}
+          tlsClientCert: {{ tls_client_cert | default('') }}
+          tlsClientKey: {{ tls_client_key | default('') }}
+          tlsCaCert: {{ tls_ca_cert | default('') }}
+{%  if reset_index %}
+          resetIndices:
+            - {{ amqp_data_source }}_*
+{%  endif %}
+{% endif %}

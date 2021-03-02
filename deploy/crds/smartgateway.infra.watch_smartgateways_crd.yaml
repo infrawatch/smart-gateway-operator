@@ -79,24 +79,17 @@ spec:
             exporterPort:
               description: Metrics port for Prometheus to export. Defaults to 8081.
               type: integer
-            cpuStats:
-              description: Include CPU usage info in http requests (degrades performance). Defaults to 'false'.
-              type: boolean
             dataCount:
-              description: Stop after receiving this many messages in total (-1 forever). Defaults to '-1'.
+              description: Stop after receiving this many messages in total (0 forever). Defaults to '0'.
               type: integer
             debug:
               description: Enable verbose debugging statements. Defaults to 'false'.
               type: boolean
-            prefetch:
-              description: Number of messages that we can prefetch from AMQP 1.x. By enabling prefetching, the smart gateway won't need to
-                request every message individually from the AMQP bus, resulting in a round trip for every request between sender and receiver.
-                To avoid the round trip for every message, the use of prefetch can be used to allow the receiver to request messages be sent
-                in anticipation of them being sent to us.
-              type: integer
-            containerImagePath:
-              description: Path to the container image this Operator will deploy. Value is defined as the standard registry/image_name:tag
-                format.
+            coreContainerImagePath:
+              description: Path to container image this operator will use for the sg-core. Value is defined as the standard registry/image_name:tag format
+              type: string
+            bridgeContainerImagePath:
+              description: Path to container image this operator will use for the bridge. Value is defined as the standard registry/image_name:tag format
               type: string
             useTimestamp:
               description: Use the source timestamp (time when data was collected) rather than let Prometheus write when the data was 

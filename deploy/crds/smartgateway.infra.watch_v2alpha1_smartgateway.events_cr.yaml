@@ -7,4 +7,3 @@ spec:
   debug: false
   serviceType: "events"
   resetIndex: false
-  prefetch: 0
