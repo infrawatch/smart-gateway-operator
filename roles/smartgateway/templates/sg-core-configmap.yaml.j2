@@ -7,8 +7,9 @@ metadata:
 data:
   "sg-core.conf.yaml": |
 {% if debug %}
-    loglevel: debug
+    logLevel: debug
 {% endif %}
+    handleErrors: true
     transports:
       - name: socket
         config:
@@ -27,7 +28,7 @@ data:
         config:
           host: {{ exporter_host }}
           port: {{ exporter_port }}
-          withtimestamp: {{ use_timestamp | default('true') | lower }}
+          withTimeStamp: {{ use_timestamp | default('true') | lower }}
 {% elif service_type == 'events' %}
       - name: elasticsearch
         config:
