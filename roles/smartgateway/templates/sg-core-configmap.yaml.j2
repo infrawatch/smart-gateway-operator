@@ -35,7 +35,7 @@ data:
           useBasicAuth: {{ use_basic_auth | default('false') | lower }}
           hostURL: {{ elastic_url | default('http://elasticsearch.' + meta.namespace + '.svc:9200') }}
           user: {{ elastic_user | default('elastic') }}
-          password: {{ elastic_user | default('changeme') }}
+          password: {{ elastic_pass | default('changeme') }}
           useTLS: {{ use_tls | default('false') | lower }}
           tlsServerName: {{ tls_server_name | default('') }}
           tlsClientCert: {{ tls_client_cert | default('') }}
