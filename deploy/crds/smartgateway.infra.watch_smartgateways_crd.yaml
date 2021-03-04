@@ -9,6 +9,8 @@ spec:
     listKind: SmartGatewayList
     plural: smartgateways
     singular: smartgateway
+    shortNames:
+    - sg
   scope: Namespaced
   version: v2alpha1
   subresources:
