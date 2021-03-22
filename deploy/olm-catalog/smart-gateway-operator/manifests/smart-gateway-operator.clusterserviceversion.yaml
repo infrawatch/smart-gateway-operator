@@ -39,11 +39,12 @@ metadata:
     createdAt: "2019-11-14T14:49:00Z"
     description: Operator for managing the Smart Gateway Custom Resources, resulting
       in deployments of the Smart Gateway.
+    olm.skipRange: =>2.1.0 <2.3.0
     operators.operatorframework.io/builder: operator-sdk-v0.19.4
     operators.operatorframework.io/project_layout: ansible
     repository: https://github.com/infrawatch/smart-gateway-operator
     support: Red Hat
-  name: smart-gateway-operator.v2.2.0
+  name: smart-gateway-operator.v2.3.0
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -310,11 +311,10 @@ spec:
   maintainers:
   - email: support@redhat.com
     name: Red Hat
-  maturity: alpha
+  maturity: stable
   provider:
     name: Red Hat
-  replaces: smart-gateway-operator.v2.1.0
   selector:
     matchLabels:
       name: smart-gateway-operator
-  version: 2.2.0
+  version: 2.3.0
