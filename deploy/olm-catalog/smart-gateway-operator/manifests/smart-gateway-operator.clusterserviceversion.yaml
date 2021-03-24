@@ -170,18 +170,6 @@ spec:
                 app: smart-gateway-operator
             spec:
               containers:
-              - command:
-                - /usr/local/bin/ao-logs
-                - /tmp/ansible-operator/runner
-                - stdout
-                image: quay.io/infrawatch/smart-gateway-operator:latest
-                imagePullPolicy: Always
-                name: ansible
-                resources: {}
-                volumeMounts:
-                - mountPath: /tmp/ansible-operator/runner
-                  name: runner
-                  readOnly: true
               - env:
                 - name: WATCH_NAMESPACE
                   valueFrom:
