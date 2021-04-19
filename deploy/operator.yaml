@@ -15,7 +15,7 @@ spec:
       serviceAccountName: smart-gateway-operator
       containers:
       - name: operator
-        image: quay.io/infrawatch/smart-gateway-operator:latest
+        image: <<OPERATOR_IMAGE>>:<<OPERATOR_TAG>>
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /tmp/ansible-operator/runner

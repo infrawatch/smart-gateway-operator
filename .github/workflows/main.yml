@@ -9,6 +9,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install Ansible
+        run: python -m pip install ansible
+
       - name: Install operator_sdk.util dependency for Ansible role linting
         run: ansible-galaxy collection install operator_sdk.util
 
@@ -64,5 +67,11 @@ jobs:
       - name: Move operator-sdk binary
         run: sudo mv operator-sdk /usr/local/bin
 
+      - name: Create working directory
+        run: mkdir /tmp/bundle
+
+      - name: Generate bundle
+        run: WORKING_DIR=/tmp/bundle ./build/generate_bundle.sh
+
       - name: Check bundle validation
-        run: operator-sdk bundle validate --verbose ./deploy/olm-catalog/smart-gateway-operator
+        run: operator-sdk bundle validate --verbose /tmp/bundle
