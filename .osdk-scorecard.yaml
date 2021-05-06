@@ -5,8 +5,8 @@ scorecard:
   plugins:
     - basic:
         cr-manifest:
-          - "deploy/crds/smartgateway.infra.watch_v2alpha1_smartgateway.metrics_cr.yaml"
+          - "deploy/crds/smartgateway.infra.watch_v2_smartgateway.metrics_cr.yaml"
     - olm:
         cr-manifest:
-          - "deploy/crds/smartgateway.infra.watch_v2alpha1_smartgateway.metrics_cr.yaml"
+          - "deploy/crds/smartgateway.infra.watch_v2_smartgateway.metrics_cr.yaml"
         csv-path: "deploy/olm-catalog/smart-gateway-operator/manifests/smart-gateway-operator.clusterserviceversion.yaml"

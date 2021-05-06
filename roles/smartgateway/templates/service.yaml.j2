@@ -1,17 +1,20 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: '{{ meta.name }}-smartgateway'
+  name: '{{ meta.name }}-smartgateway-{{ this_service.name }}'
   namespace: '{{ meta.namespace }}'
   labels:
     app: smart-gateway
     smart-gateway: '{{ meta.name }}'
 spec:
   ports:
-  - name: prom-http
-    port: 8081
-    targetPort: 8081
-    protocol: TCP
+{% for this_port in this_service.ports %}
+  - name: {{ this_port.name }}
+    port: {{ this_port.port }}
+    targetPort: {{ this_port.target_port }}
+    protocol: {{ this_port.protocol }}
   selector:
     app: smart-gateway
     smart-gateway: '{{ meta.name }}'
+{% endfor %}
+# vim: set ft=yaml shiftwidth=2 tabstop=2 expandtab:

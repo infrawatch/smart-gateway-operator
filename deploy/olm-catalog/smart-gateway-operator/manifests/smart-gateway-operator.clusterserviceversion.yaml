@@ -5,30 +5,57 @@ metadata:
     alm-examples: |-
       [
         {
-          "apiVersion": "smartgateway.infra.watch/v2alpha1",
+          "apiVersion": "smartgateway.infra.watch/v2",
           "kind": "SmartGateway",
           "metadata": {
-            "name": "cloud1-events"
+            "name": "demo"
           },
           "spec": {
-            "debug": false,
-            "resetIndex": false,
-            "serviceType": "events",
-            "size": 1
-          }
-        },
-        {
-          "apiVersion": "smartgateway.infra.watch/v2alpha1",
-          "kind": "SmartGateway",
-          "metadata": {
-            "name": "cloud1-metrics"
-          },
-          "spec": {
-            "amqpDataSource": "collectd",
-            "debug": false,
-            "serviceType": "metrics",
+            "applications": [
+              {
+                "config": "host: localhost\nport: 8081\nwithtimestamp: false\n",
+                "name": "prometheus"
+              }
+            ],
+            "bridge": {
+              "amqpUrl": "amqp://amq-interconnect:5672/collectd",
+              "enabled": true,
+              "ring_buffer_count": 15000,
+              "socket_block": true,
+              "stats_period": 60,
+              "stop_count": 0,
+              "unix_socket_path": "/tmp/smartgateway",
+              "verbose": true
+            },
+            "handleErrors": false,
+            "logLevel": "info",
+            "pluginDir": "/usr/lib64/sg-core",
+            "services": [
+              {
+                "name": "prometheus",
+                "ports": [
+                  {
+                    "name": "prom-http",
+                    "port": 8081,
+                    "protocol": "TCP",
+                    "targetPort": 8081
+                  }
+                ]
+              }
+            ],
             "size": 1,
-            "useTimestamp": true
+            "transports": [
+              {
+                "config": "path: /tmp/smartgateway\n",
+                "handlers": [
+                  {
+                    "config": "",
+                    "name": "collectd-metrics"
+                  }
+                ],
+                "name": "socket"
+              }
+            ]
           }
         }
       ]
@@ -50,88 +77,16 @@ spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
     owned:
-    - description: Instance of the Smart Gateway
-      displayName: SmartGateway
-      kind: SmartGateway
+    - kind: SmartGateway
       name: smartgateways.smartgateway.infra.watch
-      resources:
-      - kind: Pod
-        name: ""
-        version: v1
-      - kind: Deployments
-        name: ""
-        version: v1
-      - kind: ReplicaSets
-        name: ""
-        version: v1
-      - kind: Services
-        name: ""
-        version: v1
-      - kind: ConfigMaps
-        name: ""
-        version: v1
-      - kind: SmartGateways
-        name: smartgateways.smartgateway.infra.watch
-        version: v2alpha1
-      - kind: ServiceMonitors
-        name: servicemonitors.monitoring.coreos.com
-        version: v1
-      specDescriptors:
-      - description: Number of Smart Gateways to deploy
-        displayName: Size
-        path: size
-        x-descriptors:
-        - urn:alm:descriptor:com.tectonic.ui:number
-      - description: Location of the AMQP endpoint to connect the Smart Gateway to
-        displayName: AMQP URL
-        path: amqpUrl
-        x-descriptors:
-        - urn:alm:descriptor:com.tectonic.ui:text
-      - description: Container image path
-        displayName: Container image path
-        path: containerImagePath
-        x-descriptors:
-        - urn:alm:descriptor:com.tectonic.ui:text
-      - description: Number of messages that we can prefetch from AMQP 1.x. By enabling
-          prefetching, the smart gateway won't need to request every message individually
-          from the AMQP bus, resulting in a round trip for every request between sender
-          and receiver. To avoid the round trip for every message, the use of prefetch
-          can be used to allow the receiver to request messages be sent in anticipation
-          of them being sent to us.
-        displayName: Prefetch
-        path: prefetch
-        x-descriptors:
-        - urn:alm:descriptor:com.tectonic.ui:number
-      - description: Use the source timestamp (time when data was collected) rather
-          than let Prometheus write when the data was scraped for that metric.
-        displayName: Use Timestamp
-        path: useTimestamp
-        x-descriptors:
-        - urn:alm:descriptor:com.tectonic.ui:booleanSwitch
-      - description: Smart Gateway Service Type
-        displayName: Service Type
-        path: serviceType
-        x-descriptors:
-        - urn:alm:descriptor:com.tectonic.ui:select:metrics
-        - urn:alm:descriptor:com.tectonic.ui:select:events
-      - description: Enable additional debugging information to console output
-        displayName: Enable debugging
-        path: debug
-        x-descriptors:
-        - urn:alm:descriptor:tectonic.ui:booleanSwitch
-      statusDescriptors:
-      - description: Conditions provided by deployment
-        displayName: Conditions
-        path: conditions
-        x-descriptors:
-        - urn:alm:descriptor:io.kubernetes:conditions
-      version: v2alpha1
+      version: v2
   description: |-
     # Smart Gateway for Service Telemetry Framework
 
     The Smart Gateway is middleware for OpenShift that takes metrics and events
     data streams from an AMQP 1.x message bus, and provides a method to having
-    that data stream stored within Prometheus or ElasticSearch.
+    that data stream stored within supported data stores such as Prometheus and
+    ElasticSearch.
 
     ## Core capabilities
 
@@ -183,6 +138,10 @@ spec:
                   value: smart-gateway-operator
                 - name: ANSIBLE_GATHERING
                   value: explicit
+                - name: ANSIBLE_VERBOSITY_SMARTGATEWAY_SMARTGATEWAY_INFRA_WATCH
+                  value: "4"
+                - name: ANSIBLE_DEBUG_LOGS
+                  value: "true"
                 - name: RELATED_IMAGE_CORE_SMARTGATEWAY_IMAGE
                   value: <<RELATED_IMAGE_CORE_SMARTGATEWAY>>:<<RELATED_IMAGE_CORE_SMARTGATEWAY_TAG>>
                 - name: RELATED_IMAGE_BRIDGE_SMARTGATEWAY_IMAGE

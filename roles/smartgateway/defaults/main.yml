@@ -8,5 +8,15 @@ use_timestamp: true
 tls_secret_name: elasticsearch-es-cert
 exporter_host: 0.0.0.0
 exporter_port: 8081
-data_count: 0
 
+# used in conjunction with sg_vars in vars/main.yml to provide single parameter override for the dictionaries
+sg_defaults:
+  bridge:
+    enabled: true
+    amqp_url: "amqp://127.0.0.1:5672/collectd/telemetry"
+    unix_socket_path: "/tmp"
+    socket_block: true
+    ring_buffer_count: 15000
+    stats_period: 60
+    stop_count: 0
+    verbose: true

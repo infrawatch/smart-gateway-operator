@@ -1,0 +1,10 @@
+---
+# vars for smartgateway
+sg_vars:
+  bridge: |
+    {%- if bridge is defined and bridge is iterable -%}
+    {{ sg_defaults.bridge | combine((bridge | stripnone), recursive=True) }}
+    {%- else -%}
+    {{ sg_defaults.bridge }}
+    {%- endif -%}
+
