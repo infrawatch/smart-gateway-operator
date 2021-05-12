@@ -77,8 +77,20 @@ spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
     owned:
-    - kind: SmartGateway
+    - description: Instance of the Smart Gateway
+      displayName: SmartGateway
+      kind: SmartGateway
       name: smartgateways.smartgateway.infra.watch
+      resources:
+      - kind: Services
+        name: ""
+        version: v1
+      - kind: SmartGateways
+        name: smartgateways.smartgateway.infra.watch
+        version: v2
+      - kind: ServiceMonitors
+        name: servicemonitors.monitoring.coreos.com
+        version: v1
       version: v2
   description: |-
     # Smart Gateway for Service Telemetry Framework
