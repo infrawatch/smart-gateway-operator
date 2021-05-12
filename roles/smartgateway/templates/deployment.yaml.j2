@@ -104,8 +104,7 @@ spec:
         ports:
 {%     for port in ports %}
           - name: {{ port.name }}
-            targetPort: {{ port.target_port }}
-            protocol: {{ port.protocol }}
+            containerPort: {{ port.target_port }}
 {%     endfor %}
 {%   endif %}
 {% endif %}
