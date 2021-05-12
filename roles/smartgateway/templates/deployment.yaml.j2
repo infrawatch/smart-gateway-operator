@@ -100,11 +100,16 @@ spec:
               fieldRef:
                 apiVersion: v1
                 fieldPath: metadata.name
-{%   if ports is defined and ports != "" %}
+{%   if services is defined and services != "" %}
         ports:
-{%     for port in ports %}
+{%     for service in services %}
+{%       if service.ports is defined and service.ports != "" %}
+{%         for port in service.ports %}
           - name: {{ port.name }}
             containerPort: {{ port.target_port }}
+            protocol: {{ port.protocol }}
+{%         endfor %}
+{%       endif %}
 {%     endfor %}
 {%   endif %}
 {% endif %}
