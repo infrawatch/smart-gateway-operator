@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: '{{ meta.name }}-smartgateway-{{ this_service.name }}'
+  name: '{{ this_service.name }}'
   namespace: '{{ meta.namespace }}'
   labels:
     app: smart-gateway
