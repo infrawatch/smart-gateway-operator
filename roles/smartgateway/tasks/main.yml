@@ -4,15 +4,26 @@
   set_fact:
     api_groups: "{{ lookup('k8s', cluster_info='api_groups') }}"
 
+- name: Print some debug information
+  vars:
+    msg: |
+      SmartGateway Variables
+      --------------------------------------------
+      {{ sg_vars | to_nice_yaml }}
+  debug:
+    msg: "{{ msg.split('\n') }}"
+
 - name: Set Smart Gateway core image
   set_fact:
     core_container_image_path: "{{ lookup('env', 'RELATED_IMAGE_CORE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-core:latest', true) }}"
   when: core_container_image_path is undefined
+
 - name: Set Smart Gateway bridge image
   set_fact:
     bridge_container_image_path: "{{ lookup('env', 'RELATED_IMAGE_BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-bridge:latest', true) }}"
   when: bridge_container_image_path is undefined
 
+# used as part of the Deployment object in order to trigger pod restarts on ConfigMap change
 - name: Get Smart Gateway ConfigMap Environment
   set_fact:
     smartgateway_resource_configmap:
@@ -29,5 +40,11 @@
   loop:
     - name: sg-core-configmap.yaml.j2
     - name: deployment.yaml.j2
-    - name: service.yaml.j2
-      to_load: "{{ True if 'metrics' in service_type else False }}"
+
+- name: Deploy services requested by this Smart Gateway
+  include_tasks: base_service.yml
+  loop: "{{ services }}"
+  loop_control:
+    loop_var: this_service
+  when:
+    - services is defined

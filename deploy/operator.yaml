@@ -33,10 +33,14 @@ spec:
           value: smart-gateway-operator
         - name: ANSIBLE_GATHERING
           value: explicit
+        - name: ANSIBLE_VERBOSITY_SMARTGATEWAY_SMARTGATEWAY_INFRA_WATCH
+          value: 4
+        - name: ANSIBLE_DEBUG_LOGS
+          value: true
         - name: RELATED_IMAGE_CORE_SMARTGATEWAY_IMAGE
-          value: quay.io/infrawatch/sg-core:latest
+          value: <<RELATED_IMAGE_CORE_SMARTGATEWAY>>:<<RELATED_IMAGE_CORE_SMARTGATEWAY_TAG>>
         - name: RELATED_IMAGE_BRIDGE_SMARTGATEWAY_IMAGE
-          value: quay.io/infrawatch/sg-bridge:latest
+          value: <<RELATED_IMAGE_BRIDGE_SMARTGATEWAY>>:<<RELATED_IMAGE_BRIDGE_SMARTGATEWAY_TAG>>
       volumes:
       - emptyDir: {}
         name: runner

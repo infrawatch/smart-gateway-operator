@@ -6,43 +6,30 @@ metadata:
   namespace: {{ meta.namespace }}
 data:
   "sg-core.conf.yaml": |
-{% if debug %}
-    logLevel: debug
-{% endif %}
-    handleErrors: true
+    pluginDir: "{{ plugin_dir | default('/usr/lib64/sg-core') }}"
+    logLevel: "{{ log_level | default('info') }}"
+    handleErrors: {{ handle_errors | default(True) }}
     transports:
-      - name: socket
-        config:
-          path: /tmp/smartgateway
+{% for transport in transports %}
+      - name: {{ transport.name }}
+{%   if transport.config is defined and transport.config != "" %}
+        config: {{ transport.config | from_yaml }}
+{%   endif %}
+{%   if transport.handlers is defined and transport.handlers != "" %}
         handlers:
-{% if service_type == 'metrics' %}
-          - name: {{ amqp_data_source }}-metrics
-{% elif service_type == 'events' %}
-          - name: events
-            config:
-              strictSource: {{ amqp_data_source }}
-{% endif %}
+{%     for handler in transport.handlers %}
+          - name: {{ handler.name }}
+{%       if handler.config is defined and handler.config != "" %}
+            config: {{ handler.config | from_yaml }}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endfor %}
     applications:
-{% if service_type == 'metrics' %}
-      - name: prometheus 
-        config:
-          host: {{ exporter_host }}
-          port: {{ exporter_port }}
-          withTimeStamp: {{ use_timestamp | default('true') | lower }}
-{% elif service_type == 'events' %}
-      - name: elasticsearch
-        config:
-          useBasicAuth: {{ use_basic_auth | default('false') | lower }}
-          hostURL: {{ elastic_url | default('http://elasticsearch.' + meta.namespace + '.svc:9200') }}
-          user: {{ elastic_user | default('elastic') }}
-          password: {{ elastic_pass | default('changeme') }}
-          useTLS: {{ use_tls | default('false') | lower }}
-          tlsServerName: {{ tls_server_name | default('') }}
-          tlsClientCert: {{ tls_client_cert | default('') }}
-          tlsClientKey: {{ tls_client_key | default('') }}
-          tlsCaCert: {{ tls_ca_cert | default('') }}
-{%  if reset_index %}
-          resetIndices:
-            - {{ amqp_data_source }}_*
-{%  endif %}
-{% endif %}
+{% for application in applications %}
+      - name: {{ application.name }}
+{%   if application.config is defined and application.config != "" %}
+        config: {{ application.config | from_yaml }}
+{%   endif %}
+{% endfor %}
+# vim: set ft=yaml shiftwidth=2 tabstop=2 expandtab:

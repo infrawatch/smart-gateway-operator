@@ -26,38 +26,73 @@ spec:
 {% endif %}
     spec:
       containers:
+{% if sg_vars.bridge.enabled is defined and sg_vars.bridge.enabled %}
       - name: bridge
         image: {{ bridge_container_image_path }}
         args:
+{%   if sg_vars.bridge.amqp_url is defined and sg_vars.bridge.amqp_url != "" %}
         - --amqp_url
-        - amqp://{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/collectd/telemetry') }}
+        - {{ sg_vars.bridge.amqp_url }}
+{%   endif -%}
+{%   if sg_vars.bridge.verbose is defined and sg_vars.bridge.verbose %}
         - --verbose
+{%   endif -%}
+{%   if sg_vars.bridge.socket_block is defined and sg_vars.bridge.socket_block %}
         - --block
+{%   endif -%}
+{%   if sg_vars.bridge.stats_period is defined and sg_vars.bridge.stats_period != "" %}
         - --stat_period
-        - "60"
+        - "{{ sg_vars.bridge.stats_period }}"
+{%   endif -%}
+{%   if sg_vars.bridge.ring_buffer_count is defined and sg_vars.bridge.ring_buffer_count != "" %}
         - --rbc
-        - "15000"
+        - "{{ sg_vars.bridge.ring_buffer_count }}"
+{%   endif -%}
+{%   if sg_vars.bridge.stop_count is defined and sg_vars.bridge.stop_count != "" %}
         - --count
-        - "{{ data_count }}"
+        - "{{ sg_vars.bridge.stop_count }}"
+{%   endif -%}
+{%   if sg_vars.bridge.inet_target is defined and sg_vars.bridge.inet_target != "" %}
+        - --gw_inet
+        - "{{ sg_vars.bridge.inet_target }}"
+{%   endif -%}
+{%   if sg_vars.bridge.unix_socket_path is defined and sg_vars.bridge.unix_socket_path != "" %}
+        - --gw_unix
+        - "{{ sg_vars.bridge.unix_socket_path }}/smartgateway"
+{%   endif -%}
+{%   if sg_vars.bridge.ring_buffer_size is defined and sg_vars.bridge.ring_buffer_size != "" %}
+        - --rbs
+        - "{{ sg_vars.bridge.ring_buffer_size }}"
+{%   endif -%}
+{%   if sg_vars.bridge.container_id_pattern is defined and sg_vars.bridge.container_id_pattern != "" %}
+        - --cid
+        - "{{ sg_vars.bridge.container_id_pattern }}"
+{%   endif -%}
+{%   if sg_vars.bridge.unix_socket_path is defined and sg_vars.bridge.unix_socket_path != "" %}
         volumeMounts:
-        - mountPath: /tmp
+        - mountPath: {{ sg_vars.bridge.unix_socket_path }}
           name: socket-dir
+{%   endif %}
+{% endif %}
+{% if transports is defined and transports != "" %}
       - name: sg-core
         image: {{ core_container_image_path }}
         args:
           - -config
           - /etc/sg-core/sg-core.conf.yaml
+{%   if sg_vars.bridge.unix_socket_path is defined and sg_vars.bridge.unix_socket_path != "" %}
         volumeMounts:
-        - mountPath: /tmp
+        - mountPath: {{ sg_vars.bridge.unix_socket_path }}
           name: socket-dir
+{%   endif %}
 {%   if smartgateway_resource_configmap is defined %}
         - mountPath: /etc/sg-core/
           name: sg-core-config
           readOnly: true
-{%     if service_type == 'events' %}
+{%   endif %}
+{%   if (applications | selectattr('name','equalto','elasticsearch') | list | count > 0) %}
         - name: elastic-certs
           mountPath: /config/certs
-{%     endif %}
 {%   endif %}
         env:
           - name: MY_POD_NAME
@@ -65,9 +100,19 @@ spec:
               fieldRef:
                 apiVersion: v1
                 fieldPath: metadata.name
+{%   if services is defined and services != "" %}
         ports:
-        - name: "{{ service_type }}"
-          containerPort: 8081
+{%     for service in services %}
+{%       if service.ports is defined and service.ports != "" %}
+{%         for port in service.ports %}
+          - name: {{ port.name }}
+            containerPort: {{ port.target_port }}
+            protocol: {{ port.protocol }}
+{%         endfor %}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endif %}
       volumes:
       - name: socket-dir
         emptyDir: {}
@@ -75,9 +120,10 @@ spec:
       - name: sg-core-config
         configMap:
           name: {{ meta.name }}-sg-core-configmap
-{%   if service_type == 'events' %}
+{% endif %}
+{% if (applications | selectattr('name','equalto','elasticsearch') | list | count > 0) %}
       - name: elastic-certs
         secret:
           secretName: {{ tls_secret_name }}
-{%   endif %}
 {% endif %}
+# vim: set ft=yaml shiftwidth=2 tabstop=2 expandtab:

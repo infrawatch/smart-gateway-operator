@@ -12,11 +12,11 @@ spec:
     shortNames:
     - sg
   scope: Namespaced
-  version: v2alpha1
+  version: v2
   subresources:
     status: {}
   versions:
-  - name: v2alpha1
+  - name: v2
     served: true
     storage: true
   validation:
@@ -39,65 +39,120 @@ spec:
           description: 'SmartGatewaySpec is a specification of the desired behavior
             of the Smartgateway deployment. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status'
           properties:
+            pluginDir:
+              description: Plugin directory path.
+              type: string
+            logLevel:
+              description: Log level for sg-core.
+              type: string
             size:
-              description: Size sets the number of replicas to create. Defaults to 1.
+              description: Number of Smart Gateway instances to deploy. This number should always be a value of 1.
               type: integer
-            amqpUrl:
-              description: AMQP1.x listener example 127.0.0.1:5672/collectd/telemetry. Defaults to using
-                'messaging-internal-<name>.<namespace>.src:5672/collectd/telemetry'.
-              type: string
-            amqpDataSource:
-              description: The expected data source of the messages received from the address configured in amqpUrl. Available values include 'universal', 'collectd', and 'ceilometer'.
-              type: string
-            useBasicAuth:
-              description: Whether to use basic authentication or not when connecting to ElasticSearch. Default is 'false'
+            handleErrors:
+              description: Tell handlers to send errors to event bus.
               type: boolean
-            elasticUrl:
-              description: URL for ElasticSearch endpoing to connect when the Smart Gateway is operating as an 'events' service type.
-                Defaults to 'elasticsearch-es-http.<namespace>.svc:9200'.
-              type: string
-            elasticUser:
-              description: Basic Authentication username for ElasticSearch.
-              type: string
-            elasticPass:
-              description: Basic Authentication password for ElasticSearch.
-              type: string
-            tlsSecretName:
-              description: Name of the Secret object that holds the TLS certificates and key for Elasticsearch.
-                Defaults to 'elasticsearch-es-cert'.
-              type: string
-            resetIndex:
-              description: Reset the ElasticSearch index on load. Defaults to 'false'.
-              type: boolean
-            serviceType:
-              description: The service type for this smart gateway. One of 'metrics' or 'events'. Defaults to 'metrics'.
-              type: string
-              enum:
-                - metrics
-                - events
-            exporterHost:
-              description: Metrics URL for Prometheus to export. Defaults to "0.0.0.0".
-              type: string
-            exporterPort:
-              description: Metrics port for Prometheus to export. Defaults to 8081.
-              type: integer
-            dataCount:
-              description: Stop after receiving this many messages in total (0 forever). Defaults to '0'.
-              type: integer
-            debug:
-              description: Enable verbose debugging statements. Defaults to 'false'.
-              type: boolean
-            coreContainerImagePath:
-              description: Path to container image this operator will use for the sg-core. Value is defined as the standard registry/image_name:tag format
-              type: string
             bridgeContainerImagePath:
-              description: Path to container image this operator will use for the bridge. Value is defined as the standard registry/image_name:tag format
+              description: Registry path to bridge container image.
               type: string
-            useTimestamp:
-              description: Use the source timestamp (time when data was collected) rather than let Prometheus write when the data was 
-                scraped for that metric.
-              type: boolean
-          type: object
+            coreContainerImagePath:
+              description: Registry path to the sg-core container image.
+              type: string
+            bridge:
+              description: AMQP1 bridge configuration options
+              properties:
+                enabled:
+                  description: Whether to enable the bridge for connection to AMQP. Defaults to true.
+                  type: boolean
+                amqpUrl:
+                  description: URL of the AMQP endpoint. Format of ^amqp://(([a-z]+)(:([a-z]+))*@)*([a-zA-Z_0-9.-]+)(:([0-9]+))*(.+)$. Defaults to amqp://127.0.0.1:5672/collectd/telemetry.
+                  type: string
+                  pattern: "^amqp://(([a-z]+)(:([a-z]+))*@)*([a-zA-Z_0-9.-]+)(:([0-9]+))*(.+)$"
+                unixSocketPath:
+                  description: Connect to gateway with unix socket. Defaults to /tmp with 'smartgateway' appended as the final path, e.g. /tmp/smartgateway.
+                  type: string
+                inetTarget:
+                  description: Connect to gateway with inet socket. Defaults to 127.0.0.1:30000.
+                  type: string
+                socketBlock:
+                  description: Outgoing socket connection will block. Defaults to true.
+                  type: boolean
+                ringBufferCount:
+                  description: Number of message buffers between AMQP and Outgoing. Defaults to 15000.
+                  type: integer
+                ringBufferSize:
+                  description: Size of a message buffer between AMQP and Outgoing. Defaults to 2048.
+                  type: integer
+                statsPeriod:
+                  description: How often to print stats, 0 for no stats. Value is in seconds. Defaults to 60.
+                  type: integer
+                containerIdPattern:
+                  description: AMQP container ID (should be unique). Defaults to "sa-%x".
+                  type: string
+                stopCount:
+                  description: Number of AMQP mesg to rcv before exit, 0 for continous. Defaults to 0.
+                  type: integer
+                verbose:
+                  description: Print extra info, multiple instance increase verbosity. Defaults to true.
+                  type: boolean
+              type: object
+            services:
+              description: Services that should be created for this Smart Gateway
+              items:
+                properties:
+                  name:
+                    description: Postfix of the service name
+                    type: string
+                  ports:
+                    description: Ports to create for this service
+                    items:
+                      properties:
+                        name:
+                          description: Port name
+                          type: string
+                        port:
+                          description: Port number to expose
+                          type: integer
+                        targetPort:
+                          description: Target port for service
+                          type: integer
+                        protocol:
+                          description: Protocol for this service
+                          type: string
+                    type: array
+              type: array
+            transports:
+              description: Transports to enable.
+              items:
+                properties:
+                  name:
+                    description: Name of the transport to load.
+                    type: string
+                  handlers:
+                    description: List of handler plugins to load for this transport.
+                    items:
+                      properties:
+                        name:
+                          description: Name of the handler to load.
+                          type: string
+                        config:
+                          description: Free form configuration for handler.
+                          type: string
+                    type: array
+                  config:
+                    description: Free form configuration for plugins.
+                    type: string
+              type: array
+            applications:
+              description: Applications to load.
+              items:
+                properties:
+                  name:
+                    description: Name of the application.
+                    type: string
+                  config:
+                    description: Free form configuration for the application.
+                    type: string
+              type: array
         status:
           description: Status results of an instance of Smart Gateway
           properties:

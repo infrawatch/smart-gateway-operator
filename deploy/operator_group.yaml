@@ -1,8 +1,0 @@
-apiVersion: operators.coreos.com/v1
-kind: OperatorGroup
-metadata:
-  name: smartgateway-operator-group
-  namespace: service-telemetry
-spec:
-  targetNamespaces:
-  - service-telemetry

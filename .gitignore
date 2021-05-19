@@ -1,2 +1,3 @@
 .venv/
 bundle.Dockerfile
+roles/smartgateway/filter_plugins/__pycache__/

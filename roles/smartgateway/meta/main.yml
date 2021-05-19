@@ -5,15 +5,15 @@ galaxy_info:
 
   license: Apache
 
-  min_ansible_version: 2.7
+  min_ansible_version: 2.9
 
   platforms:
-  - name: RHEL
-    versions:
-    - 7
-  - name: CentOS
-    versions:
-    - 7
+    - name: RHEL
+      versions:
+        - 8
+    - name: CentOS
+      versions:
+        - 8
 
   galaxy_tags:
     - monitoring
