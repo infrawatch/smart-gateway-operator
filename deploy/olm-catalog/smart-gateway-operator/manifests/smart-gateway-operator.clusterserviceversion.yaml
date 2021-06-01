@@ -66,7 +66,7 @@ metadata:
     createdAt: <<CREATED_DATE>>
     description: Operator for managing the Smart Gateway Custom Resources, resulting
       in deployments of the Smart Gateway.
-    olm.skipRange: =>2.1.0 <<<OPERATOR_BUNDLE_VERSION>>
+    olm.skipRange: =><<BUNDLE_OLM_SKIP_RANGE_LOWER_BOUND>> <<<OPERATOR_BUNDLE_VERSION>>
     operators.operatorframework.io/builder: operator-sdk-v0.19.4
     operators.operatorframework.io/project_layout: ansible
     repository: https://github.com/infrawatch/smart-gateway-operator
