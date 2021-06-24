@@ -17,6 +17,7 @@ sg_defaults:
     unix_socket_path: "/tmp"
     socket_block: true
     ring_buffer_count: 15000
+    ring_buffer_size: 135048
     stats_period: 60
     stop_count: 0
     verbose: true
