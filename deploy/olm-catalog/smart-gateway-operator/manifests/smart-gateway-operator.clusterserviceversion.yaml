@@ -20,11 +20,11 @@ metadata:
             "bridge": {
               "amqpUrl": "amqp://amq-interconnect:5672/collectd",
               "enabled": true,
-              "ring_buffer_count": 15000,
-              "socket_block": true,
-              "stats_period": 60,
-              "stop_count": 0,
-              "unix_socket_path": "/tmp/smartgateway",
+              "ringBufferCount": 15000,
+              "socketBlock": true,
+              "statsPeriod": 60,
+              "stopCount": 0,
+              "unixSocketPath": "/tmp",
               "verbose": true
             },
             "handleErrors": false,
@@ -271,6 +271,7 @@ spec:
   - email: support@redhat.com
     name: Red Hat
   maturity: stable
+  minKubeVersion: 1.20.0
   provider:
     name: Red Hat
   selector:
