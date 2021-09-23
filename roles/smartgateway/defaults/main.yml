@@ -8,6 +8,7 @@ use_timestamp: true
 tls_secret_name: elasticsearch-es-cert
 exporter_host: 0.0.0.0
 exporter_port: 8081
+block_event_bus: false
 
 # used in conjunction with sg_vars in vars/main.yml to provide single parameter override for the dictionaries
 sg_defaults:
@@ -17,6 +18,8 @@ sg_defaults:
     unix_socket_path: "/tmp"
     socket_block: true
     ring_buffer_count: 15000
+    ring_buffer_size: 2048
     stats_period: 60
     stop_count: 0
     verbose: true
+    amqp_block: false
