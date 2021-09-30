@@ -5,6 +5,7 @@ metadata:
 spec:
   size: 1
   handleErrors: False
+  blockEventBus: false
   logLevel: info
   pluginDir: /usr/lib64/sg-core
   bridge:
@@ -12,7 +13,9 @@ spec:
     amqpUrl: "amqp://amq-interconnect:5672/collectd"
     unixSocketPath: "/tmp"
     socketBlock: true
+    amqpBlock: false
     ringBufferCount: 15000
+    ringBufferSize: 2048
     statsPeriod: 60
     stopCount: 0
     verbose: true
