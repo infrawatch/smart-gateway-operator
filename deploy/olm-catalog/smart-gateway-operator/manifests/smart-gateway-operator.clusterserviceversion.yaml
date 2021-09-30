@@ -13,47 +13,6 @@ metadata:
           "spec": {
             "applications": [
               {
-                "config": "connection: \"http://10.217.4.230:3100\"\nmaxwaittime: 5s\n",
-                "name": "loki"
-              }
-            ],
-            "bridge": {
-              "amqpUrl": "amqp://amq-interconnect:5672/collectd",
-              "enabled": true,
-              "ring_buffer_count": 15000,
-              "socket_block": true,
-              "stats_period": 60,
-              "stop_count": 0,
-              "unixSocketPath": "/tmp",
-              "verbose": true
-            },
-            "handleErrors": false,
-            "logLevel": "debug",
-            "pluginDir": "/usr/lib64/sg-core",
-            "size": 1,
-            "transports": [
-              {
-                "config": "path: \"/tmp/smartgateway\"\n",
-                "handlers": [
-                  {
-                    "config": "timestampField: \"@timestamp\"\nmessageField: \"message\"\nseverityField: \"severity\"\nhostnameField: \"host\"\n",
-                    "name": "logs"
-                  }
-                ],
-                "name": "socket"
-              }
-            ]
-          }
-        },
-        {
-          "apiVersion": "smartgateway.infra.watch/v2",
-          "kind": "SmartGateway",
-          "metadata": {
-            "name": "demo"
-          },
-          "spec": {
-            "applications": [
-              {
                 "config": "host: localhost\nport: 8081\nwithtimestamp: false\n",
                 "name": "prometheus"
               }
@@ -110,7 +69,6 @@ metadata:
     createdAt: <<CREATED_DATE>>
     description: Operator for managing the Smart Gateway Custom Resources, resulting
       in deployments of the Smart Gateway.
-    olm.properties: '[{"type": "olm.maxOpenShiftVersion", "value": "4.8"}]'
     olm.skipRange: =><<BUNDLE_OLM_SKIP_RANGE_LOWER_BOUND>> <<<OPERATOR_BUNDLE_VERSION>>
     operators.operatorframework.io/builder: operator-sdk-v0.19.4
     operators.operatorframework.io/project_layout: ansible
@@ -316,7 +274,6 @@ spec:
   - email: support@redhat.com
     name: Red Hat
   maturity: stable
-  minKubeVersion: 1.20.0
   provider:
     name: Red Hat
   selector:
