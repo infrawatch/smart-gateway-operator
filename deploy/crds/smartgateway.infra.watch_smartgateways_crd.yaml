@@ -48,7 +48,7 @@ spec:
                 description: Log level for sg-core.
                 type: string
               blockEventBus:
-                description: Enables event bus blocking for sg-core.
+                description: Enables event bus blocking for sg-core. Defaults to false.
                 type: string
               size:
                 description: Number of Smart Gateway instances to deploy. This number should always be a value of 1.
@@ -69,7 +69,7 @@ spec:
                     description: Whether to enable the bridge for connection to AMQP. Defaults to true.
                     type: boolean
                   amqpBlock:
-                    description: Enables amqp blocking for sg-bridge
+                    description: Enables amqp blocking for sg-bridge. Defaults to false.
                     type: boolean
                   amqpUrl:
                     description: URL of the AMQP endpoint. Format of ^amqp://(([a-z]+)(:([a-z]+))*@)*([a-zA-Z_0-9.-]+)(:([0-9]+))*(.+)$. Defaults to amqp://127.0.0.1:5672/collectd/telemetry.
