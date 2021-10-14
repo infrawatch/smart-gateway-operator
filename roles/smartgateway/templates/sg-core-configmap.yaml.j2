@@ -9,6 +9,7 @@ data:
     pluginDir: "{{ plugin_dir | default('/usr/lib64/sg-core') }}"
     logLevel: "{{ log_level | default('info') }}"
     handleErrors: {{ handle_errors | default(True) }}
+    blockEventBus: {{ block_event_bus | default(False) }}
     transports:
 {% for transport in transports %}
       - name: {{ transport.name }}

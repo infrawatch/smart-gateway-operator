@@ -50,9 +50,16 @@ spec:
                       type: string
                   type: object
                 type: array
+              blockEventBus:
+                description: Enables event bus blocking for sg-core. Defaults to false.
+                type: string
               bridge:
                 description: AMQP1 bridge configuration options
                 properties:
+                  amqpBlock:
+                    description: Enables amqp blocking for sg-bridge. Defaults to
+                      false.
+                    type: boolean
                   amqpUrl:
                     description: URL of the AMQP endpoint. Format of ^amqp://(([a-z]+)(:([a-z]+))*@)*([a-zA-Z_0-9.-]+)(:([0-9]+))*(.+)$.
                       Defaults to amqp://127.0.0.1:5672/collectd/telemetry.

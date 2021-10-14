@@ -17,10 +17,13 @@ metadata:
                 "name": "prometheus"
               }
             ],
+            "blockEventBus": false,
             "bridge": {
+              "amqpBlock": false,
               "amqpUrl": "amqp://amq-interconnect:5672/collectd",
               "enabled": true,
               "ringBufferCount": 15000,
+              "ringBufferSize": 2048,
               "socketBlock": true,
               "statsPeriod": 60,
               "stopCount": 0,

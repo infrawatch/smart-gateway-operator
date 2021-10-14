@@ -68,6 +68,9 @@ spec:
         - --cid
         - "{{ sg_vars.bridge.container_id_pattern }}"
 {%   endif -%}
+{%   if sg_vars.bridge.amqp_block is defined and sg_vars.bridge.amqp_block %}
+        - --amqp_block
+{%   endif -%}
 {%   if sg_vars.bridge.unix_socket_path is defined and sg_vars.bridge.unix_socket_path != "" %}
         volumeMounts:
         - mountPath: {{ sg_vars.bridge.unix_socket_path }}
