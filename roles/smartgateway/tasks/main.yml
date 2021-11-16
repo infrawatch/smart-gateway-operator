@@ -23,6 +23,27 @@
     bridge_container_image_path: "{{ lookup('env', 'RELATED_IMAGE_BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-bridge:latest', true) }}"
   when: bridge_container_image_path is undefined
 
+- name: Check for existing cookie secret
+  k8s_info:
+    api_version: v1
+    kind: Secret
+    namespace: '{{ meta.namespace }}'
+    name: 'smart-gateway-session-secret'
+  register: session_secret
+
+- name: Create cookie secret
+  no_log: true
+  k8s:
+    definition:
+      api_version: v1
+      kind: Secret
+      metadata:
+        name: 'smart-gateway-session-secret'
+        namespace: '{{ meta.namespace }}'
+      stringData:
+        session_secret: "{{ lookup('password', '/dev/null') }}"
+  when: session_secret.resources|length == 0
+
 # used as part of the Deployment object in order to trigger pod restarts on ConfigMap change
 - name: Get Smart Gateway ConfigMap Environment
   set_fact:
