@@ -10,6 +10,9 @@ exporter_host: 0.0.0.0
 exporter_port: 8081
 block_event_bus: false
 
+# - This image works on OCP 4.6, 4.7, and 4.8
+oauth_proxy_image: image-registry.openshift-image-registry.svc:5000/openshift/oauth-proxy:v4.4
+
 # used in conjunction with sg_vars in vars/main.yml to provide single parameter override for the dictionaries
 sg_defaults:
   bridge:
