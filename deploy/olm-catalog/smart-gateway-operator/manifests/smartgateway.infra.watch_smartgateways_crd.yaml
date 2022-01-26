@@ -52,7 +52,7 @@ spec:
                 type: array
               blockEventBus:
                 description: Enables event bus blocking for sg-core. Defaults to false.
-                type: string
+                type: boolean
               bridge:
                 description: AMQP1 bridge configuration options
                 properties:
