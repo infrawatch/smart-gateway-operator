@@ -49,7 +49,7 @@ spec:
                 type: string
               blockEventBus:
                 description: Enables event bus blocking for sg-core. Defaults to false.
-                type: string
+                type: boolean
               size:
                 description: Number of Smart Gateway instances to deploy. This number should always be a value of 1.
                 type: integer
