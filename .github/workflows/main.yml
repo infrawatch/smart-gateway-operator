@@ -45,8 +45,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get -y install make
+
       - name: Verify image builds
-        run: docker build --tag infrawatch/smart-gateway-operator:latest --file build/Dockerfile .
+        run: make docker-build
 
   bundle-check:
     name: Bundle check
@@ -59,7 +62,7 @@ jobs:
       - name: Get operator-sdk image
         run: curl --output operator-sdk -JL https://github.com/operator-framework/operator-sdk/releases/download/$RELEASE_VERSION/operator-sdk-$RELEASE_VERSION-x86_64-linux-gnu
         env:
-          RELEASE_VERSION: v0.19.4
+          RELEASE_VERSION: v1.16.0
 
       - name: Make operator-sdk executable
         run: chmod +x operator-sdk
@@ -67,11 +70,8 @@ jobs:
       - name: Move operator-sdk binary
         run: sudo mv operator-sdk /usr/local/bin
 
-      - name: Create working directory
-        run: mkdir /tmp/bundle
-
       - name: Generate bundle
-        run: WORKING_DIR=/tmp/bundle ./build/generate_bundle.sh
+        run: ./build/generate_bundle.sh
 
       - name: Check bundle validation
-        run: operator-sdk bundle validate --verbose /tmp/bundle
+        run: operator-sdk bundle validate --verbose ./bundle/

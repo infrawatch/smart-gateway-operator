@@ -1,0 +1,30 @@
+apiVersion: smartgateway.infra.watch/v2
+kind: SmartGateway
+metadata:
+  name: smartgateway-sample
+spec:
+  applications:
+    - config: |
+        host: 127.0.0.1
+        port: 8081
+        withTimeStamp: true
+      name: prometheus
+  bridge:
+    enabled: false
+  handleErrors: true
+  logLevel: info
+  services:
+    - name: smartgateway-sample
+      ports:
+        - name: prom-http
+          port: 8083
+          protocol: TCP
+          targetPort: 8083
+  size: 1
+  transports:
+    - config: |
+        collectd: true
+      handlers:
+        - config: ''
+          name: collectd-metrics
+      name: dummy-metrics
