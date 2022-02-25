@@ -6,3 +6,4 @@ collections:
     version: "0.3.1"
   - name: kubernetes.core
     version: "2.2.0"
+  - name: community.crypto

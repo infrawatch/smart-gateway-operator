@@ -1,6 +1,29 @@
 ---
+- name: Generate an OpenSSL private key
+  community.crypto.openssl_privatekey:
+    path: /tmp/infra.watch.pem
+    size: 2048
+
+- name: Generate an OpenSSL Certificate Signing Request
+  community.crypto.openssl_csr:
+    path: /tmp/infra.watch.csr
+    privatekey_path: /tmp/infra.watch.pem
+    common_name: infra.watch
+
+- name: Generate self-signed certificate for smartgateway-sample-tls-proxy
+  community.crypto.x509_certificate:
+    path: /tmp/infra.watch.crt
+    privatekey_path: /tmp/infra.watch.pem
+    csr_path: /tmp/infra.watch.csr
+    provider: selfsigned
+
+- name: Create Secret from certificates
+  command: |
+    kubectl --namespace={{ namespace }} create secret tls smartgateway-sample-proxy-tls --namespace=osdk-test --cert=/tmp/infra.watch.crt --key=/tmp/infra.watch.pem
+  ignore_errors: yes
+
 - name: Create the smartgateway.infra.watch/v2.SmartGateway
-  k8s:
+  kubernetes.core.k8s:
     state: present
     namespace: '{{ namespace }}'
     definition: "{{ lookup('template', '/'.join([samples_dir, cr_file])) | from_yaml }}"
@@ -12,7 +35,11 @@
   vars:
     cr_file: 'smartgateway_v2_smartgateway.yaml'
 
-- name: Add assertions here
-  assert:
-    that: false
-    fail_msg: FIXME Add real assertions for your operator
+- debug: var=deploy
+  vars:
+    deploy: '{{ lookup("kubernetes.core.k8s", api_version="v1", kind="Deployment", namespace=namespace, resource_name="smartgateway-sample-smartgateway") }}'
+
+- assert:
+    that: deploy.status.readyReplicas > 0
+  vars:
+    deploy: '{{ lookup("kubernetes.core.k8s", api_version="v1", kind="Deployment", namespace=namespace, resource_name="smartgateway-sample-smartgateway") }}'

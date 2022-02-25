@@ -56,6 +56,9 @@ spec:
               handleErrors:
                 description: Tell handlers to send errors to event bus.
                 type: boolean
+              oauthProxyImage:
+                description: OAuth proxy container image.
+                type: string
               bridgeContainerImagePath:
                 description: Registry path to bridge container image.
                 type: string

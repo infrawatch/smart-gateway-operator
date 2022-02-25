@@ -1,5 +1,5 @@
 # Adds namespace to all resources.
-namespace: smart-gateway-operator-system
+namespace: service-telemetry
 
 # Value of this field is prepended to the
 # names of all resources, e.g. a deployment named
