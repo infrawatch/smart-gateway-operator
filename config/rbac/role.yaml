@@ -60,10 +60,10 @@ rules:
   ## Rules for monitoring.coreos.com Kind: ServiceMonitor
   ##
   - apiGroups:
-    - monitoring.coreos.com
+      - monitoring.coreos.com
     resources:
-    - servicemonitors
+      - servicemonitors
     verbs:
-    - get
-    - create
+      - get
+      - create
 #+kubebuilder:scaffold:rules
