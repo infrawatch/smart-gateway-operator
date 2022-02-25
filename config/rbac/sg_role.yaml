@@ -14,7 +14,6 @@ rules:
       - authentication.k8s.io
     resources:
       - tokenreviews
-      - subjectaccessreviews
     verbs:
       - create
 #+kubebuilder:scaffold:rules
