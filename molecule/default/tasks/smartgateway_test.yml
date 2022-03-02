@@ -19,7 +19,7 @@
 
 - name: Create Secret from certificates
   command: |
-    kubectl --namespace={{ namespace }} create secret tls smartgateway-sample-proxy-tls --namespace=osdk-test --cert=/tmp/infra.watch.crt --key=/tmp/infra.watch.pem
+    kubectl --namespace={{ namespace }} create secret tls smartgateway-sample-proxy-tls --cert=/tmp/infra.watch.crt --key=/tmp/infra.watch.pem
   ignore_errors: yes
 
 - name: Create the smartgateway.infra.watch/v2.SmartGateway
