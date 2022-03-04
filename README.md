@@ -60,15 +60,14 @@ make docker-build VERSION=5.0.0-testing IMAGE_TAG_BASE=registry.openshift.local/
 Bundles can be created via the `./build/generate_bundle.sh` script.
 
 ```bash
-./build/generate_bundle.sh
 ## Begin bundle creation
 -- Generating operator version
----- Operator Version: 5.0.1646424265
+---- Operator Version: 5.0.1646425384
 -- Generate bundle
 ~/src/github.com/infrawatch/smart-gateway-operator ~/src/github.com/infrawatch/smart-gateway-operator
 operator-sdk generate kustomize manifests -q
-cd config/manager && /home/leif/.local/bin/kustomize edit set image controller=quay.io/infrawatch/smart-gateway-operator:5.0.1646424265
-/home/leif/.local/bin/kustomize build config/manifests | operator-sdk generate bundle -q --overwrite --version 5.0.1646424265 --channels=unstable --default-channel=unstable
+cd config/manager && /home/leif/.local/bin/kustomize edit set image controller=quay.io/infrawatch/smart-gateway-operator:5.0.1646425384
+/home/leif/.local/bin/kustomize build config/manifests | operator-sdk generate bundle -q --overwrite --version 5.0.1646425384 --channels=unstable --default-channel=unstable
 INFO[0000] Creating bundle.Dockerfile
 INFO[0000] Creating bundle/metadata/annotations.yaml
 INFO[0000] Bundle metadata generated suceessfully
@@ -77,8 +76,9 @@ INFO[0000] All validation tests have completed successfully
 ~/src/github.com/infrawatch/smart-gateway-operator
 ---- Replacing variables in generated manifest
 ---- Generated bundle complete at bundle/manifests/smart-gateway-operator.clusterserviceversion.yaml
--- Commands to create a bundle build
-docker build -t quay.io/infrawatch-operators/smart-gateway-operator-bundle:5.0.1646424265 -f /Dockerfile
-docker push quay.io/infrawatch-operators/smart-gateway-operator-bundle:5.0.1646424265
+***
+Bundle has been created locally. To build and push the bundle to your remote registry run:
+> make bundle-build bundle-push
+***
 ## End Bundle creation
 ```

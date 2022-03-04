@@ -13,4 +13,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: quay.io/infrawatch/smart-gateway-operator
-  newTag: 5.0.0-dev5
+  newTag: 5.0.1646425384
