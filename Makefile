@@ -94,6 +94,20 @@ undeploy: ## Undeploy controller from the K8s cluster specified in ~/.kube/confi
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 ARCH := $(shell uname -m | sed 's/x86_64/amd64/')
 
+.PHONY: kustomize-local
+KUSTOMIZE_LOCAL = $(shell pwd)/bin/kustomize
+kustomize-local: ## Download kustomize locally if necessary.
+ifeq (,$(wildcard $(KUSTOMIZE_LOCAL)))
+	@{ \
+	set -e ;\
+	mkdir -p $(dir $(KUSTOMIZE_LOCAL)) ;\
+	curl -sSLo - https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v3.8.7/kustomize_v3.8.7_$(OS)_$(ARCH).tar.gz | \
+	tar xzf - -C bin/ ;\
+	}
+else
+KUSTOMIZE_LOCAL = $(shell which kustomize)
+endif
+
 .PHONY: kustomize
 KUSTOMIZE = $(shell pwd)/bin/kustomize
 kustomize: ## Download kustomize locally if necessary.

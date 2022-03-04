@@ -5,6 +5,7 @@
   gather_facts: no
   collections:
     - kubernetes.core
+    - community.crypto
 
   vars:
     ctrl_label: control-plane=controller-manager

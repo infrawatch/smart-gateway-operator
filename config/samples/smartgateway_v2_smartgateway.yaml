@@ -3,6 +3,7 @@ kind: SmartGateway
 metadata:
   name: smartgateway-sample
 spec:
+  oauthProxyImage: quay.io/openshift/origin-oauth-proxy:4.4
   applications:
     - config: |
         host: 127.0.0.1
