@@ -7,4 +7,3 @@ sg_vars:
     {%- else -%}
     {{ sg_defaults.bridge }}
     {%- endif -%}
-

@@ -1,5 +1,7 @@
 ---
+# Use the 'create api' subcommand to add watches to this file.
 - version: v2
   group: smartgateway.infra.watch
   kind: SmartGateway
-  role: /opt/ansible/roles/smartgateway
+  role: smartgateway
+#+kubebuilder:scaffold:watch
