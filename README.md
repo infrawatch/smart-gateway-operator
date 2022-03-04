@@ -1,12 +1,22 @@
 # smart-gateway-operator
 
-Operator for the infra.watch [smart gateway](https://github.com/infrawatch/smart-gateway)
+Operator for the infra.watch [sg-core](https://github.com/infrawatch/sg-core)
 
 ## Deployment to an existing cluster
 
-## Released Smart Gateway Operator
+You can deploy to a local cluster using kustomize via the `Makefile` in the
+smart-gateway-operator repository. You must be running a compatible version of
+kustomize. You can use `make kustomize-local` to install the preferred version
+in your local repository source within the `bin/` subdirectory. You can pass
+that the Makefile to use by appending `KUSTOMIZE=$(pwd)/bin/kustomize` to the
+`make` command.
 
-Use the OperatorHub in OpenShift to deploy from the Community catalog for a released version of Smart Gateway Operator.
+By default the `service-telemetry` namespace is used.
+
+```bash
+make kustomize-local
+make deploy KUSTOMIZE=$(pwd)/bin/kustomize
+```
 
 ## Development Instance of Smart Gateway Operator in STF
 
@@ -25,233 +35,50 @@ ansible-playbook build/run-ci.yaml -e __service_telemetry_events_enabled=false -
 
 Alternatively you can deploy the latest published artifacts. Currently this is not the recommended method.
 
-```
+```bash
 ansible-playbook build/run-ci.yaml -e __local_build_enabled=false
+```
+
+# Create a new container image
+
+Container images can be built and pushed using `docker` via `make`. You can
+append `VERSION` to set which tagged version of the container image is created.
+You can use `IMAGE_TAG_BASE` to set the image path and registry to target.
+
+```bash
+make docker-build docker-push VERSION=5.0.0-testing IMAGE_TAG_BASE=quay.io/leifmadsen/smart-gateway-operator
+```
+
+If you don't wish to push the image, remove the `docker-push` parameter from being used with the `make` command.
+
+```bash
+make docker-build VERSION=5.0.0-testing IMAGE_TAG_BASE=registry.openshift.local/service-telemetry/smart-gateway-operator
 ```
 
 # Generate a bundle
 
-Use the `generate_bundle.sh` script.
+Bundles can be created via the `./build/generate_bundle.sh` script.
 
-```
+```bash
 ./build/generate_bundle.sh
 ## Begin bundle creation
 -- Generating operator version
----- Operator Version: 1.3.1620788433
--- Create working directory
----- Created working directory: /tmp/smart-gateway-operator-bundle-1.3.1620788433
--- Generate Dockerfile for bundle
----- Generated Dockerfile complete
+---- Operator Version: 5.0.1646424265
 -- Generate bundle
 ~/src/github.com/infrawatch/smart-gateway-operator ~/src/github.com/infrawatch/smart-gateway-operator
-INFO[0000] Generating bundle manifests version 1.3.1620788433
-INFO[0000] Bundle manifests generated successfully in /tmp/smart-gateway-operator-bundle-1.3.1620788433
-INFO[0000] Building annotations.yaml
-INFO[0000] Generating output manifests directory
-INFO[0000] Writing annotations.yaml in /tmp/smart-gateway-operator-bundle-1.3.1620788433/metadata
-INFO[0000] Building Dockerfile
-INFO[0000] Writing bundle.Dockerfile in /home/lmadsen/src/github.com/infrawatch/smart-gateway-operator
+operator-sdk generate kustomize manifests -q
+cd config/manager && /home/leif/.local/bin/kustomize edit set image controller=quay.io/infrawatch/smart-gateway-operator:5.0.1646424265
+/home/leif/.local/bin/kustomize build config/manifests | operator-sdk generate bundle -q --overwrite --version 5.0.1646424265 --channels=unstable --default-channel=unstable
+INFO[0000] Creating bundle.Dockerfile
+INFO[0000] Creating bundle/metadata/annotations.yaml
+INFO[0000] Bundle metadata generated suceessfully
+operator-sdk bundle validate ./bundle
+INFO[0000] All validation tests have completed successfully
 ~/src/github.com/infrawatch/smart-gateway-operator
 ---- Replacing variables in generated manifest
----- Generated bundle complete at /tmp/smart-gateway-operator-bundle-1.3.1620788433/manifests/smart-gateway-operator.clusterserviceversion.yaml
+---- Generated bundle complete at bundle/manifests/smart-gateway-operator.clusterserviceversion.yaml
 -- Commands to create a bundle build
-docker build -t quay.io/infrawatch-operators/smart-gateway-operator-bundle:1.3.1620788433 -f /tmp/smart-gateway-operator-bundle-1.3.1620788433/Dockerfile /tmp/smart-gateway-operator-bundle-1.3.1620788433
-docker push quay.io/infrawatch-operators/smart-gateway-operator-bundle:1.3.1620788433
+docker build -t quay.io/infrawatch-operators/smart-gateway-operator-bundle:5.0.1646424265 -f /Dockerfile
+docker push quay.io/infrawatch-operators/smart-gateway-operator-bundle:5.0.1646424265
+## End Bundle creation
 ```
-
-# Build and test against CodeReady Containers
-
-NOTE: You'll need a Red Hat subscription to access CodeReady Containers. Access of the pull secret
-is available at https://cloud.redhat.com/openshift/install/crc/installer-provisioned. Upstream CodeReady
-development is available at https://github.com/code-ready/crc.
-
-A procedure for testing in CodeReady Containers will be available soon.
-
-* buildah
-  * 1.14.0
-* kubernetes
-  * v1.16.2
-* crc
-  * crc version: 1.6.0+8ef676f
-* oc
-  * openshift-clients-4.2.0-201910041700
-* operator-sdk
-  * v0.15.2 (!0.13.0 which causes regressions via `gen-csv` command)
-
-## Set up CRC and buildah
-
-Setup CRC and then login with the `kubeadmin` user.
-
-```
-$ crc setup
-$ crc start --memory=32768
-$ crc console --credentials
-```
-
-Install `buildah` via `dnf`.
-
-```
-sudo dnf install buildah -y
-```
-
-## Login to CRC registry
-
-```
-REGISTRY=$(oc registry info)
-TOKEN=$(oc whoami -t)
-INTERNAL_REGISTRY=$(oc registry info --internal=true)
-buildah login --tls-verify=false -u openshift -p "${TOKEN}" "${REGISTRY}"
-```
-
-## Create working project (namespace)
-
-Create a namespace for the application called `service-telemetry`.
-
-```
-oc new-project service-telemetry
-```
-
-## Build the operator
-
-```
-buildah bud -f build/Dockerfile -t "${REGISTRY}/service-telemetry/smart-gateway-operator:latest" .
-buildah push --tls-verify=false "${REGISTRY}/service-telemetry/smart-gateway-operator:latest"
-```
-
-## Deploy with the newly built operator
-
-Install required RBAC rules and service account.
-
-```
-oc apply \
-    -f deploy/role_binding.yaml \
-    -f deploy/role.yaml \
-    -f deploy/service_account.yaml \
-    -f deploy/operator_group.yaml
-```
-
-Pick a version from `deploy/olm-catalog/smart-gateway-operator/` and run the
-following commands. Adjust version to what you want to test. We'll be using
-`v1.0.0` as our example version.
-
-```
-CSV_VERSION=1.0.0
-INTERNAL_REGISTRY=$(oc registry info --internal=true)
-oc apply -f deploy/olm-catalog/smart-gateway-operator/${CSV_VERSION}/smartgateway.infra.watch_smartgateways_crd.yaml
-
-oc create -f <(sed "\
-    s|image: .\+/smart-gateway-operator:.\+$|image: ${INTERNAL_REGISTRY}/service-telemetry/smart-gateway-operator:latest|g;
-    s|namespace: placeholder|namespace: service-telemetry|g"\
-    "deploy/olm-catalog/smart-gateway-operator/${CSV_VERSION}/smart-gateway-operator.v${CSV_VERSION}.clusterserviceversion.yaml")
-```
-
-Validate that installation of the `ClusterServiceVersion` is progressing via
-the `oc` CLI console.
-```
-oc get csv --watch
-```
-If you see `PHASE: Succeeded` then your CSV has been properly imported and
-your Operator should be running locally. You can validate this by running `oc
-get pods` and looking for the `smart-gateway-operator` and that it is
-`Running`.
-
-You can bring up the logs of the Smart Gateway Operator by running `oc logs
-<<pod_name>> -c operator`.
-
-# Simple Smart Gateway Deployment
-
-To create a Smart Gateway, you'll need to connect it to a compatible AMQP 1.x
-message bus. For demonstration purposes we're going to use the Red Hat AMQ
-Interconnect Operator, create an AMQ Interconnect instance, then create a Smart
-Gateway instance that connects to it.
-
-## Create Message Bus Deployment
-
-Subscribe to the AMQ Interconnect Operator and AMQ Certificate Manager. After subscribing create a new `Interconnect` object.
-
-### Create AMQ Interconnect Subscription
-
-```
-oc apply -f - <<EOF
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  name: amq7-interconnect-operator
-  namespace: service-telemetry
-spec:
-  channel: 1.2.0
-  installPlanApproval: Automatic
-  name: amq7-interconnect-operator
-  source: redhat-operators
-  sourceNamespace: openshift-marketplace
-EOF
-```
-
-You can check the status of the AMQ Interconnect ClusterServiceVersion
-installation with `oc get csv`. When complete you should see `PHASE:
-Succeeded`.
-
-
-### Create Interconnect Object
-
-Create a simple `Interconnect` object to deploy AMQ Interconnect router.
-
-```
-apiVersion: interconnectedcloud.github.io/v1alpha1
-kind: Interconnect
-metadata:
-  name: amq-interconnect
-  namespace: smart-gateway
-spec:
-  addresses:
-  - distribution: multicast
-    prefix: collectd
-  - distribution: multicast
-    prefix: ceilometer
-  deploymentPlan:
-    livenessPort: 8888
-    placement: AntiAffinity
-    resources: {}
-    role: interior
-    size: 1
-  edgeListeners:
-  - expose: true
-    port: 5671
-    saslMechanisms: ANONYMOUS
-    sslProfile: openstack
-  interRouterListeners:
-  - port: 55672
-  listeners:
-  - port: 5672
-  sslProfiles:
-  - generateCaCert: true
-    generateCredentials: true
-    name: openstack
-  users: amq-interconnect-users
-```
-
-Validate that you see an AMQ Interconnect router come up with `oc get pods`.
-
-
-## Creating a Smart Gateway
-
-Create a Smart Gateway deployment.
-
-### Create Smart Gateway Instance
-
-```
-oc apply -f - <<EOF
-apiVersion: smartgateway.infra.watch/v2alpha1
-kind: SmartGateway
-metadata:
-  name: cloud1-metrics
-  namespace: service-telemetry
-spec:
-  amqpUrl: amq-interconnect:5672/collectd/telemetry
-  debug: true
-  prefetch: 15000
-  serviceType: metrics
-  size: 1
-EOF
-```
-
