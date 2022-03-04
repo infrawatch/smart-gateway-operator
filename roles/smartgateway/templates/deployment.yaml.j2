@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: '{{ meta.name }}-smartgateway'
-  namespace: '{{ meta.namespace }}'
+  name: '{{ ansible_operator_meta.name }}-smartgateway'
+  namespace: '{{ ansible_operator_meta.namespace }}'
 spec:
   replicas: {{ size }}
   progressDeadlineSeconds: 600
@@ -15,16 +15,17 @@ spec:
   selector:
     matchLabels:
       app: smart-gateway
-      smart-gateway: '{{ meta.name }}'
+      smart-gateway: '{{ ansible_operator_meta.name }}'
   template:
     metadata:
       labels:
         app: smart-gateway
-        smart-gateway: '{{ meta.name }}'
+        smart-gateway: '{{ ansible_operator_meta.name }}'
 {% if smartgateway_resource_configmap is defined %}
-        sg-config-resource-name: {{ smartgateway_resource_configmap.env | k8s_config_resource_name }}
+        sg-config-resource-name: {{ smartgateway_resource_configmap.env | kubernetes.core.k8s_config_resource_name }}
 {% endif %}
     spec:
+      serviceAccountName: smart-gateway-operator-smart-gateway
       containers:
 {% if (applications | selectattr('name','equalto','prometheus') | list | count > 0) %}
       - name: oauth-proxy
@@ -34,7 +35,7 @@ spec:
         - -tls-cert=/etc/tls/private/tls.crt
         - -tls-key=/etc/tls/private/tls.key
         - -cookie-secret-file=/etc/proxy/secrets/session_secret
-        - -openshift-service-account=NA
+        - -openshift-service-account=smart-gateway-operator-smart-gateway
         - -upstream=http://localhost:8081/
         - '-openshift-delegate-urls={"/": {"resource": "namespaces", "verb": "get"}}'
         ports:
@@ -42,7 +43,7 @@ spec:
           name: https
         volumeMounts:
           - mountPath: /etc/tls/private
-            name: {{ meta.name }}-proxy-tls
+            name: {{ ansible_operator_meta.name }}-proxy-tls
           - mountPath: /etc/proxy/secrets
             name: session-secret
 {% endif -%}
@@ -138,17 +139,17 @@ spec:
 {% endif %}
       volumes:
 {% if (applications | selectattr('name','equalto','prometheus') | list | count > 0) %}
-      - name: {{ meta.name }}-proxy-tls
+      - name: {{ ansible_operator_meta.name }}-proxy-tls
         secret:
           defaultMode: 420
-          secretName: {{ meta.name }}-proxy-tls
+          secretName: {{ ansible_operator_meta.name }}-proxy-tls
 {% endif %}
       - name: socket-dir
         emptyDir: {}
 {% if smartgateway_resource_configmap is defined %}
       - name: sg-core-config
         configMap:
-          name: {{ meta.name }}-sg-core-configmap
+          name: {{ ansible_operator_meta.name }}-sg-core-configmap
 {% endif %}
 {% if (applications | selectattr('name','equalto','elasticsearch') | list | count > 0) %}
       - name: elastic-certs
