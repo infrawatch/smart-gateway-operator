@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ ansible_operator_meta.name }}-sg-core-configmap
-  namespace: {{ ansible_operator_meta.namespace }}
+  name: {{ meta.name }}-sg-core-configmap
+  namespace: {{ meta.namespace }}
 data:
   "sg-core.conf.yaml": |
     pluginDir: "{{ plugin_dir | default('/usr/lib64/sg-core') }}"
