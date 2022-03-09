@@ -1,0 +1,41 @@
+apiVersion: smartgateway.infra.watch/v2
+kind: SmartGateway
+metadata:
+  name: demo
+spec:
+  size: 1
+  handleErrors: False
+  blockEventBus: false
+  logLevel: info
+  pluginDir: /usr/lib64/sg-core
+  bridge:
+    enabled: true
+    amqpUrl: "amqp://amq-interconnect:5672/collectd"
+    unixSocketPath: "/tmp"
+    socketBlock: true
+    amqpBlock: false
+    ringBufferCount: 15000
+    ringBufferSize: 2048
+    statsPeriod: 60
+    stopCount: 0
+    verbose: true
+  services:
+    - name: prometheus
+      ports:
+        - name: prom-http
+          port: 8081
+          targetPort: 8081
+          protocol: TCP
+  transports:
+    - name: socket
+      handlers:
+        - name: collectd-metrics
+          config: ""
+      config: |
+        path: /tmp/smartgateway
+  applications:
+    - name: prometheus
+      config: |
+        host: localhost
+        port: 8081
+        withtimestamp: false

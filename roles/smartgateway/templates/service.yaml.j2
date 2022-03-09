@@ -2,12 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: '{{ this_service.name }}'
-  namespace: '{{ ansible_operator_meta.namespace }}'
+  namespace: '{{ meta.namespace }}'
   annotations:
     service.beta.openshift.io/serving-cert-secret-name: {{ this_service.name }}-proxy-tls
   labels:
     app: smart-gateway
-    smart-gateway: '{{ ansible_operator_meta.name }}'
+    smart-gateway: '{{ meta.name }}'
 spec:
   ports:
 {% for this_port in this_service.ports %}
@@ -17,6 +17,6 @@ spec:
     protocol: {{ this_port.protocol }}
   selector:
     app: smart-gateway
-    smart-gateway: '{{ ansible_operator_meta.name }}'
+    smart-gateway: '{{ meta.name }}'
 {% endfor %}
 # vim: set ft=yaml shiftwidth=2 tabstop=2 expandtab:

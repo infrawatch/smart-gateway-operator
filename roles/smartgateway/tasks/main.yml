@@ -2,7 +2,7 @@
 # this will be useful later to understand if we're on vanilla k8s or OpenShift (OKD)
 - name: "Get information about the cluster"
   set_fact:
-    api_groups: "{{ lookup('kubernetes.core.k8s', cluster_info='api_groups') }}"
+    api_groups: "{{ lookup('k8s', cluster_info='api_groups') }}"
 
 - name: Print some debug information
   vars:
@@ -24,22 +24,22 @@
   when: bridge_container_image_path is undefined
 
 - name: Check for existing cookie secret
-  kubernetes.core.k8s_info:
+  k8s_info:
     api_version: v1
     kind: Secret
-    namespace: '{{ ansible_operator_meta.namespace }}'
+    namespace: '{{ meta.namespace }}'
     name: 'smart-gateway-session-secret'
   register: session_secret
 
 - name: Create cookie secret
   no_log: true
-  kubernetes.core.k8s:
+  k8s:
     definition:
       api_version: v1
       kind: Secret
       metadata:
         name: 'smart-gateway-session-secret'
-        namespace: '{{ ansible_operator_meta.namespace }}'
+        namespace: '{{ meta.namespace }}'
       stringData:
         session_secret: "{{ lookup('password', '/dev/null') }}"
   when: session_secret.resources|length == 0
@@ -54,7 +54,7 @@
     - name: sg-core-configmap.yaml.j2
 
 - name: Deploy Smart Gateway
-  kubernetes.core.k8s:
+  k8s:
     state: "{{ state }}"
     definition: "{{ lookup('template', item.name) | from_yaml }}"
   when: item.to_load | default(True)
