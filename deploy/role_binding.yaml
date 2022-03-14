@@ -17,6 +17,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: smart-gateway-operator
+  namespace: placeholder
 roleRef:
   kind: ClusterRole
   name: smart-gateway-operator
