@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Ansible
-        run: python -m pip install ansible
+        run: python -m pip install 'ansible <= 2.9'
 
       - name: Install operator_sdk.util dependency for Ansible role linting
         run: ansible-galaxy collection install operator_sdk.util
