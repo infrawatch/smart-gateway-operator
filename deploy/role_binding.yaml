@@ -9,3 +9,16 @@ roleRef:
   kind: Role
   name: smart-gateway-operator
   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: smart-gateway-operator
+subjects:
+- kind: ServiceAccount
+  name: smart-gateway-operator
+  namespace: placeholder
+roleRef:
+  kind: ClusterRole
+  name: smart-gateway-operator
+  apiGroup: rbac.authorization.k8s.io
