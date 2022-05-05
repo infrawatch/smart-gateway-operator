@@ -13,12 +13,12 @@ roleRef:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: smart-gateway-operator
+  name: smart-gateway-auth-delegator
 subjects:
 - kind: ServiceAccount
-  name: smart-gateway-operator
+  name: default
   namespace: placeholder
 roleRef:
-  kind: ClusterRole
-  name: smart-gateway-operator
   apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
