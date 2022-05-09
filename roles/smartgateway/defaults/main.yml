@@ -9,6 +9,7 @@ tls_secret_name: elasticsearch-es-cert
 exporter_host: 0.0.0.0
 exporter_port: 8081
 block_event_bus: false
+service_account_name: smart-gateway
 
 # - This image works on OCP 4.6, 4.7, and 4.8
 oauth_proxy_image: image-registry.openshift-image-registry.svc:5000/openshift/oauth-proxy:v4.4
