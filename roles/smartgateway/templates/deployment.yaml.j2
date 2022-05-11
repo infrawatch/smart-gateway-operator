@@ -34,7 +34,7 @@ spec:
         - -tls-cert=/etc/tls/private/tls.crt
         - -tls-key=/etc/tls/private/tls.key
         - -cookie-secret-file=/etc/proxy/secrets/session_secret
-        - -openshift-service-account=NA
+        - -openshift-service-account={{ service_account_name }}
         - -upstream=http://localhost:8081/
         - '-openshift-delegate-urls={"/": {"resource": "namespaces", "verb": "get"}}'
         ports:
@@ -136,6 +136,7 @@ spec:
 {%     endfor %}
 {%   endif %}
 {% endif %}
+      serviceAccountName: {{ service_account_name }}
       volumes:
 {% if (applications | selectattr('name','equalto','prometheus') | list | count > 0) %}
       - name: {{ meta.name }}-proxy-tls
