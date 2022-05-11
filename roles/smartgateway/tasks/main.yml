@@ -44,6 +44,41 @@
         session_secret: "{{ lookup('password', '/dev/null') }}"
   when: session_secret.resources|length == 0
 
+- name: Create Smart Gateway ServiceAccount
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: "{{ service_account_name }}"
+        namespace: "{{ meta.namespace }}"
+
+- name: Create Smart Gateway Role
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'sg-role.yaml.j2') | from_yaml }}"
+
+- name: Create Smart Gateway RoleBinding
+  k8s:
+    definition:
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        labels:
+          app.kubernetes.io/component: smart-gateway
+          app.kubernetes.io/name: smart-gateway
+          app.kubernetes.io/part-of: service-telemetry-framework
+        name: smart-gateway
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: smart-gateway
+      subjects:
+      - kind: ServiceAccount
+        name: smart-gateway
+        namespace: "{{ meta.namespace }}"
+
 # used as part of the Deployment object in order to trigger pod restarts on ConfigMap change
 - name: Get Smart Gateway ConfigMap Environment
   set_fact:
