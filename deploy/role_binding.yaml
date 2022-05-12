@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: smart-gateway-operator
-  namespace: service-telemetry
+  namespace: placeholder
 roleRef:
   kind: ClusterRole
   name: smart-gateway-operator
