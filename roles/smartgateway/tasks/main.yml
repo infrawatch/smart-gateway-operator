@@ -27,7 +27,7 @@
   k8s_info:
     api_version: v1
     kind: Secret
-    namespace: '{{ meta.namespace }}'
+    namespace: '{{ ansible_operator_meta.namespace }}'
     name: 'smart-gateway-session-secret'
   register: session_secret
 
@@ -39,7 +39,7 @@
       kind: Secret
       metadata:
         name: 'smart-gateway-session-secret'
-        namespace: '{{ meta.namespace }}'
+        namespace: '{{ ansible_operator_meta.namespace }}'
       stringData:
         session_secret: "{{ lookup('password', '/dev/null') }}"
   when: session_secret.resources|length == 0
@@ -52,7 +52,7 @@
       kind: ServiceAccount
       metadata:
         name: "{{ service_account_name }}"
-        namespace: "{{ meta.namespace }}"
+        namespace: "{{ ansible_operator_meta.namespace }}"
 
 - name: Create Smart Gateway Role
   k8s:
@@ -77,7 +77,7 @@
       subjects:
       - kind: ServiceAccount
         name: smart-gateway
-        namespace: "{{ meta.namespace }}"
+        namespace: "{{ ansible_operator_meta.namespace }}"
 
 # used as part of the Deployment object in order to trigger pod restarts on ConfigMap change
 - name: Get Smart Gateway ConfigMap Environment
