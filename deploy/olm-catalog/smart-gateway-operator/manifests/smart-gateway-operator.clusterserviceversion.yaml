@@ -71,10 +71,10 @@ metadata:
       in deployments of the Smart Gateway.
     olm.properties: '[{"type": "olm.maxOpenShiftVersion", "value": "4.11"}]'
     olm.skipRange: =><<BUNDLE_OLM_SKIP_RANGE_LOWER_BOUND>> <<<OPERATOR_BUNDLE_VERSION>>
-    operators.operatorframework.io/builder: operator-sdk-v0.19.4
-    operators.operatorframework.io/project_layout: ansible
     operators.openshift.io/valid-subscription: '["OpenStack Platform", "Cloud Infrastructure",
       "Cloud Suite"]'
+    operators.operatorframework.io/builder: operator-sdk-v0.19.4
+    operators.operatorframework.io/project_layout: ansible
     repository: https://github.com/infrawatch/smart-gateway-operator
     support: Red Hat
   name: smart-gateway-operator.v1.99.0
