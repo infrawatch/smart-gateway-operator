@@ -154,7 +154,7 @@ spec:
 {% if (applications | selectattr('name','equalto','elasticsearch') | list | count > 0) %}
       - name: elastic-certs
         secret:
-          secretName: {{ tls_secret_name }}
+          secretName: {{ (applications | selectattr('name','equalto','elasticsearch') | map(attribute='config') | first | from_yaml).tlsSecretName | default(tls_secret_name)}}
 {% endif %}
       - name: session-secret
         secret:
