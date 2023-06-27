@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 LOGFILE=${LOGFILE:-/dev/null}
+OPERATOR_SDK=${OPERATOR_SDK:-operator-sdk}
 REL=$(dirname "$0")
 
 # shellcheck source=build/metadata.sh
