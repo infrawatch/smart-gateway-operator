@@ -2,7 +2,7 @@
 set -e
 LOGFILE=${LOGFILE:-/dev/null}
 OPERATOR_SDK=${OPERATOR_SDK:-operator-sdk}
-REL=$(dirname "$0")
+REL=$( readlink -f $(dirname "$0"))
 
 # shellcheck source=build/metadata.sh
 . "${REL}/metadata.sh"
