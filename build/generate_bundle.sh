@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+set -x
 LOGFILE=${LOGFILE:-/dev/null}
 OPERATOR_SDK=${OPERATOR_SDK:-operator-sdk}
 REL=$( readlink -f $(dirname "$0"))
@@ -44,7 +45,7 @@ build_bundle_instructions() {
 }
 
 
-echo ${OPERATOR_SDK}
+${OPERATOR_SDK} --version
 # generate templates
 generate_version
 create_working_dir
