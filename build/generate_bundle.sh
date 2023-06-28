@@ -25,15 +25,15 @@ generate_dockerfile() {
 generate_bundle() {
     REPLACE_REGEX="s#<<CREATED_DATE>>#${CREATED_DATE}#g;s#<<OPERATOR_IMAGE>>#${OPERATOR_IMAGE}#g;s#<<OPERATOR_TAG>>#${OPERATOR_TAG}#g;s#<<RELATED_IMAGE_BRIDGE_SMARTGATEWAY>>#${RELATED_IMAGE_BRIDGE_SMARTGATEWAY}#g;s#<<RELATED_IMAGE_BRIDGE_SMARTGATEWAY_TAG>>#${RELATED_IMAGE_BRIDGE_SMARTGATEWAY_TAG}#g;s#<<RELATED_IMAGE_CORE_SMARTGATEWAY>>#${RELATED_IMAGE_CORE_SMARTGATEWAY}#g;s#<<RELATED_IMAGE_CORE_SMARTGATEWAY_TAG>>#${RELATED_IMAGE_CORE_SMARTGATEWAY_TAG}#g;s#<<RELATED_IMAGE_OAUTH_PROXY>>#${RELATED_IMAGE_OAUTH_PROXY}#g;s#<<RELATED_IMAGE_OAUTH_PROXY_TAG>>#${RELATED_IMAGE_OAUTH_PROXY_TAG}#g;s#<<OPERATOR_BUNDLE_VERSION>>#${OPERATOR_BUNDLE_VERSION}#g;s#1.99.0#${OPERATOR_BUNDLE_VERSION}#g;s#<<BUNDLE_OLM_SKIP_RANGE_LOWER_BOUND>>#${BUNDLE_OLM_SKIP_RANGE_LOWER_BOUND}#g"
 
-    pushd "${REL}/../" | tee -a ${LOGFILE} 2>&1
-    ${OPERATOR_SDK} generate bundle --channels ${BUNDLE_CHANNELS} --default-channel ${BUNDLE_DEFAULT_CHANNEL} --manifests --metadata --version "${OPERATOR_BUNDLE_VERSION}" --output-dir "${WORKING_DIR}" | tee -a ${LOGFILE} 2>&1
-    popd | tee -a ${LOGFILE} 2>&1
+    pushd "${REL}/../" >> ${LOGFILE} 2>&1
+    ${OPERATOR_SDK} generate bundle --channels ${BUNDLE_CHANNELS} --default-channel ${BUNDLE_DEFAULT_CHANNEL} --manifests --metadata --version "${OPERATOR_BUNDLE_VERSION}" --output-dir "${WORKING_DIR}" >> ${LOGFILE} 2>&1
+    popd >> ${LOGFILE} 2>&1
 
     sed -i -E "${REPLACE_REGEX}" "${WORKING_DIR}/manifests/${OPERATOR_NAME}.clusterserviceversion.yaml"
 }
 
 copy_extra_metadata() {
-    pushd "${REL}/../" | tee -a ${LOGFILE} 2>&1
+    pushd "${REL}/../" >> ${LOGFILE} 2>&1
     cp -r ./deploy/olm-catalog/smart-gateway-operator/tests/ "${WORKING_DIR}"
     cp ./deploy/olm-catalog/smart-gateway-operator/metadata/properties.yaml "${WORKING_DIR}/metadata/"
 }
