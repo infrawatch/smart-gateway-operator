@@ -45,7 +45,7 @@ build_bundle_instructions() {
 }
 
 
-${OPERATOR_SDK} --version
+${OPERATOR_SDK} version
 # generate templates
 generate_version
 create_working_dir
