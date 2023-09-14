@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -e
 set -x
+
 LOGFILE=${LOGFILE:-/dev/null}
-truncate --size=0 $LOGFILE
+# If LOGFILE is /dev/null, this command fails, so ignore that error
+truncate --size=0 ${LOGFILE} || true
 
 OPERATOR_SDK=${OPERATOR_SDK:-operator-sdk}
 REL=$( readlink -f $(dirname "$0"))
