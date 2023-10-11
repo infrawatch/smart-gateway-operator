@@ -69,11 +69,21 @@ metadata:
     createdAt: <<CREATED_DATE>>
     description: Operator for managing the Smart Gateway Custom Resources, resulting
       in deployments of the Smart Gateway.
+    features.operators.openshift.io/cnf: "false"
+    features.operators.openshift.io/cni: "false"
+    features.operators.openshift.io/csi: "false"
+    features.operators.openshift.io/disconnected: "false"
+    features.operators.openshift.io/fips-compliant: "false"
+    features.operators.openshift.io/proxy-aware: "false"
+    features.operators.openshift.io/tls-profiles: "false"
+    features.operators.openshift.io/token-auth-aws: "false"
+    features.operators.openshift.io/token-auth-azure: "false"
+    features.operators.openshift.io/token-auth-gcp: "false"
     olm.skipRange: =><<BUNDLE_OLM_SKIP_RANGE_LOWER_BOUND>> <<<OPERATOR_BUNDLE_VERSION>>
-    operators.operatorframework.io/builder: operator-sdk-v0.19.4
-    operators.operatorframework.io/project_layout: ansible
     operators.openshift.io/valid-subscription: '["OpenStack Platform", "Cloud Infrastructure",
       "Cloud Suite"]'
+    operators.operatorframework.io/builder: operator-sdk-v0.19.4
+    operators.operatorframework.io/project_layout: ansible
     repository: https://github.com/infrawatch/smart-gateway-operator
     support: Red Hat
   name: smart-gateway-operator.v1.99.0
