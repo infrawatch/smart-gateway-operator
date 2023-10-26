@@ -23,6 +23,10 @@
     bridge_container_image_path: "{{ lookup('env', 'RELATED_IMAGE_BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-bridge:latest', true) }}"
   when: bridge_container_image_path is undefined
 
+- name: Set OAuth Proxy image
+  set_fact:
+    oauth_proxy_image: "{{ lookup('env', 'RELATED_IMAGE_OAUTH_PROXY_IMAGE') | default('quay.io/openshift/origin-oauth-proxy:latest', true) }}"
+
 - name: Check for existing cookie secret
   k8s_info:
     api_version: v1
