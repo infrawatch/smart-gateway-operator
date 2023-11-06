@@ -1,0 +1,7 @@
+---
+- project:
+    name: infrawatch/smart-gateway-operator
+    github-check:
+      jobs:
+        - stf-crc-latest-nightly_bundles
+        - stf-crc-latest-local_build
