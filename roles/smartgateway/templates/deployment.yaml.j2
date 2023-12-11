@@ -36,7 +36,7 @@ spec:
         - -cookie-secret-file=/etc/proxy/secrets/session_secret
         - -openshift-service-account={{ service_account_name }}
         - -upstream=http://localhost:8081/
-        - '-openshift-delegate-urls={"/": {"resource": "namespaces", "verb": "get"}}'
+        - '-openshift-delegate-urls={"/": {"namespace": "{{ ansible_operator_meta.namespace }}", "resource": "smartgateways", "group": "smartgateway.infra.watch", "verb": "get"}}'
         ports:
         - containerPort: 8083
           name: https
