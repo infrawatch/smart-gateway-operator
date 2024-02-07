@@ -389,4 +389,5 @@ spec:
   selector:
     matchLabels:
       name: smart-gateway-operator
+  replaces: smart-gateway-operator.v---bundle-latest-released-version
   version: 1.99.0
