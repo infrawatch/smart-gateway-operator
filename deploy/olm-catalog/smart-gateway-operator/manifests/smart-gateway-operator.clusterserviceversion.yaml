@@ -72,7 +72,7 @@ metadata:
     features.operators.openshift.io/cnf: "false"
     features.operators.openshift.io/cni: "false"
     features.operators.openshift.io/csi: "false"
-    features.operators.openshift.io/disconnected: "false"
+    features.operators.openshift.io/disconnected: "true"
     features.operators.openshift.io/fips-compliant: "false"
     features.operators.openshift.io/proxy-aware: "false"
     features.operators.openshift.io/tls-profiles: "false"
@@ -184,14 +184,6 @@ spec:
           - get
           - update
           - patch
-          - watch
-        - apiGroups:
-          - ""
-          resources:
-          - namespaces
-          verbs:
-          - get
-          - list
           - watch
         - apiGroups:
           - rbac.authorization.k8s.io
@@ -341,14 +333,6 @@ spec:
           - rolebindings
           verbs:
           - create
-        - apiGroups:
-          - ""
-          resources:
-          - namespaces
-          verbs:
-          - get
-          - list
-          - watch
         - apiGroups:
           - rbac.authorization.k8s.io
           resources:
