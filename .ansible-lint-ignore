@@ -1,0 +1,8 @@
+# This file contains ignores rule violations for ansible-lint
+roles/smartgateway/defaults/main.yml var-naming[no-role-prefix]
+roles/smartgateway/meta/main.yml schema[meta]
+roles/smartgateway/tasks/base_service.yml fqcn[action]
+roles/smartgateway/tasks/main.yml fqcn[action-core]
+roles/smartgateway/tasks/main.yml fqcn[action]
+roles/smartgateway/tasks/main.yml yaml[indentation]
+roles/smartgateway/vars/main.yml var-naming[no-role-prefix]
