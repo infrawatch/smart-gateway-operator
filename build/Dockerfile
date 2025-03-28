@@ -1,4 +1,4 @@
-FROM quay.io/openshift/origin-ansible-operator:4.14
+FROM quay.io/operator-framework/ansible-operator:v1.36.1
 
 # temporarily switch to root user to adjust image layers
 USER 0
@@ -7,6 +7,10 @@ USER 0
 # -- excludes ansible so it remains at 2.9 tag as shipped with the base image
 # -- cleans up the cached data from dnf to keep the image as small as possible
 RUN dnf update -y --exclude=ansible* && dnf clean all && rm -rf /var/cache/dnf
+
+COPY requirements.yml ${HOME}/requirements.yml
+RUN ansible-galaxy collection install -r ${HOME}/requirements.yml \
+ && chmod -R ug+rwx ${HOME}/.ansible
 
 # switch back to user 1001 when running the base image (non-root)
 USER 1001
