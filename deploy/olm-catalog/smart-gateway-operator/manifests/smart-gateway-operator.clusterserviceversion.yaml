@@ -79,7 +79,6 @@ metadata:
     features.operators.openshift.io/token-auth-aws: "false"
     features.operators.openshift.io/token-auth-azure: "false"
     features.operators.openshift.io/token-auth-gcp: "false"
-    olm.skipRange: =><<BUNDLE_OLM_SKIP_RANGE_LOWER_BOUND>> <<<OPERATOR_BUNDLE_VERSION>>
     operators.openshift.io/valid-subscription: '["OpenStack Platform", "Cloud Infrastructure",
       "Cloud Suite"]'
     operators.operatorframework.io/builder: operator-sdk-v0.19.4
@@ -373,5 +372,4 @@ spec:
   selector:
     matchLabels:
       name: smart-gateway-operator
-  replaces: smart-gateway-operator.v---bundle-latest-released-version
   version: 1.99.0
