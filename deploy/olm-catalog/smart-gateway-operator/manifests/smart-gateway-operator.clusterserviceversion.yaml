@@ -65,7 +65,7 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring
     certified: "false"
-    containerImage: <<OPERATOR_IMAGE>>:<<OPERATOR_TAG>>
+    containerImage: <<OPERATOR_IMAGE_PULLSPEC>>
     createdAt: <<CREATED_DATE>>
     description: Operator for managing the Smart Gateway Custom Resources, resulting
       in deployments of the Smart Gateway.
@@ -234,12 +234,12 @@ spec:
                 - name: ANSIBLE_DEBUG_LOGS
                   value: "true"
                 - name: RELATED_IMAGE_CORE_SMARTGATEWAY_IMAGE
-                  value: <<RELATED_IMAGE_CORE_SMARTGATEWAY>>:<<RELATED_IMAGE_CORE_SMARTGATEWAY_TAG>>
+                  value: <<RELATED_IMAGE_CORE_SMARTGATEWAY_PULLSPEC>>
                 - name: RELATED_IMAGE_BRIDGE_SMARTGATEWAY_IMAGE
-                  value: <<RELATED_IMAGE_BRIDGE_SMARTGATEWAY>>:<<RELATED_IMAGE_BRIDGE_SMARTGATEWAY_TAG>>
+                  value: <<RELATED_IMAGE_BRIDGE_SMARTGATEWAY_PULLSPEC>>
                 - name: RELATED_IMAGE_OAUTH_PROXY_IMAGE
-                  value: <<RELATED_IMAGE_OAUTH_PROXY>>:<<RELATED_IMAGE_OAUTH_PROXY_TAG>>
-                image: <<OPERATOR_IMAGE>>:<<OPERATOR_TAG>>
+                  value: <<RELATED_IMAGE_OAUTH_PROXY_PULLSPEC>>
+                image: <<OPERATOR_IMAGE_PULLSPEC>>
                 imagePullPolicy: Always
                 name: operator
                 resources: {}
