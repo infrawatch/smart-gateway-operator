@@ -29,12 +29,22 @@ generate_dockerfile() {
 generate_bundle() {
     # FOR COMPATIBILITY -- can be removed once all our builds and CI set _PULLSPEC vars
     # If we get separate $FOO and $FOO_TAG, combine them to set $FOO_PULLSPEC
-    for image in OPERATOR_IMAGE RELATED_IMAGE_CORE_SMARTGATEWAY RELATED_IMAGE_BRIDGE_SMARTGATEWAY RELATED_IMAGE_OAUTH_PROXY; do
-        tag="${image}_TAG"
-        if [[ -n "${!image}" ]] && [[ -n "${!tag}" ]]; then
-            declare ${image}_PULLSPEC="${!image}:${!tag}"
+    images=(
+        OPERATOR_IMAGE
+        RELATED_IMAGE_CORE_SMARTGATEWAY
+        RELATED_IMAGE_BRIDGE_SMARTGATEWAY
+        RELATED_IMAGE_OAUTH_PROXY
+    )
+    for image_var in "${images[@]}"; do
+        tag_var="${image_var}_TAG"
+        image_value="${!image_var}"
+        tag_value="${!tag_var}"
+
+        if [[ -n "$image_value" && -n "$tag_value" ]]; then
+            declare "${image_var}_PULLSPEC"="${image_value}:${tag_value}"
         fi
     done
+
     REPLACE_REGEX="s#<<CREATED_DATE>>#${CREATED_DATE}#g;s#<<OPERATOR_IMAGE_PULLSPEC>>#${OPERATOR_IMAGE_PULLSPEC}#g;s#<<OPERATOR_TAG>>#${OPERATOR_TAG}#g;s#<<RELATED_IMAGE_BRIDGE_SMARTGATEWAY_PULLSPEC>>#${RELATED_IMAGE_BRIDGE_SMARTGATEWAY_PULLSPEC}#g;s#<<RELATED_IMAGE_CORE_SMARTGATEWAY_PULLSPEC>>#${RELATED_IMAGE_CORE_SMARTGATEWAY_PULLSPEC}#g;s#<<RELATED_IMAGE_OAUTH_PROXY_PULLSPEC>>#${RELATED_IMAGE_OAUTH_PROXY_PULLSPEC}#g;s#<<OPERATOR_BUNDLE_VERSION>>#${OPERATOR_BUNDLE_VERSION}#g;s#1.99.0#${OPERATOR_BUNDLE_VERSION}#g"
 
     pushd "${REL}/../" > /dev/null 2>&1
