@@ -75,7 +75,9 @@ build_bundle_instructions() {
 
 
 # generate templates
-generate_version
+if [[ -z "${OPERATOR_BUNDLE_VERSION}" ]]; then
+    generate_version
+fi
 create_working_dir
 generate_dockerfile
 generate_bundle
