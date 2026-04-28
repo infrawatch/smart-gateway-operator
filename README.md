@@ -1,5 +1,7 @@
 # smart-gateway-operator
 
+> **⚠️ DEPRECATED**: This operator is deprecated and will no longer receive updates with new features. Changes in this repository are only related to maintenance tasks. Users should migrate to alternative telemetry solutions.
+
 Operator for the infra.watch [smart gateway](https://github.com/infrawatch/smart-gateway)
 
 ## Deployment to an existing cluster
