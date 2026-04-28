@@ -1,0 +1,9 @@
+---
+schema: olm.deprecations
+package: smart-gateway-operator
+entries:
+  - reference:
+      schema: olm.package
+    message: |
+      smart-gateway-operator is deprecated and future changes are limited to critical fixes.
+      Please migrate to alternative telemetry solutions.
