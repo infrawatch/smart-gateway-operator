@@ -157,21 +157,17 @@ spec:
         - apiGroups:
           - rbac.authorization.k8s.io
           resources:
-          - roles
-          verbs:
-          - create
-          - list
-          - get
-          - update
-          - patch
-          - watch
-        - apiGroups:
-          - rbac.authorization.k8s.io
-          resources:
           - clusterroles
           verbs:
           - create
           - list
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - clusterroles
+          resourceNames:
+          - smart-gateway
+          verbs:
           - get
           - update
           - patch
@@ -183,6 +179,13 @@ spec:
           verbs:
           - create
           - list
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - clusterrolebindings
+          resourceNames:
+          - smart-gateway
+          verbs:
           - get
           - update
           - patch
