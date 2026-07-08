@@ -220,6 +220,10 @@ spec:
               labels:
                 app: smart-gateway-operator
             spec:
+              securityContext:
+                runAsNonRoot: true
+                seccompProfile:
+                  type: RuntimeDefault
               containers:
               - env:
                 - name: WATCH_NAMESPACE
@@ -247,14 +251,29 @@ spec:
                 image: <<OPERATOR_IMAGE_PULLSPEC>>
                 imagePullPolicy: Always
                 name: operator
-                resources: {}
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 256Mi
+                  limits:
+                    cpu: 500m
+                    memory: 512Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                      - ALL
+                  readOnlyRootFilesystem: true
+                  runAsNonRoot: true
+                  seccompProfile:
+                    type: RuntimeDefault
                 volumeMounts:
-                - mountPath: /tmp/ansible-operator/runner
-                  name: runner
+                - mountPath: /tmp
+                  name: tmp
               serviceAccountName: smart-gateway-operator
               volumes:
               - emptyDir: {}
-                name: runner
+                name: tmp
       permissions:
       - rules:
         - apiGroups:
