@@ -226,6 +226,10 @@ spec:
                   type: RuntimeDefault
               containers:
               - env:
+                - name: ANSIBLE_LOCAL_TEMP
+                  value: /tmp/ansible-local
+                - name: ANSIBLE_REMOTE_TEMP
+                  value: /tmp/ansible-local
                 - name: WATCH_NAMESPACE
                   valueFrom:
                     fieldRef:
