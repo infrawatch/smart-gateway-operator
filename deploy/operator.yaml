@@ -12,15 +12,39 @@ spec:
       labels:
         app: smart-gateway-operator
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccountName: smart-gateway-operator
       containers:
       - name: operator
         image: <<OPERATOR_IMAGE_PULLSPEC>>
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
         volumeMounts:
-        - mountPath: /tmp/ansible-operator/runner
-          name: runner
+        - mountPath: /tmp
+          name: tmp
         env:
+        - name: ANSIBLE_LOCAL_TEMP
+          value: /tmp/ansible-local
+        - name: ANSIBLE_REMOTE_TEMP
+          value: /tmp/ansible-local
         - name: WATCH_NAMESPACE
           valueFrom:
             fieldRef:
@@ -45,4 +69,4 @@ spec:
           value: <<RELATED_IMAGE_OAUTH_PROXY_PULLSPEC>>
       volumes:
       - emptyDir: {}
-        name: runner
+        name: tmp
