@@ -16,12 +16,10 @@
 - name: Set Smart Gateway core image
   set_fact:
     core_container_image_path: "{{ lookup('env', 'RELATED_IMAGE_CORE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-core:latest', true) }}"
-  when: core_container_image_path is undefined
 
 - name: Set Smart Gateway bridge image
   set_fact:
     bridge_container_image_path: "{{ lookup('env', 'RELATED_IMAGE_BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-bridge:latest', true) }}"
-  when: bridge_container_image_path is undefined
 
 - name: Set OAuth Proxy image
   set_fact:
