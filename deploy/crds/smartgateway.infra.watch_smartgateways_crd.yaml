@@ -56,12 +56,6 @@ spec:
               handleErrors:
                 description: Tell handlers to send errors to event bus.
                 type: boolean
-              bridgeContainerImagePath:
-                description: Registry path to bridge container image.
-                type: string
-              coreContainerImagePath:
-                description: Registry path to the sg-core container image.
-                type: string
               bridge:
                 description: AMQP1 bridge configuration options
                 properties:

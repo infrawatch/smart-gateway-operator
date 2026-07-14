@@ -45,6 +45,9 @@ spec:
             name: {{ ansible_operator_meta.name }}-proxy-tls
           - mountPath: /etc/proxy/secrets
             name: session-secret
+          - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+            name: sa-token
+            readOnly: true
 {% endif -%}
 {% if sg_vars.bridge.enabled is defined and sg_vars.bridge.enabled %}
       - name: bridge
@@ -137,6 +140,7 @@ spec:
 {%   endif %}
 {% endif %}
       serviceAccountName: {{ service_account_name }}
+      automountServiceAccountToken: false
       volumes:
 {% if (applications | selectattr('name','equalto','prometheus') | list | count > 0) %}
       - name: {{ ansible_operator_meta.name }}-proxy-tls
@@ -159,4 +163,22 @@ spec:
       - name: session-secret
         secret:
           secretName: smart-gateway-session-secret
+{% if (applications | selectattr('name','equalto','prometheus') | list | count > 0) %}
+      - name: sa-token
+        projected:
+          sources:
+          - serviceAccountToken:
+              path: token
+              expirationSeconds: 3600
+          - configMap:
+              name: kube-root-ca.crt
+              items:
+              - key: ca.crt
+                path: ca.crt
+          - downwardAPI:
+              items:
+              - path: namespace
+                fieldRef:
+                  fieldPath: metadata.namespace
+{% endif %}
 # vim: set ft=yaml shiftwidth=2 tabstop=2 expandtab:
