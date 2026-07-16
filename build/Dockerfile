@@ -8,8 +8,11 @@ USER 0
 # -- cleans up the cached data from dnf to keep the image as small as possible
 RUN dnf update -y --exclude=ansible* && dnf clean all && rm -rf /var/cache/dnf
 
-# upgrade pyasn1 to fix CVE-2026-30922 (DoS vulnerability via unbounded recursion)
-RUN pip3 install --upgrade 'pyasn1>=0.6.3'
+# NOTE(dpawlik): The base image contains vulnerable pyasn1 library installed,
+# that's why it needs to be updated to newer.
+# upgrade pyasn1 to fix CVE-2026-59885, CVE-2026-59884, CVE-2026-59886
+RUN rpm -e --nodeps python3-pyasn1 ; \
+    pip3 install --no-cache-dir pyasn1>=0.6.4
 
 COPY requirements.yml ${HOME}/requirements.yml
 RUN ansible-galaxy collection install -r ${HOME}/requirements.yml \
