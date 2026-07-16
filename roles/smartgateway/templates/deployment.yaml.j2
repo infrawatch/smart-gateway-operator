@@ -50,6 +50,18 @@ spec:
         ports:
         - containerPort: 8083
           name: https
+        livenessProbe:
+          tcpSocket:
+            port: 8083
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 8083
+          initialDelaySeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
         volumeMounts:
           - mountPath: /etc/tls/private
             name: {{ ansible_operator_meta.name }}-proxy-tls
@@ -160,6 +172,24 @@ spec:
 {%       endif %}
 {%     endfor %}
 {%   endif %}
+        livenessProbe:
+          exec:
+            command:
+            - curl
+            - -sf
+            - http://127.0.0.1:8081/metrics
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - curl
+            - -sf
+            - http://127.0.0.1:8081/metrics
+          initialDelaySeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
 {% endif %}
       serviceAccountName: {{ service_account_name }}
       automountServiceAccountToken: false
