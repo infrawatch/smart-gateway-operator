@@ -25,10 +25,20 @@ spec:
         sg-config-resource-name: {{ smartgateway_resource_configmap.env | k8s_config_resource_name }}
 {% endif %}
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
 {% if (applications | selectattr('name','equalto','prometheus') | list | count > 0) %}
       - name: oauth-proxy
         image: {{ oauth_proxy_image }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
         args:
         - -https-address=:8083
         - -tls-cert=/etc/tls/private/tls.crt
@@ -64,6 +74,12 @@ spec:
 {% if sg_vars.bridge.enabled is defined and sg_vars.bridge.enabled %}
       - name: bridge
         image: {{ bridge_container_image_path }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
         args:
 {%   if sg_vars.bridge.amqp_url is defined and sg_vars.bridge.amqp_url != "" %}
         - --amqp_url
@@ -115,6 +131,12 @@ spec:
 {% if transports is defined and transports != "" %}
       - name: sg-core
         image: {{ core_container_image_path }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
         args:
           - -config
           - /etc/sg-core/sg-core.conf.yaml
