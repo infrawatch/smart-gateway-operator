@@ -10,6 +10,7 @@ exporter_host: 0.0.0.0
 exporter_port: 8081
 block_event_bus: false
 service_account_name: smart-gateway
+no_verbose_logs: true
 
 # used in conjunction with sg_vars in vars/main.yml to provide single parameter override for the dictionaries
 sg_defaults:
