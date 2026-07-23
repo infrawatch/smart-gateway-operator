@@ -243,9 +243,9 @@ spec:
                 - name: ANSIBLE_GATHERING
                   value: explicit
                 - name: ANSIBLE_VERBOSITY_SMARTGATEWAY_SMARTGATEWAY_INFRA_WATCH
-                  value: "4"
+                  value: "2"
                 - name: ANSIBLE_DEBUG_LOGS
-                  value: "true"
+                  value: "False"
                 - name: RELATED_IMAGE_CORE_SMARTGATEWAY_IMAGE
                   value: <<RELATED_IMAGE_CORE_SMARTGATEWAY_PULLSPEC>>
                 - name: RELATED_IMAGE_BRIDGE_SMARTGATEWAY_IMAGE

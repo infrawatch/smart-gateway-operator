@@ -5,6 +5,7 @@
     api_groups: "{{ lookup('k8s', cluster_info='api_groups') }}"
 
 - name: Print some debug information
+  no_log: "{{ no_verbose_logs | bool }}"
   vars:
     msg: |
       SmartGateway Variables
@@ -83,6 +84,7 @@
 
 # used as part of the Deployment object in order to trigger pod restarts on ConfigMap change
 - name: Get Smart Gateway ConfigMap Environment
+  no_log: "{{ no_verbose_logs | bool }}"
   set_fact:
     smartgateway_resource_configmap:
       env: "{{ lookup('template', item.name) | from_yaml }}"
@@ -91,6 +93,7 @@
     - name: sg-core-configmap.yaml.j2
 
 - name: Deploy Smart Gateway
+  no_log: "{{ no_verbose_logs | bool }}"
   k8s:
     state: "{{ state }}"
     definition: "{{ lookup('template', item.name) | from_yaml }}"
