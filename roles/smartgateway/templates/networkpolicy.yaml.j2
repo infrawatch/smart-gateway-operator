@@ -1,0 +1,20 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: '{{ ansible_operator_meta.name }}-smartgateway'
+  namespace: '{{ ansible_operator_meta.namespace }}'
+  labels:
+    app: smart-gateway
+    smart-gateway: '{{ ansible_operator_meta.name }}'
+spec:
+  podSelector:
+    matchLabels:
+      app: smart-gateway
+      smart-gateway: '{{ ansible_operator_meta.name }}'
+  policyTypes:
+  - Ingress
+  ingress:
+  - ports:
+    - port: 8083
+      protocol: TCP

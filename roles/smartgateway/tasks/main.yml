@@ -102,6 +102,13 @@
     - name: sg-core-configmap.yaml.j2
     - name: deployment.yaml.j2
 
+- name: Deploy Smart Gateway NetworkPolicy
+  k8s:
+    state: "{{ state }}"
+    definition: "{{ lookup('template', 'networkpolicy.yaml.j2') | from_yaml }}"
+  when:
+    - applications | selectattr('name','equalto','prometheus') | list | count > 0
+
 - name: Deploy services requested by this Smart Gateway
   include_tasks: base_service.yml
   loop: "{{ services }}"
