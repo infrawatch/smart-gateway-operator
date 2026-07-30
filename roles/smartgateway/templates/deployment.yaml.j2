@@ -39,6 +39,13 @@ spec:
           capabilities:
             drop:
             - ALL
+        resources:
+          limits:
+            cpu: '{{ sg_resources.oauth_proxy.cpu_limit }}'
+            memory: {{ sg_resources.oauth_proxy.memory_limit }}
+          requests:
+            cpu: {{ sg_resources.oauth_proxy.cpu_request }}
+            memory: {{ sg_resources.oauth_proxy.memory_request }}
         args:
         - -https-address=:8083
         - -tls-cert=/etc/tls/private/tls.crt
@@ -80,6 +87,13 @@ spec:
           capabilities:
             drop:
             - ALL
+        resources:
+          limits:
+            cpu: '{{ sg_resources.bridge.cpu_limit }}'
+            memory: {{ sg_resources.bridge.memory_limit }}
+          requests:
+            cpu: {{ sg_resources.bridge.cpu_request }}
+            memory: {{ sg_resources.bridge.memory_request }}
         args:
 {%   if sg_vars.bridge.amqp_url is defined and sg_vars.bridge.amqp_url != "" %}
         - --amqp_url
@@ -137,6 +151,13 @@ spec:
           capabilities:
             drop:
             - ALL
+        resources:
+          limits:
+            cpu: '{{ sg_resources.sg_core.cpu_limit }}'
+            memory: {{ sg_resources.sg_core.memory_limit }}
+          requests:
+            cpu: {{ sg_resources.sg_core.cpu_request }}
+            memory: {{ sg_resources.sg_core.memory_request }}
         args:
           - -config
           - /etc/sg-core/sg-core.conf.yaml
