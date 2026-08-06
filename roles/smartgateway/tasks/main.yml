@@ -82,6 +82,64 @@
         name: smart-gateway
         namespace: "{{ ansible_operator_meta.namespace }}"
 
+- name: Check for existing resource limits ConfigMap
+  k8s_info:
+    api_version: v1
+    kind: ConfigMap
+    namespace: '{{ ansible_operator_meta.namespace }}'
+    name: 'smart-gateway-resource-limits'
+  register: resource_limits_cm
+
+- name: Create resource limits ConfigMap
+  k8s:
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: 'smart-gateway-resource-limits'
+        namespace: '{{ ansible_operator_meta.namespace }}'
+      data:
+        oauth_proxy_cpu_limit: "{{ sg_resource_defaults.oauth_proxy.cpu_limit }}"
+        oauth_proxy_memory_limit: "{{ sg_resource_defaults.oauth_proxy.memory_limit }}"
+        oauth_proxy_cpu_request: "{{ sg_resource_defaults.oauth_proxy.cpu_request }}"
+        oauth_proxy_memory_request: "{{ sg_resource_defaults.oauth_proxy.memory_request }}"
+        bridge_cpu_limit: "{{ sg_resource_defaults.bridge.cpu_limit }}"
+        bridge_memory_limit: "{{ sg_resource_defaults.bridge.memory_limit }}"
+        bridge_cpu_request: "{{ sg_resource_defaults.bridge.cpu_request }}"
+        bridge_memory_request: "{{ sg_resource_defaults.bridge.memory_request }}"
+        sg_core_cpu_limit: "{{ sg_resource_defaults.sg_core.cpu_limit }}"
+        sg_core_memory_limit: "{{ sg_resource_defaults.sg_core.memory_limit }}"
+        sg_core_cpu_request: "{{ sg_resource_defaults.sg_core.cpu_request }}"
+        sg_core_memory_request: "{{ sg_resource_defaults.sg_core.memory_request }}"
+  when: resource_limits_cm.resources | length == 0
+
+- name: Set resource limits from ConfigMap
+  vars:
+    cm_data: "{{ resource_limits_cm.resources[0].data }}"
+  set_fact:
+    sg_resources:
+      oauth_proxy:
+        cpu_limit: "{{ cm_data.oauth_proxy_cpu_limit | default(sg_resource_defaults.oauth_proxy.cpu_limit) }}"
+        memory_limit: "{{ cm_data.oauth_proxy_memory_limit | default(sg_resource_defaults.oauth_proxy.memory_limit) }}"
+        cpu_request: "{{ cm_data.oauth_proxy_cpu_request | default(sg_resource_defaults.oauth_proxy.cpu_request) }}"
+        memory_request: "{{ cm_data.oauth_proxy_memory_request | default(sg_resource_defaults.oauth_proxy.memory_request) }}"
+      bridge:
+        cpu_limit: "{{ cm_data.bridge_cpu_limit | default(sg_resource_defaults.bridge.cpu_limit) }}"
+        memory_limit: "{{ cm_data.bridge_memory_limit | default(sg_resource_defaults.bridge.memory_limit) }}"
+        cpu_request: "{{ cm_data.bridge_cpu_request | default(sg_resource_defaults.bridge.cpu_request) }}"
+        memory_request: "{{ cm_data.bridge_memory_request | default(sg_resource_defaults.bridge.memory_request) }}"
+      sg_core:
+        cpu_limit: "{{ cm_data.sg_core_cpu_limit | default(sg_resource_defaults.sg_core.cpu_limit) }}"
+        memory_limit: "{{ cm_data.sg_core_memory_limit | default(sg_resource_defaults.sg_core.memory_limit) }}"
+        cpu_request: "{{ cm_data.sg_core_cpu_request | default(sg_resource_defaults.sg_core.cpu_request) }}"
+        memory_request: "{{ cm_data.sg_core_memory_request | default(sg_resource_defaults.sg_core.memory_request) }}"
+  when: resource_limits_cm.resources | length > 0
+
+- name: Set resource limits from defaults
+  set_fact:
+    sg_resources: "{{ sg_resource_defaults }}"
+  when: resource_limits_cm.resources | length == 0
+
 # used as part of the Deployment object in order to trigger pod restarts on ConfigMap change
 - name: Get Smart Gateway ConfigMap Environment
   no_log: "{{ no_verbose_logs | bool }}"
