@@ -53,6 +53,7 @@
     definition:
       apiVersion: v1
       kind: ServiceAccount
+      automountServiceAccountToken: false
       metadata:
         name: "{{ service_account_name }}"
         namespace: "{{ ansible_operator_meta.namespace }}"
